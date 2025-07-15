@@ -26,6 +26,12 @@ PermanentCard >> isRedo [
 	^ false
 ]
 
+{ #category : 'testing' }
+PermanentCard >> matchesCancellationFrom: aCancellationCard [
+
+	^ self class = aCancellationCard 
+]
+
 { #category : 'removing' }
 PermanentCard >> removePermanentEffect [
 	self subclassResponsibility .

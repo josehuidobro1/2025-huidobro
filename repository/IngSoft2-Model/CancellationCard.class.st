@@ -9,9 +9,9 @@ Class {
 }
 
 { #category : 'instance creation' }
-CancellationCard class >> newWithCard: aChosenCard [
+CancellationCard class >> newWithCard: aChosenCardClass [
 
-	^ self new initializeWith:aChosenCard.
+	^ self new initializeWith:aChosenCardClass.
 ]
 
 { #category : 'playing' }
@@ -21,11 +21,12 @@ CancellationCard >> applyTo: aShip using: aShip2 in: aGame [
 ]
 
 { #category : 'playing' }
-CancellationCard >> getChosenCard [
-	^chosenCard .
+CancellationCard >> chosenCard [
+
+	^ chosenCard
 ]
 
 { #category : 'initialization' }
-CancellationCard >> initializeWith:aChosenCard [
-	chosenCard := aChosenCard .
+CancellationCard >> initializeWith:aChosenCardClass [
+	chosenCard := aChosenCardClass .
 ]

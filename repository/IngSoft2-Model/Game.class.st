@@ -72,15 +72,10 @@ Game >> applyBlackHoleEffectOn: aShip [
 ]
 
 { #category : 'playing' }
-Game >> applyCancellationCardEffect [
-	self shouldBeImplemented.
-]
-
-{ #category : 'playing' }
 Game >> applyCancellationCardEffectOn: aPermanentCard [
 
 	| aCard |
-	aCard := activeCards detect: [ :card | card = aPermanentCard ].
+	aCard := activeCards detect: [ :card | card matchesCancellationFrom: aPermanentCard].
 	aCard ifNil: [
 		Error signal: 'active cards does not have that Permanent Card' ].
 	aCard removePermanentEffect.

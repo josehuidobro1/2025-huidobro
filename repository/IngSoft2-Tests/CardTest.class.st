@@ -395,7 +395,7 @@ CardTest >> test009WhenUseCancellationCardThenRemoveSpeedCard [
 	aFixedCardFactory := FixedCard withTypeOfCard: CancellationCard new.
 
 	aGame shipNamed: ship1 useCard: aSpeedCard with: ship1.
-	aCancellationCard := CancellationCard newWithCard: aSpeedCard.
+	aCancellationCard := CancellationCard newWithCard: SpeedCard.
 	aGame shipNamed: ship1 useCard: aCancellationCard with: ship1.
 	aGame playTurn.
 
@@ -440,7 +440,7 @@ CardTest >> test010WhenUseCancellationCardWithAccelerationThenRemoveAcceleration
 	aFixedCardFactory := FixedCard withTypeOfCard: CancellationCard new.
 
 	aGame shipNamed: ship1 useCard: aAccelerationCard with: ship1.
-	aCancellationCard := CancellationCard newWithCard: aAccelerationCard.
+	aCancellationCard := CancellationCard newWithCard: AccelerationCard.
 
 	aGame playTurn.
 	aGame shipNamed: ship1 useCard: aCancellationCard with: ship1.
@@ -487,7 +487,7 @@ CardTest >> test011WhenUseCancellationCardWithMercenaryThenRemoveMercenary [
 
 	aMercenaryCard := MercenaryCard new.
 	aGame shipNamed: ship1 useCard: aMercenaryCard with: ship2.
-	aCancellationCard := CancellationCard newWithCard: aMercenaryCard.
+	aCancellationCard := CancellationCard newWithCard: MercenaryCard.
 	aGame shipNamed: ship1 useCard: aCancellationCard with: ship1.
 	aGame playTurn.
 	aGame playTurn.
@@ -529,7 +529,7 @@ CardTest >> test012WhenUseCancellationCardAndNoActiveCardsThenRaiseError [
 		         until: 1
 		         having: (FixedCardFactory with: typesOfCards).
 	aSpeedCard := SpeedCard new.
-	aCancellationCard := CancellationCard newWithCard: aSpeedCard.
+	aCancellationCard := CancellationCard newWithCard: SpeedCard.
 	self
 		should: [
 		aGame shipNamed: ship1 useCard: aCancellationCard with: ship1 ]
