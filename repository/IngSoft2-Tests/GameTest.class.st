@@ -206,7 +206,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 				using: aDiceBucket
 				andShipsNamed: ships
 				until: 1
-				having: (CardFactory with: typesOfCards) ]
+				having: (CardFactory withTypes: typesOfCards) ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -241,7 +241,7 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 				using: aDiceBucket
 				andShipsNamed: ships
 				until: 0
-				having: (CardFactory with: typesOfCards) ]
+				having: (CardFactory withTypes: typesOfCards) ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -428,7 +428,7 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory with: typesOfCards).
+		         having: (CardFactory withTypes: typesOfCards).
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 3
 ]
@@ -509,7 +509,7 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory with: typesOfCards).
+		         having: (CardFactory withTypes: typesOfCards).
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 6
 ]
@@ -545,7 +545,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory with: typesOfCards).
+		         having: (CardFactory withTypes: typesOfCards).
 	aGame playTurn.
 	aGame playTurn.
 	ship := aGame ships at: 1.
@@ -579,7 +579,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory with: typesOfCards).
+		         having: (CardFactory withTypes: typesOfCards).
 	ship1 := aGame ships at: 1.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
 	self assert: ship1 position equals: 3
@@ -615,7 +615,7 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory with: typesOfCards).
+		         having: (CardFactory withTypes: typesOfCards).
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
 	self assert: (aGame ships at: 1) position equals: 1
 ]
@@ -650,7 +650,7 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory with: typesOfCards).
+		         having: (CardFactory withTypes: typesOfCards).
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 4
 ]
@@ -703,7 +703,7 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory with: typesOfCards).
+		         having: (CardFactory withTypes: typesOfCards).
 	aGame play.
 	ships := #( 'ship 1' 'ship 2' 'ship 3' 'ship 4' ).
 	winner := aGame showWinner.
