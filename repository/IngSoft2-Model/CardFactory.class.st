@@ -35,7 +35,7 @@ CardFactory >> generateInitialCards [
 CardFactory >> generateRandomCardOn: aShip [
 
 	| card |
-	typesOfCards := Card subclasses.
+	typesOfCards := {PermanentCard. InstantCard. RedoCard.}.
 	cards := typesOfCards do: [ :type | type new generateRandomCard ].
 
 	card := (cards at: (Random new nextIntegerBetween: 1 and: cards size))
