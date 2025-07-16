@@ -2,41 +2,31 @@ Class {
 	#name : 'FixedCardFactory',
 	#superclass : 'CardFactory',
 	#instVars : [
-		'types'
+		'types',
+		'index'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
 
-{ #category : 'instance creation' }
-FixedCardFactory class >> with: typesOfCards [
+{ #category : 'accessing' }
+FixedCardFactory class >> withTypes: cardsTypes [
 
-	^ self new initializeWithTypes: typesOfCards
+	^ self new initializeWithTypes: cardsTypes
 ]
 
-{ #category : 'as yet unclassified' }
-FixedCardFactory >> generateInitialCards [
+{ #category : 'generators' }
+FixedCardFactory >> generateRandomCard [
 
-	| selectedTypes |
-	selectedTypes := types size >= 2
-		                 ifTrue: [ types first: 2 ]
-		                 ifFalse: [
-			                 {
-				                 types first.
-				                 types first } ].
-
-	^ (selectedTypes collect: [ :aType | aType generateRandomCard ])
-		  asOrderedCollection
+	|  card |
+	card := typesOfCards at: index.
+	index := index \\ typesOfCards size + 1.
+	^ card
 ]
 
 { #category : 'initialization' }
-FixedCardFactory >> initializeWithTypes: typesOfCards [
+FixedCardFactory >> initializeWithTypes: cards [
 
-	types := typesOfCards
-]
-
-{ #category : 'initialization' }
-FixedCardFactory >> initializeWithTypesOfCards: cardsTypes [
-
-	typesOfCards := cardsTypes.
+	index := 1.
+	typesOfCards := cards
 ]

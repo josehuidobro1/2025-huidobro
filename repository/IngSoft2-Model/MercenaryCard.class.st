@@ -1,6 +1,6 @@
 Class {
 	#name : 'MercenaryCard',
-	#superclass : 'PermanentCard',
+	#superclass : 'Card',
 	#instVars : [
 		'mercenary',
 		'shipWithMercenary',
@@ -36,6 +36,12 @@ MercenaryCard >> applyTo: aShip using: aMercenary in:aGame [
 	shipWithMercenary := aShip.
 	shipBeingMercenary := aMercenary .
 	aShip receiveMercenaryCardEffectWith: aMercenary
+]
+
+{ #category : 'testing' }
+MercenaryCard >> isPermanent [
+
+	^ true
 ]
 
 { #category : 'removing' }

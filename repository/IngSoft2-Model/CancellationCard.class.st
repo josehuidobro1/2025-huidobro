@@ -1,6 +1,6 @@
 Class {
 	#name : 'CancellationCard',
-	#superclass : 'InstantCard',
+	#superclass : 'Card',
 	#instVars : [
 		'chosenCard'
 	],
@@ -9,9 +9,9 @@ Class {
 }
 
 { #category : 'instance creation' }
-CancellationCard class >> newWithCard: aChosenCardClass [
+CancellationCard class >> newWithCard: aChosenCard [
 
-	^ self new initializeWith:aChosenCardClass.
+	^ self new initializeWith: aChosenCard
 ]
 
 { #category : 'playing' }
@@ -27,6 +27,6 @@ CancellationCard >> chosenCard [
 ]
 
 { #category : 'initialization' }
-CancellationCard >> initializeWith:aChosenCardClass [
-	chosenCard := aChosenCardClass .
+CancellationCard >> initializeWith:aChosenCard [
+	chosenCard := aChosenCard .
 ]

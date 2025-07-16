@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'cards',
 		'givenCards',
-		'typesOfCards'
+		'typesOfCards',
+		'random'
 	],
 	#classInstVars : [
 		'cards'
@@ -24,33 +25,29 @@ CardFactory >> generateInitialCards [
 
 	| initialCards |
 	initialCards := OrderedCollection new.
-	initialCards add: (self randomCard:
-			 (Random new nextIntegerBetween: 1 and: typesOfCards size)).
-	initialCards add: (self randomCard:
-			 (Random new nextIntegerBetween: 1 and: typesOfCards size)).
+	initialCards add: self generateRandomCard.
+	initialCards add: self generateRandomCard.
 	^ initialCards
+]
+
+{ #category : 'generators' }
+CardFactory >> generateRandomCard [
+
+	| card index |
+	index := random nextIntegerBetween: 1 and: typesOfCards size.
+	card := (typesOfCards at: index).
+	^ card
 ]
 
 { #category : 'generators' }
 CardFactory >> generateRandomCardOn: aShip [
 
-	| card |
-	typesOfCards := {PermanentCard. InstantCard. RedoCard.}.
-	cards := typesOfCards do: [ :type | type new generateRandomCard ].
-
-	card := (cards at: (Random new nextIntegerBetween: 1 and: cards size))
-		        new.
-	aShip receiveThis: card generateRandomCard
+	aShip receiveThis: self generateRandomCard.
 ]
 
 { #category : 'initialization' }
-CardFactory >> initializeWithTypesOfCards: cardsTypes [
+CardFactory >> initializeWithTypesOfCards: cardTypes [
 
-	typesOfCards := cardsTypes.
-]
-
-{ #category : 'generators' }
-CardFactory >> randomCard: index [
-
-	^ (typesOfCards at: index) generateRandomCard.
+	typesOfCards := cardTypes.
+	random := Random new
 ]

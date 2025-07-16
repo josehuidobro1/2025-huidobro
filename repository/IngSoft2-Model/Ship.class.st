@@ -63,6 +63,11 @@ Ship >> hasAsMercery: aShip [
 	^ bonusBattle anySatisfy: [ :ship | aShip = ship name ]
 ]
 
+{ #category : 'testing' }
+Ship >> hasCard: aCard [
+	^ cards anySatisfy: [ :card | card matches: aCard ]
+]
+
 { #category : 'playing' }
 Ship >> helpToFightWith: aDiceBucket [
 
@@ -250,6 +255,18 @@ Ship >> removeAccelerationCardEffect [
 ]
 
 { #category : 'removing' }
+Ship >> removeCard: aCard [
+
+	| cardToRemove |
+	cardToRemove := cards detect: [ :card | card matches: aCard ].
+
+	cards
+		remove: cardToRemove
+		ifAbsent: [
+		Error signal: 'Tried to remove a card that is not in hand' ]
+]
+
+{ #category : 'removing' }
 Ship >> removeSpeedCardEffect [
 	self decreaseBonusThrow .
 ]
@@ -289,17 +306,13 @@ Ship >> turnsThatHasToSkip [
 ]
 
 { #category : 'playing' }
-Ship >> use: aCard with: aShip in:aGame [
+Ship >> use: aCard with: aShip in: aGame [
 
-	| index |
-	index := cards indexOf: (cards value
-			          detect: [ :card | card class = aCard class ]
-			          ifNone: [
-			          Error signal:
-				          'You can not use a card that you do not have' ]).
+	(self hasCard: aCard) ifFalse: [
+		Error signal: 'Cannot play a card you do not have' ].
 	aCard applyTo: self using: aShip in: aGame.
-	aGame addToActiveCardsThisCard: aCard .
-	cards removeAt: index.
+	aGame addToActiveCardsThisCard: aCard.
+	self removeCard: aCard
 ]
 
 { #category : 'playing' }

@@ -1,6 +1,6 @@
 Class {
 	#name : 'SpeedCard',
-	#superclass : 'PermanentCard',
+	#superclass : 'Card',
 	#instVars : [
 		'linkedShip'
 	],
@@ -18,6 +18,12 @@ SpeedCard class >> applyTo: aShip [
 SpeedCard >> applyTo: aShip using: aShip2 in:aGame [
 	linkedShip := aShip. 
 	aShip receiveSpeedCardEffect.
+]
+
+{ #category : 'testing' }
+SpeedCard >> isPermanent [
+
+	^ true
 ]
 
 { #category : 'removing' }

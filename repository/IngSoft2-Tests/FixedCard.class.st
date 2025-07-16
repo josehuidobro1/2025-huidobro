@@ -1,6 +1,6 @@
 Class {
 	#name : 'FixedCard',
-	#superclass : 'Object',
+	#superclass : 'Card',
 	#instVars : [
 		'card'
 	],
@@ -11,10 +11,10 @@ Class {
 { #category : 'as yet unclassified' }
 FixedCard class >> withTypeOfCard: aCard [
 
-^ self new initializeWithA: aCard.
+	^ aCard 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'generators' }
 FixedCard >> generateRandomCard [
 
 	^ card

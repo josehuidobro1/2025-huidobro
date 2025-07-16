@@ -1,12 +1,12 @@
 Class {
-	#name : 'InstantCard',
+	#name : 'Card',
 	#superclass : 'Object',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'generation' }
-InstantCard >> generateRandomCard [
+{ #category : 'generators' }
+Card >> generateRandomCard [
 
 	| classes |
 	classes := self class subclasses.
@@ -14,13 +14,19 @@ InstantCard >> generateRandomCard [
 ]
 
 { #category : 'testing' }
-InstantCard >> isPermanent [
+Card >> isPermanent [
 
 	^ false
 ]
 
 { #category : 'testing' }
-InstantCard >> isRedo [
+Card >> isRedo [
 
 	^ false
+]
+
+{ #category : 'testing' }
+Card >> matches: anotherCard [
+
+	^ self class = anotherCard class
 ]

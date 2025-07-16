@@ -82,7 +82,7 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 0
-		         having: (FixedCardFactory with: typesOfCards).
+		         having: (FixedCardFactory  withTypes: typesOfCards).
 	gameState := Started new.
 	self
 		should: [ gameState showWinner: aGame ]
@@ -123,7 +123,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
 		         until: 1
-		         having: (FixedCardFactory with: typesOfCards).
+		         having: (FixedCardFactory withTypes: typesOfCards).
 	aGame play.
 	self assert: aGame showWinner name equals: shipOne
 ]
@@ -157,7 +157,7 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
 		         until: 1
-		         having: (FixedCardFactory with: typesOfCards).
+		         having: (FixedCardFactory withTypes: typesOfCards).
 
 	self
 		should: [ aGame currentStatus showWinner: aGame ]
@@ -197,7 +197,7 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
 		         until: 1
-		         having: (FixedCardFactory with: typesOfCards).
+		         having: (FixedCardFactory withTypes: typesOfCards).
 	aGame playTurn.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.

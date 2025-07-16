@@ -18,6 +18,6 @@ CardGiver class >> initializeThis [
 CardGiver >> applyTo: aShip in: aGame [
 
 	| cardFactory |
-	cardFactory := CardFactory new.
+	cardFactory := CardFactory withTypes: { Card }.
 	cardFactory generateRandomCardOn: aShip
 ]
