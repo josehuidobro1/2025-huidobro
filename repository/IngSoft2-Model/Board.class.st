@@ -45,6 +45,8 @@ Board >> amountOfCellsOf: anEffectOrClass [
 { #category : 'playing' }
 Board >> effectOnPosition: position [
 
+	((wormHole positions: self) anySatisfy: [ :cell | cell = position ])
+		ifTrue: [ ^ wormHole ].
 	^ (cells at: position) effect value
 ]
 
@@ -127,16 +129,6 @@ Board >> parsecsPerCell [
 Board >> specialCells [
 
 	^ wormHole positions: self
-]
-
-{ #category : 'verification' }
-Board >> verifyPosition: position [
-
-	| newPosition |
-	newPosition := position.
-	wormHole ifNotNil: [
-		newPosition := wormHole transportIfConnectedTo: position ].
-	^ newPosition
 ]
 
 { #category : 'instance creation' }

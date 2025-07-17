@@ -120,7 +120,7 @@ BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 	aY := 7.
 	aWorm := Worm with: aX and: aY.
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: NoEffect with: 1).
+	distributions add: (Distribution at: NoEffect  with: 1).
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
@@ -129,7 +129,7 @@ BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 	aLoadedDice := LoadedDice withSequence: #( 6 ).
 	aShip := Ship create: 'ship 1'.
 	aShip move: 6 in: aBoard.
-	self assert: (aBoard verifyPosition: aShip) position equals: 4
+	self assert: aShip position equals: 4
 ]
 
 { #category : 'tests' }
@@ -150,7 +150,7 @@ BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCel
 	loadedDice := LoadedDice withSequence: #( 6 ).
 	aShip := Ship create: 'ship1'.
 	aShip move: loadedDice throw in: aBoard.
-	self assert: (aBoard verifyPosition: aShip) position equals: 4
+	self assert: aShip position equals: 4
 ]
 
 { #category : 'tests' }

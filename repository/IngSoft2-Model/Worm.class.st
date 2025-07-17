@@ -1,6 +1,6 @@
 Class {
 	#name : 'Worm',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#instVars : [
 		'positionX',
 		'positionY'
@@ -21,6 +21,16 @@ Worm class >> with: aX and: aY [
 			  'Worm holes positions must be different' ].
 	
 	^ self new initializeWith: aX positionsOn: aY
+]
+
+{ #category : 'playing' }
+Worm >> applyTo: aShip in: aGame [
+
+	| aPosition newPosition |
+	aPosition := aShip position.
+	aPosition = positionX ifTrue: [ newPosition := positionY ].
+	aPosition = positionY ifTrue: [ newPosition := positionX ].
+	aShip receiveWormHoleEfffect: newPosition
 ]
 
 { #category : 'initialization' }

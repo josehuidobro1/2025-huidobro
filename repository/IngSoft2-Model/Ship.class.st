@@ -150,7 +150,6 @@ Ship >> move: numberOfCells in: aBoard [
 	newPosition := position + numberOfCells.
 	result := aBoard move: newPosition at: currentLap having: 0.
 	position := result at: 1.
-	position := aBoard verifyPosition: position.
 	currentLap := result at: 2
 ]
 
@@ -224,6 +223,12 @@ Ship >> receiveSpeedCardEffect [
 Ship >> receiveThis: aCard [
 
 	cards add: aCard
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> receiveWormHoleEfffect: aPosition [
+
+	position := aPosition
 ]
 
 { #category : 'playing' }

@@ -126,21 +126,6 @@ Game >> findShipBy: aName [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
-
-	| cardFactory |
-	board := aCircularBoard with: numberOfLaps.
-	ships := shipsNames collect: [ :aName | Ship create: aName ].
-	bucketOfDices := aDiceBucket.
-	status := Started creation.
-	turnManager := TurnManager with: ships.
-	battleManager := BattleManager with: aDiceBucket.
-	historicalEffects := NoEffect new.
-	cardManager := CardManager creation.
-	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
-]
-
-{ #category : 'initialization' }
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps cardManager: aCardManager [
 
 	| cardFactory |
@@ -153,23 +138,6 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	historicalEffects := NoEffect new.
 	cardManager := aCardManager.
 	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
-]
-
-{ #category : 'initialization' }
-Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps having: cardTypes [
-
-	| cardFactory |
-	board := aCircularBoard with: numberOfLaps.
-	ships := shipsNames collect: [ :aName | Ship create: aName ].
-	ships do: [ :ship | ship recieveCardsFrom: cardTypes ].
-	bucketOfDices := aDiceBucket.
-	status := Started creation.
-	turnManager := TurnManager with: ships.
-	battleManager := BattleManager with: aDiceBucket.
-	activeCards := OrderedCollection new.
-	historicalCards := OrderedCollection new.
-	historicalEffects := NoEffect new.
-	cardManager := CardManager new
 ]
 
 { #category : 'testing' }
