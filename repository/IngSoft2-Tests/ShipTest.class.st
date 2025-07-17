@@ -131,7 +131,7 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame play.
 
 	self assert: aGame showWinner name equals: 'Ship1'
@@ -265,7 +265,7 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 3
@@ -301,7 +301,7 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
@@ -339,7 +339,7 @@ ShipTest >> test017WhenShipMovesMoreCellsThanCellsInBoardThenItActualPositionIs1
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	self assert: (aGame findShipBy: 'ship 1') position equals: 1
 ]
@@ -372,7 +372,7 @@ ShipTest >> test018WhenShipMovesToLastCellInLapThanCellsInBoardThenItIsInLastCel
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	self assert: (aGame findShipBy: 'ship 1') position equals: 10
 ]
@@ -405,7 +405,7 @@ ShipTest >> test019WhenShipMovesByEffectAndItIsInEarlyCellsThenLapsStayZeroAndNo
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	self assert: (aGame findShipBy: 'ship 1') laps equals: 1
 ]

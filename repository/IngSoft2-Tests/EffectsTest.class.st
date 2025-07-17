@@ -32,7 +32,7 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	ship1 move: 6 in: aBoard.
 	effect := (distributions at: 1) cellClass.
@@ -66,7 +66,7 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	ship1 move: 2 in: aBoard.
 	effect := (distributions at: 1) cellClass.
@@ -100,7 +100,7 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
@@ -134,7 +134,7 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory  withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
@@ -170,7 +170,7 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 2
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
 	ship2 move: 13 in: aBoard.
@@ -209,7 +209,7 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
 	ship2 move: 23 in: aBoard.
@@ -247,7 +247,7 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: (aGame ships at: 2) laps equals: 2
@@ -281,7 +281,7 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
 	self assert: ship1 shields equals: 2
@@ -326,7 +326,7 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
 	self assert: ship1 position equals: 7
@@ -370,7 +370,7 @@ EffectsTest >> test010WhenCreatHyperJumpEffectToShip1andShip2ThenShipsPositionAr
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	aGame playTurn.
 	self
@@ -469,7 +469,7 @@ EffectsTest >> test014WhenCreatHyperJumpWithParsecsrEffectToShipThenItMovesParse
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
 	self assert: ship1 position equals: 6
@@ -512,7 +512,7 @@ EffectsTest >> test015WhenCreatHyperJumpLightYearEffectToShipThenItMovesPrrsecs 
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
 	self assert: ship1 position equals: 6

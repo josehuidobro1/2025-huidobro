@@ -91,6 +91,7 @@ Ship >> initializeWith: aName [
 	bonusThrow := 0.
 	bonusBattle := OrderedCollection new.
 	shipsIAmMercenaryTo := OrderedCollection new.
+	cards := OrderedCollection new.
 	amIMercenary:=false.
 ]
 
@@ -193,8 +194,9 @@ Ship >> receiveBlackHoleEffectFrom: aBoard [
 ]
 
 { #category : 'playing' }
-Ship >> receiveCard: aClass [ 
-	self shouldBeImplemented.
+Ship >> receiveCard: aCard [
+
+	cards add: aCard
 ]
 
 { #category : 'playing' }
@@ -306,16 +308,6 @@ Ship >> turnsThatHasToSkip [
 ]
 
 { #category : 'playing' }
-Ship >> use: aCard with: aShip in: aGame [
-
-	(self hasCard: aCard) ifFalse: [
-		Error signal: 'Cannot play a card you do not have' ].
-	aCard applyTo: self using: aShip in: aGame.
-	aGame addToActiveCardsThisCard: aCard.
-	self removeCard: aCard
-]
-
-{ #category : 'playing' }
 Ship >> useBonusThrow [
 
 	| increment |
@@ -323,6 +315,19 @@ Ship >> useBonusThrow [
 	bonusThrow > 0 ifTrue: [ increment := 1 ].
 	bonusThrow := bonusThrow - 1.
 	^ increment
+]
+
+{ #category : 'playing' }
+Ship >> useCard: aCard with: aShip in: aGame [
+
+	(self hasCard: aCard) ifFalse: [
+		Error signal: 'Cannot play a card you do not have' ].
+	aGame cardManager
+		playCard: aCard
+		by: self
+		target: aShip
+		in: aGame.
+	self removeCard: aCard
 ]
 
 { #category : 'accessing' }

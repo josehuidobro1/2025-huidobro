@@ -34,7 +34,7 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame play.
 	self assert: aGame showWinner isNotNil
 ]
@@ -67,9 +67,7 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         andShipsNamed: ships.
 
 	self assert: aGame play equals: 'Game over'
 ]
@@ -100,7 +98,7 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame play.
 	self assert: aGame showWinner name equals: 'shipOne'
 ]
@@ -131,7 +129,7 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame play.
 	assertedResult := Dictionary new.
 	assertedResult at: 'ship 1' put: 10.
@@ -165,7 +163,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	(aGame ships at: 1) move: 10 in: aBoard.
 	(aGame ships at: 2) move: 5 in: aBoard.
 	aGame play.
@@ -178,7 +176,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 { #category : 'tests' }
 GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards|
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -206,7 +204,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 				using: aDiceBucket
 				andShipsNamed: ships
 				until: 1
-				having: (CardFactory withTypes: typesOfCards) ]
+				cardManager: CardManager creation ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -217,7 +215,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 { #category : 'tests' }
 GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards|
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -241,7 +239,7 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 				using: aDiceBucket
 				andShipsNamed: ships
 				until: 0
-				having: (CardFactory withTypes: typesOfCards) ]
+				cardManager: CardManager creation ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -278,7 +276,7 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 
 	self assert: (aGame ships at: 1) position equals: 1
 ]
@@ -311,7 +309,7 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 
 	(aGame ships at: 2) move: 10 in: aBoard.
 	aGame play.
@@ -350,7 +348,7 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 
 	aGame playTurn.
 	aGame playTurn.
@@ -388,7 +386,7 @@ GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: (FixedCardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	self
 		should: [ aGame showRanking ]
 		raise: Error
@@ -422,13 +420,13 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard  withTypeOfCard: MercenaryCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 3
 ]
@@ -509,7 +507,7 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 6
 ]
@@ -545,7 +543,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	aGame playTurn.
 	ship := aGame ships at: 1.
@@ -555,7 +553,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 { #category : 'tests' }
 GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotReceiveTheSecondEffect [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 typesOfCards|
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 6 ).
@@ -579,7 +577,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	ship1 := aGame ships at: 1.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
 	self assert: ship1 position equals: 3
@@ -588,7 +586,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 { #category : 'tests' }
 GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShipThenFight [
 
-	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 ship2 typesOfCards|
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 ship2 typesOfCards |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 14 3 ).
@@ -615,7 +613,7 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
 	self assert: (aGame ships at: 1) position equals: 1
 ]
@@ -650,7 +648,7 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 4
 ]
@@ -658,7 +656,7 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 { #category : 'tests' }
 GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 
-	| amountOfCells worm distributions distanceToMove  aDice dices1 aDiceBucket1 aWorm laps ship1 ship2 ships ship3 ship4 aGame aBoard winner typesOfCards|
+	| amountOfCells worm distributions distanceToMove aDice dices1 aDiceBucket1 aWorm laps ship1 ship2 ships ship3 ship4 aGame aBoard winner typesOfCards |
 	amountOfCells := 5.
 	worm := Worm with: 2 and: 4.
 	distanceToMove := OrderedCollection new.
@@ -703,7 +701,7 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps
-		         having: (CardFactory withTypes: typesOfCards).
+		         cardManager: CardManager creation.
 	aGame play.
 	ships := #( 'ship 1' 'ship 2' 'ship 3' 'ship 4' ).
 	winner := aGame showWinner.

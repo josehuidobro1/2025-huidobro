@@ -12,7 +12,8 @@ Class {
 		'cards',
 		'activeCards',
 		'historicalCards',
-		'historicalEffects'
+		'historicalEffects',
+		'cardManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -37,17 +38,13 @@ Game class >> validateUniqueNames: ships [
 ]
 
 { #category : 'as yet unclassified' }
-Game class >> with: aBoard using: aLoadedDice andShipsNamed: shipsName until: laps having: aCardDeck [ 
+Game class >> with: aBoard using: aDiceBucket andShipsNamed: shipsName until: laps cardManager: aCardManager [
 	shipsName ifEmpty: [
 		^ Error signal: 'List of ships must not be empty.' ].
 	self validateUniqueNames: shipsName.
 
 	^ self new
-		  initializeWith: aBoard
-		  using: aLoadedDice
-		  andShipsNamed: shipsName
-		  until: laps
-		  having: aCardDeck.
+		  initializeWith: aBoard using: aDiceBucket andShipsNamed: shipsName until: laps cardManager: aCardManager
 ]
 
 { #category : 'adding' }
@@ -130,6 +127,12 @@ Game >> board [
 ]
 
 { #category : 'accessing' }
+Game >> cardManager [
+
+	^ cardManager
+]
+
+{ #category : 'accessing' }
 Game >> currentStatus [
 
 	^ status
@@ -148,6 +151,37 @@ Game >> findShipBy: aName [
 ]
 
 { #category : 'initialization' }
+Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
+
+	| cardFactory |
+	board := aCircularBoard with: numberOfLaps.
+	ships := shipsNames collect: [ :aName | Ship create: aName ].
+	bucketOfDices := aDiceBucket.
+	status := Started creation.
+	turnManager := TurnManager with: ships.
+	battleManager := BattleManager with: aDiceBucket.
+	historicalEffects := NoEffect new.
+	cardManager := CardManager creation.
+	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
+]
+
+{ #category : 'initialization' }
+Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps cardManager: aCardManager [
+
+	| cardFactory |
+	board := aCircularBoard with: numberOfLaps.
+	ships := shipsNames collect: [ :aName | Ship create: aName ].
+	bucketOfDices := aDiceBucket.
+	status := Started creation.
+	turnManager := TurnManager with: ships.
+	battleManager := BattleManager with: aDiceBucket.
+	historicalEffects := NoEffect new.
+	cardManager := aCardManager.
+	cardManager ensureHasEnoughCardsForShips: ships size.
+	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
+]
+
+{ #category : 'initialization' }
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps having: cardTypes [
 
 	| cardFactory |
@@ -161,6 +195,7 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	activeCards := OrderedCollection new.
 	historicalCards := OrderedCollection new.
 	historicalEffects := NoEffect new.
+	cardManager := CardManager new
 ]
 
 { #category : 'testing' }
@@ -211,8 +246,7 @@ Game >> shipNamed: aShip1 useCard: aCard with: aShip2 [
 	| ship1 ship2 |
 	ship1 := self findShipBy: aShip1.
 	ship2 := self findShipBy: aShip2.
-	ship1 use: aCard with: ship2 in: self.
-	historicalCards add: aCard
+	ship1  useCard: aCard with: ship2 in: self.
 ]
 
 { #category : 'accessing' }

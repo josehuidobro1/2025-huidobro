@@ -14,6 +14,12 @@ Card >> generateRandomCard [
 ]
 
 { #category : 'testing' }
+Card >> isCancellationCard [
+
+	^ false
+]
+
+{ #category : 'testing' }
 Card >> isPermanent [
 
 	^ false
