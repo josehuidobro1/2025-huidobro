@@ -5,6 +5,12 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'adding' }
+FixCardManager >> addCardsToDeck: cards [
+
+	deck addAll: cards
+]
+
 { #category : 'as yet unclassified' }
 FixCardManager >> drawCard [
 

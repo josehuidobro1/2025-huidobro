@@ -29,7 +29,6 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	ships add: 'ship 3'.
 	typesOfCards := OrderedCollection new.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -64,7 +63,6 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -95,7 +93,6 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -126,7 +123,6 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 		                    basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -160,7 +156,6 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -198,8 +193,6 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 1'.
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	self
 		should: [
 			Game
@@ -233,8 +226,6 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 		                    and: aWorm
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	self
 		should: [
 			Game
@@ -273,7 +264,6 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -306,7 +296,6 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -345,7 +334,6 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -383,7 +371,6 @@ GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -423,7 +410,6 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -503,8 +489,7 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
+	cardManager := CardManager creation..
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -540,7 +525,6 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	ships add: ship1.
 	ships add: ship2.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1
@@ -574,7 +558,6 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 	laps := 3.
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -609,10 +592,7 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 	ship2 := 'ship 2'.
 	ships add: ship1.
 	ships add: ship2.
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1
@@ -647,7 +627,6 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 	ships add: ship1.
 	ships add: ship2.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1
@@ -699,10 +678,7 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 	ship4 := 'ship 4'.
 	ships add: ship3.
 	ships add: ship4.
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	cardManager := CardManager creation.
-	8 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1

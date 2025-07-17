@@ -31,7 +31,6 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 			AccelerationCard new.
 			SpeedCard new.
 			SpeedCard new }.
-
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -68,7 +67,6 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 	cardManager addCardsToDeck: {
 			SpeedCard new.
 			SpeedCard new }.
-
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -101,11 +99,6 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new }.
-
-
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -138,11 +131,6 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new }.
-
-
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -177,13 +165,6 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new }.
-
-
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -221,16 +202,6 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new }.
-
-
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -267,15 +238,6 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new }.
-
-
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -308,10 +270,6 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new }.
-
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -355,13 +313,6 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new }.
 
 	aGame := Game
 		         with: aBoard
@@ -406,17 +357,6 @@ EffectsTest >> test010WhenCreatHyperJumpEffectToShip1andShip2ThenShipsPositionAr
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new }.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -510,13 +450,6 @@ EffectsTest >> test014WhenCreatHyperJumpWithParsecsrEffectToShipThenItMovesParse
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new }.
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
@@ -559,13 +492,7 @@ EffectsTest >> test015WhenCreatHyperJumpLightYearEffectToShipThenItMovesPrrsecs 
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new }.
+
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm

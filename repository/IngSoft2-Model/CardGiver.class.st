@@ -17,7 +17,5 @@ CardGiver class >> initializeThis [
 { #category : 'playing' }
 CardGiver >> applyTo: aShip in: aGame [
 
-	| cardFactory |
-	cardFactory := CardFactory withTypes: { Card }.
-	cardFactory generateRandomCardOn: aShip
+	aGame cardManager drawCardOn: aShip
 ]

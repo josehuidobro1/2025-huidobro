@@ -22,12 +22,6 @@ CardManager >> activePermanentCards [
 	^ activeCards
 ]
 
-{ #category : 'adding' }
-CardManager >> addCardsToDeck: cards [
-
-	deck addAll: cards
-]
-
 { #category : 'as yet unclassified' }
 CardManager >> applyRedoEffectOn: aShip in: aGame [
 
@@ -63,18 +57,34 @@ CardManager >> deck [
 { #category : 'as yet unclassified' }
 CardManager >> drawCard [
 
-	self shuffleDeck.
-	^ (deck at: 1).
+	| index randomCard typeOfCards |
+	typeOfCards := {
+		               AccelerationCard.
+		               SpeedCard.
+		               CancellationCard.
+		               MercenaryCard.
+		               RedoCard.
+		               RepeatCard.
+		               SpeedCard }.
+	index := Random new nextIntegerBetween: 1 and: typeOfCards size.
+	randomCard := (typeOfCards at: index) new.
+	^ randomCard
+]
+
+{ #category : 'as yet unclassified' }
+CardManager >> drawCardOn: aShip [
+
+	| card |
+	card := self drawCard.
+	aShip receiveCard: card
 ]
 
 { #category : 'as yet unclassified' }
 CardManager >> drawInitialCardsFor: aShip [
 
 	| card |
-	card := self drawCard.
-	aShip receiveCard: card.
-	card := self drawCard.
-	aShip receiveCard: card
+	self drawCardOn: aShip.
+	self drawCardOn: aShip
 ]
 
 { #category : 'as yet unclassified' }

@@ -123,7 +123,6 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -255,7 +254,6 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	laps := 3.
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -289,7 +287,6 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -326,7 +323,6 @@ ShipTest >> test017WhenShipMovesMoreCellsThanCellsInBoardThenItActualPositionIs1
 	laps := 3.
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -358,7 +354,6 @@ ShipTest >> test018WhenShipMovesToLastCellInLapThanCellsInBoardThenItIsInLastCel
 	laps := 3.
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -390,7 +385,6 @@ ShipTest >> test019WhenShipMovesByEffectAndItIsInEarlyCellsThenLapsStayZeroAndNo
 	laps := 3.
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	6 timesRepeat: [ cardManager addCardsToDeck: { SpeedCard new } ].
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket

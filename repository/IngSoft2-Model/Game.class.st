@@ -152,7 +152,6 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	battleManager := BattleManager with: aDiceBucket.
 	historicalEffects := NoEffect new.
 	cardManager := aCardManager.
-	cardManager ensureHasEnoughCardsForShips: ships size.
 	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
 ]
 

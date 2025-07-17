@@ -73,14 +73,9 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
 	ships := OrderedCollection new.
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new }.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -119,9 +114,6 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new }.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -153,9 +145,6 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new }.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -192,11 +181,6 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new.
-			SpeedCard new }.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket

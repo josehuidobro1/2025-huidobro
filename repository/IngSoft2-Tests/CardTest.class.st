@@ -25,10 +25,6 @@ CardTest >> test000WhenCreateSpeedCardThenShipSumOneInItThrow [
 		                    basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	cardManager := CardManager creation.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			CancellationCard new.
-			RedoCard new }.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -60,7 +56,7 @@ CardTest >> test001WhenUseSpeedCardFromDeckThenApplyItEffect [
 	ships := OrderedCollection new.
 	ships add: ship1.
 	aCard := SpeedCard new.
-	cardManager := CardManager creation.
+	cardManager := FixCardManager creation.
 	cardManager addCardsToDeck: {
 			aCard.
 			SpeedCard new }.
@@ -96,8 +92,10 @@ CardTest >> test002WhenShipWantsToPlayThatItDoesNotHaveThenRaiseError [
 	ship1 := 'ship 1'.
 	ships := OrderedCollection new.
 	ships add: ship1.
-	cardManager := CardManager creation.
-	cardManager addCardsToDeck: { MercenaryCard new. AccelerationCard new. }.
+	cardManager := FixCardManager creation.
+	cardManager addCardsToDeck: {
+			MercenaryCard new.
+			AccelerationCard new }.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -181,7 +179,7 @@ CardTest >> test004WhenAShipUseSpeedCardThenIsRemovedFromDeckOfShip [
 	ships := OrderedCollection new.
 	ships add: ship1.
 	aCard := SpeedCard new.
-	cardManager := CardManager creation.
+	cardManager := FixCardManager creation.
 	cardManager addCardsToDeck: { aCard. SpeedCard new. }.
 	aGame := Game
 		         with: aBoard
@@ -504,9 +502,6 @@ CardTest >> test011WhenUseCancellationCardWithMercenaryThenRemoveMercenary [
 	ships add: ship1.
 	ships add: ship2.
 	ships add: ship3.
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
-	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
 	cardManager := FixCardManager creation.
 	mercenaryCard := MercenaryCard new.
 	aCancellationCard := CancellationCard newWithCard: mercenaryCard.
@@ -776,6 +771,7 @@ CardTest >> test017WhenTheShipMovesThrowTheBoardAndITACrdGiverCellThenShipReciev
 			repeatcard.
 			AccelerationCard new.
 			SpeedCard new.
+			SpeedCard new . SpeedCard new.
 			SpeedCard new }.
 	aGame := Game
 		         with: aBoard
@@ -816,7 +812,8 @@ CardTest >> test018WhenShipUseRepeatCardAndLastEffectWasaCardGiverThenItDoesNotR
 			repeatcard.
 			RedoCard new.
 			SpeedCard new.
-			SpeedCard new }.
+			SpeedCard new. SpeedCard new.
+			SpeedCard new  }.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -826,64 +823,4 @@ CardTest >> test018WhenShipUseRepeatCardAndLastEffectWasaCardGiverThenItDoesNotR
 	aGame playTurn.
 	aGame shipNamed: ship1 useCard: repeatcard with: ship2.
 	self assert: (aGame findShipBy: ship2) cards size equals: 2
-]
-
-{ #category : 'tests' }
-CardTest >> test019WhenCreatCardManagerThenDeckIsEmpty [
-
-	| cardManager |
-	cardManager := CardManager creation.
-	self assert: cardManager deck isEmpty
-]
-
-{ #category : 'tests' }
-CardTest >> test020WhenAddACardToCardManagerThenDeckIsNotEmpty [
-
-	| cardManager speedCard |
-	cardManager := CardManager creation.
-	speedCard := SpeedCard new.
-	cardManager addCardsToDeck: { speedCard }.
-	self deny: cardManager deck isEmpty
-]
-
-{ #category : 'tests' }
-CardTest >> test021WhenInitialiceGameWithNoEnoughtCardToDrawTwoCardsPerPlayerThenRaiseError [
-
-	| cardManager speedCard aDice dices aDiceBucket distributions amountOfCells aWorm aBoard laps ship1 ship2 ship3 ships |
-	aDice := LoadedDice withSequence: #( 1 3 1 5 2 4 ).
-	dices := OrderedCollection new.
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: NoEffect with: 1).
-	amountOfCells := 10.
-	aWorm := Worm with: 9 and: 10.
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	laps := 1.
-	ship1 := 'ship 1'.
-	ship2 := 'ship 2'.
-	ship3 := 'ship 3'.
-	ships := OrderedCollection new.
-	ships add: ship1.
-	ships add: ship2.
-	ships add: ship3.
-	cardManager := CardManager creation.
-	cardManager addCardsToDeck: { AccelerationCard new }.
-	self
-		should: [
-			Game
-				with: aBoard
-				using: aDiceBucket
-				andShipsNamed: ships
-				until: 1
-				cardManager: cardManager ]
-		raise: Error
-		withExceptionDo: [ :error |
-			self
-				assert: error messageText
-				equals: 'Not enough cards to give 2 to each ship.' ]
 ]
