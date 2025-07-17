@@ -19,19 +19,27 @@ CardManager class >> creation [
 { #category : 'as yet unclassified' }
 CardManager >> activePermanentCards [
 
-	^ discardPile select: [ :card | card isPermanent ]
-]
-
-{ #category : 'adding' }
-CardManager >> addCardToDeck: aCard [
-
-	deck add: aCard
+	^ activeCards
 ]
 
 { #category : 'adding' }
 CardManager >> addCardsToDeck: cards [
 
 	deck addAll: cards
+]
+
+{ #category : 'as yet unclassified' }
+CardManager >> applyRedoEffectOn: aShip in: aGame [
+
+	| realCard |
+    discardPile isEmpty ifTrue: [
+        ^ Error signal: 'There are no cards played before.'
+    ].
+    realCard := discardPile reversed
+        detect: [ :card | card isRedo not ]
+        ifNone: [ ^ Error signal: 'No real card to redo.' ].
+
+    realCard applyTo: aShip using: aShip in: aGame.
 ]
 
 { #category : 'as yet unclassified' }

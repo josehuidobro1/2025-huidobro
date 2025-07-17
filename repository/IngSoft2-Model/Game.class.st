@@ -69,17 +69,6 @@ Game >> applyBlackHoleEffectOn: aShip [
 ]
 
 { #category : 'playing' }
-Game >> applyCancellationCardEffectOn: aPermanentCard [
-
-	| aCard |
-	aCard := activeCards detect: [ :card | card matches: aPermanentCard ].
-	aCard ifNil: [
-		Error signal: 'active cards does not have that Permanent Card' ].
-	aCard removePermanentEffect.
-	activeCards remove: aCard
-]
-
-{ #category : 'playing' }
 Game >> applyHyperJumEffectOn: aShip moving: cellsToJump [
 
 	aShip receiveHyperJumpIn: board moving: cellsToJump
@@ -96,20 +85,6 @@ Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
 	 ships do: [ :otherShip |
 		otherShip ~~ aShip ifTrue: [
 			otherShip move: numberOfCells * -1 in: board ] ].
-]
-
-{ #category : 'playing' }
-Game >> applyRedoCardEffectOn: aShip [
-
-	| realCard  |
-	historicalCards isEmpty ifTrue: [
-		^ Error signal: 'There are no cards played before.' ].
-
-	realCard := historicalCards reversed
-		            detect: [ :each | each isRedo not ]
-		            ifNone: [ ^ Error signal: 'No real card to redo.' ].
-
-	realCard applyTo: aShip using:aShip in: self
 ]
 
 { #category : 'playing' }
