@@ -46,25 +46,6 @@ Worm >> isInside: aAmountOfCells [
 ]
 
 { #category : 'playing' }
-Worm >> positionX [
-	^ positionX.
-]
-
-{ #category : 'playing' }
-Worm >> positionY [
-	^ positionY.
-]
-
-{ #category : 'playing' }
 Worm >> positions: aBoard [ 
 	^ { positionX. positionY. } .
-]
-
-{ #category : 'playing' }
-Worm >> transportIfConnectedTo: aPosition [
-
-	aPosition = positionX ifTrue: [ ^ positionY ].
-	aPosition = positionY ifTrue: [ ^ positionX ].
-
-	^ aPosition
 ]

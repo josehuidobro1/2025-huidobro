@@ -65,8 +65,8 @@ ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBegin
 	dice := LoadedDice withSequence: #( 4 1 ).
 	ship1 := Ship create: 'Ship1'.
 	amountOfCells := 4.
-	aX := 1.
-	aY := 2.
+	aX := 2.
+	aY := 3.
 	aWorm := Worm with: aX and: aY.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
@@ -77,7 +77,7 @@ ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBegin
 		                  basedOn: (Distance parsecs: 20).
 	aCircularBoard with: 2.
 	ship1 move: dice throw in: aCircularBoard.
-	self assert: ship1 position equals: 2
+	self assert: ship1 position equals: 1
 ]
 
 { #category : 'tests' }

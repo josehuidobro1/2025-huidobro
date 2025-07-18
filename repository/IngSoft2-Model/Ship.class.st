@@ -146,11 +146,14 @@ Ship >> markedAsMercenary [
 { #category : 'playing' }
 Ship >> move: numberOfCells in: aBoard [
 
-	| newPosition result |
+	| newPosition result newPositionAndLap |
 	newPosition := position + numberOfCells.
-	result := aBoard move: newPosition at: currentLap having: 0.
-	position := result at: 1.
-	currentLap := result at: 2
+	newPositionAndLap := aBoard
+		                     move: newPosition
+		                     at: currentLap
+		                     having: 0. "New method in Board"
+	position := newPositionAndLap at: 1.
+	currentLap := newPositionAndLap at: 2
 ]
 
 { #category : 'playing' }

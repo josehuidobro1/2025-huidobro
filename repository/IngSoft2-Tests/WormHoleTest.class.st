@@ -8,12 +8,12 @@ Class {
 { #category : 'tests' }
 WormHoleTest >> test000WhenCreateWormHoleThenShowPositions [
 
-	| aWorm aX aY |
+	| aWorm aX aY positions |
 	aX := 2.
 	aY := 3.
 	aWorm := Worm with: aX and: aY.
-	self assert:
-		(aWorm positionX = aX and: [ aWorm positionY = aY ])
+	positions := aWorm positions.
+	self assert: ((positions at: 1) = aX and: [ (positions at: 2) = aY ])
 ]
 
 { #category : 'tests' }

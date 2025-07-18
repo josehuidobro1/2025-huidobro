@@ -114,22 +114,33 @@ BoardTest >> test004WhenCreateBoardWithCellsNotIntegerThenReturnsError [
 { #category : 'tests' }
 BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 
-	| amountOfCells aX aY aWorm aBoard aShip distributions aLoadedDice |
+	| amountOfCells aX aY aWorm aBoard aShip distributions aLoadedDice aDiceBucket ships cardManager aGame dices |
 	amountOfCells := 10.
 	aX := 4.
 	aY := 7.
 	aWorm := Worm with: aX and: aY.
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: NoEffect  with: 1).
+	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	aLoadedDice := LoadedDice withSequence: #( 6 ).
-	aShip := Ship create: 'ship 1'.
-	aShip move: 6 in: aBoard.
-	self assert: aShip position equals: 4
+	dices := OrderedCollection new.
+	dices add: aLoadedDice.
+	aDiceBucket := DiceBucket with: dices.
+	ships := OrderedCollection new.
+	ships add: 'ship 1'.
+	cardManager := CardManager creation.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         cardManager: cardManager.
+	aGame playTurn.
+	self assert: (aGame findShipBy: 'ship 1') position equals: 4
 ]
 
 { #category : 'tests' }
