@@ -46,6 +46,6 @@ Worm >> isInside: aAmountOfCells [
 ]
 
 { #category : 'playing' }
-Worm >> positions: aBoard [ 
+Worm >> positions [
 	^ { positionX. positionY. } .
 ]
