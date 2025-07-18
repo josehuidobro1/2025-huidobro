@@ -13,7 +13,8 @@ Class {
 		'activeCards',
 		'historicalCards',
 		'historicalEffects',
-		'cardManager'
+		'cardManager',
+		'effectManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -38,13 +39,16 @@ Game class >> validateUniqueNames: ships [
 ]
 
 { #category : 'as yet unclassified' }
-Game class >> with: aBoard using: aDiceBucket andShipsNamed: shipsName until: laps cardManager: aCardManager [
-	shipsName ifEmpty: [
-		^ Error signal: 'List of ships must not be empty.' ].
-	self validateUniqueNames: shipsName.
+Game class >> with: arg1 using: arg2 andShipsNamed: arg3 until: arg4 cardManager: arg5 [
 
+	arg3 ifEmpty: [ ^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: arg3.
 	^ self new
-		  initializeWith: aBoard using: aDiceBucket andShipsNamed: shipsName until: laps cardManager: aCardManager
+		  initializeWith: arg1
+		  using: arg2
+		  andShipsNamed: arg3
+		  until: arg4
+		  cardManager: arg5
 ]
 
 { #category : 'adding' }
@@ -87,14 +91,6 @@ Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
 			otherShip move: numberOfCells * -1 in: board ] ].
 ]
 
-{ #category : 'playing' }
-Game >> applyRepeatCardEffectOn: aShip [
-
-	| effect |
-	effect := historicalEffects.
-	effect applyTo: aShip in: self
-]
-
 { #category : 'accessing' }
 Game >> board [
 
@@ -119,6 +115,12 @@ Game >> currentTopPlayer [
 	^ self shipsSortedByPosition at: 1.
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> effectManager [
+
+	^ effectManager
+]
+
 { #category : 'accessing' }
 Game >> findShipBy: aName [
 
@@ -126,18 +128,18 @@ Game >> findShipBy: aName [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps cardManager: aCardManager [
+Game >> initializeWith: arg1 using: arg2 andShipsNamed: arg3 until: arg4 cardManager: arg5 [
 
-	| cardFactory |
-	board := aCircularBoard with: numberOfLaps.
-	ships := shipsNames collect: [ :aName | Ship create: aName ].
-	bucketOfDices := aDiceBucket.
+	| tmp1 |
+	board := arg1 with: arg4.
+	ships := arg3 collect: [ :arg6 | Ship create: arg6 ].
+	bucketOfDices := arg2.
 	status := Started creation.
 	turnManager := TurnManager with: ships.
-	battleManager := BattleManager with: aDiceBucket.
-	historicalEffects := NoEffect new.
-	cardManager := aCardManager.
-	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
+	battleManager := BattleManager with: arg2.
+	effectManager := EffectManager creation.
+	cardManager := arg5.
+	ships do: [ :arg7 | cardManager drawInitialCardsFor: arg7 ]
 ]
 
 { #category : 'testing' }
@@ -162,33 +164,25 @@ Game >> play [
 { #category : 'playing' }
 Game >> playTurn [
 
-	| actualShip effect positionToMove shipsInSamePosition name |
-	status markAsPlaying.
-	actualShip := turnManager nextShip.
-	positionToMove := bucketOfDices throw + actualShip giveBonusThrow.
-	actualShip move: positionToMove in: board.
-	effect := board effectOnPosition: actualShip position.
-	name := effect className.
-	name = 'CardGiver' ifFalse: [ historicalEffects := effect ].
-	effect applyTo: actualShip in: self.
-	shipsInSamePosition := ships select: [ :ship |
-		                       ship ~~ actualShip and: [
-			                       ship position = actualShip position and:
-				                       ship laps = actualShip laps ] ].
-	shipsInSamePosition do: [ :enemy |
-		((actualShip hasAsMercery: enemy name) or: [
-			 enemy hasAsMercery: actualShip name ]) ifFalse: [
-			battleManager fightBetween: actualShip and: enemy ] ].
+	| currentShip rolledDistance boardEffect |
+	currentShip := turnManager currentShip.
+	rolledDistance := bucketOfDices rollFor: currentShip.
+	currentShip move: rolledDistance in: board.
+
+	boardEffect := board effectOnPosition: currentShip position.
+	effectManager apply: boardEffect to: currentShip in: self.
+	battleManager resolveIfNeededAt: currentShip in: self.
+
 	self someShipWon
 ]
 
 { #category : 'playing' }
-Game >> shipNamed: aShip1 useCard: aCard with: aShip2 [
+Game >> shipNamed: arg1 useCard: arg2 with: arg3 [
 
-	| ship1 ship2 |
-	ship1 := self findShipBy: aShip1.
-	ship2 := self findShipBy: aShip2.
-	ship1  useCard: aCard with: ship2 in: self.
+	| tmp1 tmp2 |
+	tmp1 := self findShipBy: arg1.
+	tmp2 := self findShipBy: arg3.
+	tmp1 useCard: arg2 with: tmp2 in: self
 ]
 
 { #category : 'accessing' }

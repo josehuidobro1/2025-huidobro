@@ -8,5 +8,7 @@ Class {
 { #category : 'playing' }
 RepeatCard >> applyTo: aShip using: aShip2 in: aGame [
 
-	aGame applyRepeatCardEffectOn: aShip2
+	| effectToRepeat |
+	effectToRepeat := aGame effectManager lastRealEffect.
+	effectToRepeat applyTo: aShip2 in: aGame
 ]

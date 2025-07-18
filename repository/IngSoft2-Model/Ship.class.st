@@ -28,6 +28,11 @@ Ship class >> create: aName [
 	^ self new initializeWith: aName
 ]
 
+{ #category : 'playing' }
+Ship >> bonusThrow [
+	^ bonusThrow.
+]
+
 { #category : 'testing' }
 Ship >> canPlay [
 
@@ -50,11 +55,6 @@ Ship >> choiceToNotPlay [
 { #category : 'playing' }
 Ship >> decreaseBonusThrow [
 	bonusThrow := bonusThrow -1.
-]
-
-{ #category : 'playing' }
-Ship >> giveBonusThrow [
-	^ bonusThrow.
 ]
 
 { #category : 'testing' }

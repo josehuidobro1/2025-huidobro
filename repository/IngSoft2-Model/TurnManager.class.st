@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'ships',
-		'turn'
+		'turn',
+		'currentTurnIndex'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -17,20 +18,27 @@ TurnManager class >> with: ships [
 	^ self new initializeWith: ships
 ]
 
-{ #category : 'playing' }
+{ #category : 'as yet unclassified' }
+TurnManager >> currentShip [
+
+	^ ships at: turn
+]
+
+{ #category : 'accessing' }
 TurnManager >> findShipBy: shipName [
 
 	^ ships detect: [ :ship | ship name = shipName ]
 ]
 
 { #category : 'initialization' }
-TurnManager >> initializeWith: shipCollection [ 
+TurnManager >> initializeWith: shipCollection [
+
 	turn := 1.
-	ships := shipCollection.
+	ships := shipCollection
 ]
 
 { #category : 'playing' }
-TurnManager >> nextPlayableShip [
+TurnManager >> nextShip [
 
 	| totalShips turnsSkipped ship |
 	totalShips := ships size.
@@ -39,28 +47,12 @@ TurnManager >> nextPlayableShip [
 	[ turnsSkipped < totalShips ] whileTrue: [
 		ship := ships at: turn.
 		turn := turn \\ totalShips + 1.
-		ship canPlay
+		(ship canPlay and: [ ship wantsToPlay ])
 			ifTrue: [ ^ ship ]
 			ifFalse: [
 				ship skipTurn.
 				turnsSkipped := turnsSkipped + 1 ] ].
-	Error signal: 'There is no ship witch can play' " --> esto lo podemos hacer pero para que el juego siga jugando si ninguna de las naves puede jugar entonces que la nabe juegue"
-]
-
-{ #category : 'playing' }
-TurnManager >> nextShip [
-
-	^ self nextShipThatWantToPlay: self nextPlayableShip
-]
-
-{ #category : 'playing' }
-TurnManager >> nextShipThatWantToPlay: actualShip [
-
-	actualShip wantsToPlay
-		ifTrue: [ ^ actualShip ]
-		ifFalse: [
-			actualShip skipTurn.
-			^ self nextShip ]
+	Error signal: 'There is no ship witch can play'
 ]
 
 { #category : 'playing' }

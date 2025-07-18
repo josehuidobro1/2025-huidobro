@@ -47,3 +47,17 @@ BattleManager >> initializeWith: aDiceBucket [
 
 	diceBucket := aDiceBucket
 ]
+
+{ #category : 'accessing' }
+BattleManager >> resolveIfNeededAt: actualShip in: aGame [
+
+	| shipsInSamePosition |
+	shipsInSamePosition := (aGame ships) select: [ :ship |
+		                       ship ~~ actualShip and: [
+			                       ship position = actualShip position and:
+				                       ship laps = actualShip laps ] ].
+	shipsInSamePosition do: [ :enemy |
+		((actualShip hasAsMercery: enemy name) or: [
+			 enemy hasAsMercery: actualShip name ]) ifFalse: [
+			self fightBetween: actualShip and: enemy ] ]
+]

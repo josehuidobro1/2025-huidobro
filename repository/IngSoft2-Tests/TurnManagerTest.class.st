@@ -111,8 +111,8 @@ TurnManagerTest >> test006WhenShip1CanNotPlayThenNextPlayableShipIsShip2 [
 	ship1 loseShield.
 	ship1 loseShield.
 	turnManager := TurnManager with: ships.
-	actualShip := turnManager nextPlayableShip.
-	self assert: actualShip name equals: 'ship2'.
+	actualShip := turnManager nextShip.
+	self assert: actualShip name equals: 'ship2'
 ]
 
 { #category : 'tests' }

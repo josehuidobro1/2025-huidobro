@@ -19,3 +19,9 @@ CardGiver >> applyTo: aShip in: aGame [
 
 	aGame cardManager drawCardOn: aShip
 ]
+
+{ #category : 'testing' }
+CardGiver >> isCardGiver [
+
+	^ true
+]
