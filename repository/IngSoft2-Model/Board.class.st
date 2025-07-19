@@ -53,6 +53,15 @@ Board >> calculatePosition: aPosition moving: parsecs [
 	^ newPosition
 ]
 
+{ #category : 'as yet unclassified' }
+Board >> calculatePositionByParsecs: parsecs [
+
+	| parsecsInCell newPosition |
+	parsecsInCell := self parsecsPerCell.
+	newPosition := (parsecs / parsecsInCell) ceiling.
+	^ newPosition
+]
+
 { #category : 'playing' }
 Board >> effectOnPosition: position [
 

@@ -33,10 +33,11 @@ HyperJump class >> with: distanceToMove [
 { #category : 'playing' }
 HyperJump >> applyTo: aShip in: aGame [
 
-	| board parsecsToJump |
+	| board parsecsToJump distance |
 	board := aGame board.
 	parsecsToJump := self nextParsecs.
-	aShip receiveHyperJumpIn: aGame board moving: parsecsToJump
+	distance := board calculatePositionByParsecs: parsecsToJump.
+	aShip move: distance in: board
 ]
 
 { #category : 'initialization' }

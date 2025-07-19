@@ -217,7 +217,7 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 ]
 
 { #category : 'tests' }
-EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroButLapsNotChange [
+EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreOneButLapsNotChange [
 
 	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 distributions typesOfCards cardManager |
 	effect := AtomicBomb.

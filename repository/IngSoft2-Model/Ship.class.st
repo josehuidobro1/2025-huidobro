@@ -5,16 +5,7 @@ Class {
 		'position',
 		'name',
 		'currentLap',
-		'shields',
-		'turnsToSkip',
-		'diceBucket',
-		'optionalTurn',
-		'cards',
-		'bonusThrow',
-		'bonusBattle',
-		'shipsIAmMercenaryTo',
-		'amIMercenary',
-		'mercenaries'
+		'state'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -32,47 +23,49 @@ Ship class >> create: aName [
 { #category : 'adding' }
 Ship >> addMercenary: aShip [
 
-	mercenaries add: aShip
+	state addMercenary: aShip
 ]
 
 { #category : 'playing' }
 Ship >> bonusThrow [
-	^ bonusThrow.
+
+	^ state bonusThrow
 ]
 
 { #category : 'testing' }
 Ship >> canPlay [
 
-	^ turnsToSkip = 0
+	^ state canIPlay
 ]
 
 { #category : 'playing' }
 Ship >> cards [
 
-	^ cards
+	^ state cards
 ]
 
 { #category : 'playing' }
 Ship >> choiceToNotPlay [
 
-	self recoverShields.
-	turnsToSkip := turnsToSkip + 1
+	^ state chooseToNotPlay
 ]
 
 { #category : 'playing' }
 Ship >> decreaseBonusThrow [
-	bonusThrow := bonusThrow -1.
+
+	state decreaseBonus
 ]
 
 { #category : 'testing' }
 Ship >> hasAsMercery: aShip [
 
-	^ mercenaries anySatisfy: [ :ship | aShip = ship  ]
+	^ state checkIfIHaveAsMercery: aShip
 ]
 
 { #category : 'testing' }
 Ship >> hasCard: aCard [
-	^ cards anySatisfy: [ :card | card matches: aCard ]
+
+	^ state hasThisCard: aCard
 ]
 
 { #category : 'playing' }
@@ -83,21 +76,17 @@ Ship >> helpToFightWith: aDiceBucket [
 
 { #category : 'playing' }
 Ship >> increaseBonusThrow [
-	bonusThrow := bonusThrow +1.
+
+	state increaseBonus
 ]
 
 { #category : 'initialization' }
-Ship >> initializeWith: arg1 [
+Ship >> initializeWith: aName [
 
 	currentLap := 1.
 	position := 1.
-	name := arg1.
-	shields := 3.
-	turnsToSkip := 0.
-	optionalTurn := true.
-	bonusThrow := 0.
-	mercenaries := OrderedCollection new.
-	cards := OrderedCollection new.
+	name := aName.
+	state := ShipState creation
 ]
 
 { #category : 'testing' }
@@ -117,8 +106,7 @@ Ship >> laps [
 { #category : 'playing' }
 Ship >> loseFight [
 
-	mercenaries do: [ :mercenaryShip | mercenaryShip loseShield ].
-	self loseShield.
+	state loseFight.
 
 	position := 1
 ]
@@ -126,11 +114,7 @@ Ship >> loseFight [
 { #category : 'playing' }
 Ship >> loseShield [
 
-	shields := shields - 1.
-	shields = 0 ifFalse: [ ^ self ].
-
-	self recoverShields.
-	turnsToSkip := 2
+	state loseShield
 ]
 
 { #category : 'playing' }
@@ -160,73 +144,51 @@ Ship >> position [
 ]
 
 { #category : 'playing' }
-Ship >> receiveCard: arg1 [
+Ship >> receiveCard: aCard [
 
-	cards add: arg1
-]
-
-{ #category : 'playing' }
-Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
-
-	| distance |
-	distance := aBoard
-		            calculatePosition: position
-		            moving: numberOfParsecs.
-	aBoard move: distance ship: self
+	state add: aCard
 ]
 
 { #category : 'playing' }
 Ship >> recoverShields [
 
-	shields := 3.
-	turnsToSkip :=0.
-	optionalTurn :=true.
+	state recoverShields
 ]
 
 { #category : 'removing' }
 Ship >> removeCard: aCard [
 
-	| cardToRemove |
-	cardToRemove := cards detect: [ :card | card matches: aCard ].
-
-	cards
-		remove: cardToRemove
-		ifAbsent: [
-		Error signal: 'Tried to remove a card that is not in hand' ]
+	state removeCard: aCard
 ]
 
 { #category : 'removing' }
 Ship >> removeMercenary: aShip [
 
-	mercenaries remove: aShip
+	state removeMercenaries: aShip
 ]
 
 { #category : 'accessing' }
 Ship >> shields [
 
-	^ shields
+	^ state shields
 ]
 
 { #category : 'playing' }
 Ship >> skipTurn [
 
-	turnsToSkip := turnsToSkip - 1
+	state reduceTurnsToSkip
 ]
 
 { #category : 'playing' }
 Ship >> throwDicesWith: aDiceBucket [
 
-	| count |
-	count := 0.
-	mercenaries do: [ :ship |
-		count := count + (ship helpToFightWith: aDiceBucket) ].
-	^ aDiceBucket throw + count
+	^ aDiceBucket throw + (state payHelpToMyMercenariesWith: aDiceBucket)
 ]
 
 { #category : 'accessing' }
 Ship >> turnsThatHasToSkip [
 
-	^ turnsToSkip
+	^ state turnsToSkip
 ]
 
 { #category : 'as yet unclassified' }
@@ -239,7 +201,7 @@ Ship >> updatePosition: newPosition andLap: newLaps [
 { #category : 'accessing' }
 Ship >> wantsToPlay [
 
-	^ optionalTurn 
+	^ state optionalTurn
 ]
 
 { #category : 'playing' }

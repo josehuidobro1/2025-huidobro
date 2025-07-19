@@ -2,19 +2,15 @@ Class {
 	#name : 'Game',
 	#superclass : 'Object',
 	#instVars : [
-		'winner',
 		'board',
 		'bucketOfDices',
 		'ships',
 		'status',
 		'turnManager',
 		'battleManager',
-		'cards',
-		'activeCards',
-		'historicalCards',
-		'historicalEffects',
 		'cardManager',
-		'effectManager'
+		'effectManager',
+		'winner'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -108,18 +104,18 @@ Game >> findShipBy: aName [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: arg1 using: arg2 andShipsNamed: arg3 until: arg4 cardManager: arg5 [
+Game >> initializeWith: aBoard using: diceBucket andShipsNamed: shipsname until: laps cardManager: aCardManager [
 
 	| tmp1 |
-	board := arg1 with: arg4.
-	ships := arg3 collect: [ :arg6 | Ship create: arg6 ].
-	bucketOfDices := arg2.
+	board := aBoard with: laps.
+	ships := shipsname collect: [ :ship | Ship create: ship ].
+	bucketOfDices := diceBucket.
 	status := Started creation.
 	turnManager := TurnManager with: ships.
-	battleManager := BattleManager with: arg2.
+	battleManager := BattleManager with: diceBucket.
 	effectManager := EffectManager creation.
-	cardManager := arg5.
-	ships do: [ :arg7 | cardManager drawInitialCardsFor: arg7 ]
+	cardManager := aCardManager.
+	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
 ]
 
 { #category : 'playing' }
@@ -211,8 +207,8 @@ Game >> skipTurnForShipNamed: shipName [
 { #category : 'playing' }
 Game >> someShipWon [
 
-	| laps |
+	| laps winner result |
 	laps := board laps.
-	winner := ships detect: [ :ship | ship winAt: board ] ifNone: [ nil ].
-	winner ifNotNil: [ status := Finished new ]
+	result := ships anySatisfy: [ :ship | ship winAt: board ].
+	result ifTrue: [ status := Finished new ]
 ]
