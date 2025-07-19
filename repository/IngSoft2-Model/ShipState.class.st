@@ -71,7 +71,7 @@ ShipState >> decreaseBonus [
 { #category : 'as yet unclassified' }
 ShipState >> hasThisCard: aCard [
 
-	^ cards anySatisfy: [ :card | card matches: aCard ]
+	^ cards anySatisfy: [ :card | card = aCard ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -121,7 +121,7 @@ ShipState >> payHelpToMyMercenariesWith: aDiceBucket [
 	count := 0.
 	mercenaries do: [ :ship |
 		count := count + (ship helpToFightWith: aDiceBucket) ].
-	^ count
+	^ count + bonusThrow
 ]
 
 { #category : 'playing' }

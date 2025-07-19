@@ -258,28 +258,7 @@ BoardTest >> test010WhenCreateBoardWithDistributionsThenEffectsOFCellsISNoEFfect
 ]
 
 { #category : 'tests' }
-BoardTest >> test011WhenBoardCreateWithParsecThenGetLightYears [
-
-	| amountOfCells aX aY aWorm aBoard distributions |
-	amountOfCells := 20.
-	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
-	aX := 1.
-	aY := 2.
-	aWorm := Worm with: aX and: aY.
-
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: NoEffect with: 1).
-
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	self assert: aBoard lightYearsPerCell equals: 3
-]
-
-{ #category : 'tests' }
-BoardTest >> test012WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbability [
+BoardTest >> test011WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbability [
 
 	| board amountOfCells worm distributions cardEffectCount blackHoleCount noEffectCount totalCells tolerance distanceToMove effect name hyperSpaceCount hyperJumpCount moonWalkCount atomicBombCount |
 	amountOfCells := 1000.
