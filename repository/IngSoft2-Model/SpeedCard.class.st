@@ -8,12 +8,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'operations' }
-SpeedCard class >> applyTo: aShip [
-
-	aShip increaseBonusThrow
-]
-
 { #category : 'playing' }
 SpeedCard >> applyTo: aShip using: aShip2 in: aGame [
 

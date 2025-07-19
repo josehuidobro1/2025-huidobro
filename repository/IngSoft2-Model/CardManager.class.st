@@ -122,6 +122,12 @@ CardManager >> initialization [
 	activeCards := OrderedCollection new.
 ]
 
+{ #category : 'testing' }
+CardManager >> isValidMercenary: aShip in: ships [
+
+	^ ships noneSatisfy: [ :ship | ship hasAsMercery: aShip ]
+]
+
 { #category : 'as yet unclassified' }
 CardManager >> playCard: aCard by: aShip target: aShip2 in: aGame [
 
@@ -142,15 +148,4 @@ CardManager >> playCard: aCard by: aShip target: aShip2 in: aGame [
 CardManager >> registerCard: aCard [
 	discardPile add:aCard.
     (aCard isPermanent )ifTrue:[ activeCards add: aCard ]
-]
-
-{ #category : 'as yet unclassified' }
-CardManager >> ship: aShip useCard: aSpeedCard on: aShip3 [ 
-	self shouldBeImplemented.
-]
-
-{ #category : 'as yet unclassified' }
-CardManager >> shuffleDeck [
-
-	deck := deck shuffled
 ]

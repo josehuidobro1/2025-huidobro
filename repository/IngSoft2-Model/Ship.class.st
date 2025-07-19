@@ -13,7 +13,8 @@ Class {
 		'bonusThrow',
 		'bonusBattle',
 		'shipsIAmMercenaryTo',
-		'amIMercenary'
+		'amIMercenary',
+		'mercenaries'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -26,6 +27,12 @@ Ship class >> create: aName [
 		^ Error signal: 'Ship´s name must be a string.' ].
 
 	^ self new initializeWith: aName
+]
+
+{ #category : 'adding' }
+Ship >> addMercenary: aShip [
+
+	mercenaries add: aShip
 ]
 
 { #category : 'playing' }
@@ -60,7 +67,7 @@ Ship >> decreaseBonusThrow [
 { #category : 'testing' }
 Ship >> hasAsMercery: aShip [
 
-	^ bonusBattle anySatisfy: [ :ship | aShip = ship name ]
+	^ mercenaries anySatisfy: [ :ship | aShip = ship  ]
 ]
 
 { #category : 'testing' }
@@ -80,19 +87,17 @@ Ship >> increaseBonusThrow [
 ]
 
 { #category : 'initialization' }
-Ship >> initializeWith: aName [
+Ship >> initializeWith: arg1 [
 
 	currentLap := 1.
 	position := 1.
-	name := aName.
+	name := arg1.
 	shields := 3.
 	turnsToSkip := 0.
 	optionalTurn := true.
 	bonusThrow := 0.
-	bonusBattle := OrderedCollection new.
-	shipsIAmMercenaryTo := OrderedCollection new.
+	mercenaries := OrderedCollection new.
 	cards := OrderedCollection new.
-	amIMercenary:=false.
 ]
 
 { #category : 'testing' }
@@ -101,16 +106,6 @@ Ship >> isAheadOf: anotherShip [
 	^ self laps > anotherShip laps or: [
 		  self laps = anotherShip laps and: [
 			  self position > anotherShip position ] ]
-]
-
-{ #category : 'testing' }
-Ship >> isNotMercenaryAnymore [
-	amIMercenary := false.
-]
-
-{ #category : 'testing' }
-Ship >> isSomeoneMercenary [
-	^ amIMercenary.
 ]
 
 { #category : 'accessing' }
@@ -122,9 +117,9 @@ Ship >> laps [
 { #category : 'playing' }
 Ship >> loseFight [
 
-	bonusBattle do:[:mercenaryShip|mercenaryShip loseShield ].
+	mercenaries do: [ :mercenaryShip | mercenaryShip loseShield ].
 	self loseShield.
-	
+
 	position := 1
 ]
 
@@ -136,11 +131,6 @@ Ship >> loseShield [
 
 	self recoverShields.
 	turnsToSkip := 2
-]
-
-{ #category : 'playing' }
-Ship >> markedAsMercenary [
-	amIMercenary := true.
 ]
 
 { #category : 'playing' }
@@ -163,11 +153,6 @@ Ship >> name [
 	^ name
 ]
 
-{ #category : 'playing' }
-Ship >> popThisMercenary: shipBeingMercenary [ 
-	bonusBattle remove: shipBeingMercenary .
-]
-
 { #category : 'accessing' }
 Ship >> position [
 
@@ -175,9 +160,9 @@ Ship >> position [
 ]
 
 { #category : 'playing' }
-Ship >> receiveCard: aCard [
+Ship >> receiveCard: arg1 [
 
-	cards add: aCard
+	cards add: arg1
 ]
 
 { #category : 'playing' }
@@ -188,16 +173,6 @@ Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
 		            calculatePosition: position
 		            moving: numberOfParsecs.
 	aBoard move: distance ship: self
-]
-
-{ #category : 'playing' }
-Ship >> receiveMercenaryCardEffectWith: aShip [
-
-	aShip isSomeoneMercenary
-		ifTrue: [ Error signal: 'You can not use this ship as a mercenary' ]
-		ifFalse: [
-			bonusBattle add: aShip.
-			aShip markedAsMercenary ]
 ]
 
 { #category : 'playing' }
@@ -220,6 +195,12 @@ Ship >> removeCard: aCard [
 		Error signal: 'Tried to remove a card that is not in hand' ]
 ]
 
+{ #category : 'removing' }
+Ship >> removeMercenary: aShip [
+
+	mercenaries remove: aShip
+]
+
 { #category : 'accessing' }
 Ship >> shields [
 
@@ -237,8 +218,8 @@ Ship >> throwDicesWith: aDiceBucket [
 
 	| count |
 	count := 0.
-	bonusBattle do: [ :mercenaryShip |
-		count := count + (mercenaryShip helpToFightWith: aDiceBucket) ].
+	mercenaries do: [ :ship |
+		count := count + (ship helpToFightWith: aDiceBucket) ].
 	^ aDiceBucket throw + count
 ]
 

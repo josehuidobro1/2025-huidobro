@@ -197,7 +197,7 @@ CardTest >> test004WhenAShipUseSpeedCardThenIsRemovedFromDeckOfShip [
 CardTest >> test005WhenShip1FightToShip3UsingShip2AsMErcenaryThenShip1WinTheBattle [
 
 	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame aCard typesOfCards ship2 ship3 cardManager |
-	aDice := LoadedDice withSequence: #( 1 3 1 5 2 4 ).
+	aDice := LoadedDice withSequence: #( 2 3 2 5 2 4 ).
 	dices := OrderedCollection new.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
@@ -507,8 +507,8 @@ CardTest >> test011WhenUseCancellationCardWithMercenaryThenRemoveMercenary [
 	aCancellationCard := CancellationCard newWithCard: mercenaryCard.
 	cardManager addCardsToDeck: {
 			mercenaryCard.
-			aCancellationCard.
 			AccelerationCard new.
+			aCancellationCard.
 			AccelerationCard new.
 			AccelerationCard new.
 			AccelerationCard new }.
@@ -518,13 +518,9 @@ CardTest >> test011WhenUseCancellationCardWithMercenaryThenRemoveMercenary [
 		         andShipsNamed: ships
 		         until: 1
 		         cardManager: cardManager.
-	aGame playTurn.
-	aGame playTurn.
-	aGame playTurn.
-	self assert: (aGame findShipBy: ship1) shields equals: 2.
-	self
-		assert: (aGame findShipBy: ship2) isSomeoneMercenary
-		equals: false
+	aGame shipNamed: ship1 useCard: mercenaryCard with: ship3.
+	aGame shipNamed: ship2 useCard: aCancellationCard with: ship1.
+	self deny: ((aGame findShipBy: ship1) hasAsMercery: ship3)
 ]
 
 { #category : 'tests' }
