@@ -125,19 +125,28 @@ CardManager >> initialization [
 { #category : 'as yet unclassified' }
 CardManager >> playCard: aCard by: aShip target: aShip2 in: aGame [
 
+	(aShip hasCard: aCard) ifFalse: [
+		Error signal: 'Cannot play a card you do not have' ].
+
 	(aCard isCancellationCard and: [ self activePermanentCards isEmpty ])
 		ifTrue: [
 			self error:
 				'Cannot play cancellation card with no active permanent cards' ].
 
 	aCard applyTo: aShip using: aShip2 in: aGame.
-	self registerCard: aCard .
+	aShip removeCard: aCard.
+	self registerCard: aCard
 ]
 
 { #category : 'as yet unclassified' }
 CardManager >> registerCard: aCard [
 	discardPile add:aCard.
     (aCard isPermanent )ifTrue:[ activeCards add: aCard ]
+]
+
+{ #category : 'as yet unclassified' }
+CardManager >> ship: aShip useCard: aSpeedCard on: aShip3 [ 
+	self shouldBeImplemented.
 ]
 
 { #category : 'as yet unclassified' }

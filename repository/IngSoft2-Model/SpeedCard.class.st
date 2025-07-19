@@ -17,8 +17,8 @@ SpeedCard class >> applyTo: aShip [
 { #category : 'playing' }
 SpeedCard >> applyTo: aShip using: aShip2 in: aGame [
 
-	linkedShip := aShip.
-	aShip increaseBonusThrow
+	linkedShip := aShip2.
+	aShip2 increaseBonusThrow
 ]
 
 { #category : 'testing' }

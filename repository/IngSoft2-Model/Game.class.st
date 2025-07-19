@@ -146,12 +146,16 @@ Game >> playTurn [
 ]
 
 { #category : 'playing' }
-Game >> shipNamed: arg1 useCard: arg2 with: arg3 [
+Game >> shipNamed: shipName useCard: aCard with: anotherShipName [
 
-	| tmp1 tmp2 |
-	tmp1 := self findShipBy: arg1.
-	tmp2 := self findShipBy: arg3.
-	tmp1 useCard: arg2 with: tmp2 in: self
+	| ship anotherShip |
+	ship := self findShipBy: shipName.
+	anotherShip := self findShipBy: anotherShipName.
+	cardManager
+		playCard: aCard
+		by: ship
+		target: anotherShip
+		in: self
 ]
 
 { #category : 'accessing' }
