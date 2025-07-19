@@ -1,6 +1,6 @@
 Class {
 	#name : 'CancellationCard',
-	#superclass : 'InstantCard',
+	#superclass : 'Card',
 	#instVars : [
 		'chosenCard'
 	],
@@ -11,21 +11,35 @@ Class {
 { #category : 'instance creation' }
 CancellationCard class >> newWithCard: aChosenCard [
 
-	^ self new initializeWith:aChosenCard.
+	^ self new initializeWith: aChosenCard
 ]
 
 { #category : 'playing' }
-CancellationCard >> applyTo: aShip using: aShip2 in: aGame [ 
-	aGame permanentCardsPlayed ifEmpty: [Error signal: 'This card must be played when there is at least one active card']. 
-	aGame applyCancellationCardEffectOn: chosenCard.
+CancellationCard >> applyTo: aShip using: aTargetShip in: aGame [
+    | cardManager |
+    cardManager := aGame cardManager.
+    
+    (cardManager hasActiveCard: chosenCard) ifFalse: [
+        Error signal: 'The selected card is not currently active'
+    ].
+
+    cardManager cancelCard: chosenCard.
+
 ]
 
 { #category : 'playing' }
-CancellationCard >> getChosenCard [
-	^chosenCard .
+CancellationCard >> chosenCard [
+
+	^ chosenCard
 ]
 
 { #category : 'initialization' }
 CancellationCard >> initializeWith:aChosenCard [
 	chosenCard := aChosenCard .
+]
+
+{ #category : 'testing' }
+CancellationCard >> isCancellationCard [
+
+	^ true
 ]

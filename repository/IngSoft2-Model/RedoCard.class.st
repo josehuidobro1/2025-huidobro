@@ -8,7 +8,7 @@ Class {
 { #category : 'playing' }
 RedoCard >> applyTo: aShip using: aShip2 in: aGame [
 
-	aGame applyRedoCardEffectOn: aShip
+	aGame cardManager applyRedoEffectOn: aShip in: aGame
 ]
 
 { #category : 'generators' }

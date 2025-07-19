@@ -2,17 +2,15 @@ Class {
 	#name : 'Game',
 	#superclass : 'Object',
 	#instVars : [
-		'winner',
 		'board',
 		'bucketOfDices',
 		'ships',
 		'status',
 		'turnManager',
 		'battleManager',
-		'cards',
-		'activeCards',
-		'historicalCards',
-		'historicalEffects'
+		'cardManager',
+		'effectManager',
+		'winner'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -37,22 +35,16 @@ Game class >> validateUniqueNames: ships [
 ]
 
 { #category : 'as yet unclassified' }
-Game class >> with: aBoard using: aLoadedDice andShipsNamed: shipsName until: laps having: aCardDeck [ 
-	shipsName ifEmpty: [
-		^ Error signal: 'List of ships must not be empty.' ].
-	self validateUniqueNames: shipsName.
+Game class >> with: arg1 using: arg2 andShipsNamed: arg3 until: arg4 cardManager: arg5 [
 
+	arg3 ifEmpty: [ ^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: arg3.
 	^ self new
-		  initializeWith: aBoard
-		  using: aLoadedDice
-		  andShipsNamed: shipsName
-		  until: laps
-		  having: aCardDeck.
-]
-
-{ #category : 'adding' }
-Game >> addToActiveCardsThisCard: aCard [ 
-	activeCards add: aCard .
+		  initializeWith: arg1
+		  using: arg2
+		  andShipsNamed: arg3
+		  until: arg4
+		  cardManager: arg5
 ]
 
 { #category : 'playing' }
@@ -61,42 +53,11 @@ Game >> applyAccelerationCardEffect [
 ]
 
 { #category : 'playing' }
-Game >> applyAtomicEffectOn: aShip [ 
-	ships do:[ :ship | ship receiveAtomicBombEffect]
-]
+Game >> applyAtomicEffectOn: aShip [
 
-{ #category : 'playing' }
-Game >> applyBlackHoleEffectOn: aShip [
-
-	aShip receiveBlackHoleEffectFrom: board 
-]
-
-{ #category : 'playing' }
-Game >> applyCancellationCardEffect [
-	self shouldBeImplemented.
-]
-
-{ #category : 'playing' }
-Game >> applyCancellationCardEffectOn: aPermanentCard [
-
-	| aCard |
-	aCard := activeCards detect: [ :card | card = aPermanentCard ].
-	aCard ifNil: [
-		Error signal: 'active cards does not have that Permanent Card' ].
-	aCard removePermanentEffect.
-	activeCards remove: aCard
-]
-
-{ #category : 'playing' }
-Game >> applyHyperJumEffectOn: aShip moving: cellsToJump [
-
-	aShip receiveHyperJumpIn: board moving: cellsToJump
-]
-
-{ #category : 'playing' }
-Game >> applyHyperSpaceJumpEffectOn: aShip [
-
-	aShip recieveHyperSpaceJumpIn: board
+	ships do: [ :ship |
+		ship moveToPosition: 1.
+		ship loseShield ]
 ]
 
 { #category : 'playing' }
@@ -106,32 +67,16 @@ Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
 			otherShip move: numberOfCells * -1 in: board ] ].
 ]
 
-{ #category : 'playing' }
-Game >> applyRedoCardEffectOn: aShip [
-
-	| realCard  |
-	historicalCards isEmpty ifTrue: [
-		^ Error signal: 'There are no cards played before.' ].
-
-	realCard := historicalCards reversed
-		            detect: [ :each | each isRedo not ]
-		            ifNone: [ ^ Error signal: 'No real card to redo.' ].
-
-	realCard applyTo: aShip using:aShip in: self
-]
-
-{ #category : 'playing' }
-Game >> applyRepeatCardEffectOn: aShip [
-
-	| effect |
-	effect := historicalEffects.
-	effect applyTo: aShip in: self
-]
-
 { #category : 'accessing' }
 Game >> board [
 
 	^ board
+]
+
+{ #category : 'accessing' }
+Game >> cardManager [
+
+	^ cardManager
 ]
 
 { #category : 'accessing' }
@@ -146,6 +91,12 @@ Game >> currentTopPlayer [
 	^ self shipsSortedByPosition at: 1.
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> effectManager [
+
+	^ effectManager
+]
+
 { #category : 'accessing' }
 Game >> findShipBy: aName [
 
@@ -153,30 +104,18 @@ Game >> findShipBy: aName [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps having: cardTypes [
+Game >> initializeWith: aBoard using: diceBucket andShipsNamed: shipsname until: laps cardManager: aCardManager [
 
-	| cardFactory |
-	board := aCircularBoard with: numberOfLaps.
-	ships := shipsNames collect: [ :aName | Ship create: aName ].
-	ships do: [ :ship | ship recieveCardsFrom: cardTypes ].
-	bucketOfDices := aDiceBucket.
+	| tmp1 |
+	board := aBoard with: laps.
+	ships := shipsname collect: [ :ship | Ship create: ship ].
+	bucketOfDices := diceBucket.
 	status := Started creation.
 	turnManager := TurnManager with: ships.
-	battleManager := BattleManager with: aDiceBucket.
-	activeCards := OrderedCollection new.
-	historicalCards := OrderedCollection new.
-	historicalEffects := NoEffect new.
-]
-
-{ #category : 'testing' }
-Game >> isBefore: shipA than: shipB [
-
-	^ (ships indexOf: shipA) < (ships indexOf: shipB)
-]
-
-{ #category : 'accessing' }
-Game >> permanentCardsPlayed [
-	^ activeCards .
+	battleManager := BattleManager with: diceBucket.
+	effectManager := EffectManager creation.
+	cardManager := aCardManager.
+	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
 ]
 
 { #category : 'playing' }
@@ -190,34 +129,29 @@ Game >> play [
 { #category : 'playing' }
 Game >> playTurn [
 
-	| actualShip effect positionToMove shipsInSamePosition name |
-	status markAsPlaying.
-	actualShip := turnManager nextShip.
-	positionToMove := bucketOfDices throw + actualShip giveBonusThrow.
-	actualShip move: positionToMove in: board.
-	effect := board effectOnPosition: actualShip position.
-	name := effect className.
-	name = 'CardGiver' ifFalse: [ historicalEffects := effect ].
-	effect applyTo: actualShip in: self.
-	shipsInSamePosition := ships select: [ :ship |
-		                       ship ~~ actualShip and: [
-			                       ship position = actualShip position and:
-				                       ship laps = actualShip laps ] ].
-	shipsInSamePosition do: [ :enemy |
-		((actualShip hasAsMercery: enemy name) or: [
-			 enemy hasAsMercery: actualShip name ]) ifFalse: [
-			battleManager fightBetween: actualShip and: enemy ] ].
+	| currentShip rolledDistance boardEffect |
+	currentShip := turnManager nextShip.
+	rolledDistance := bucketOfDices rollFor: currentShip.
+	currentShip move: rolledDistance in: board.
+
+	boardEffect := board effectOnPosition: currentShip position.
+	effectManager apply: boardEffect to: currentShip in: self.
+	battleManager resolveIfNeededAt: currentShip in: self.
+
 	self someShipWon
 ]
 
 { #category : 'playing' }
-Game >> shipNamed: aShip1 useCard: aCard with: aShip2 [
+Game >> shipNamed: shipName useCard: aCard with: anotherShipName [
 
-	| ship1 ship2 |
-	ship1 := self findShipBy: aShip1.
-	ship2 := self findShipBy: aShip2.
-	ship1 use: aCard with: ship2 in: self.
-	historicalCards add: aCard
+	| ship anotherShip |
+	ship := self findShipBy: shipName.
+	anotherShip := self findShipBy: anotherShipName.
+	cardManager
+		playCard: aCard
+		by: ship
+		target: anotherShip
+		in: self
 ]
 
 { #category : 'accessing' }
@@ -273,8 +207,8 @@ Game >> skipTurnForShipNamed: shipName [
 { #category : 'playing' }
 Game >> someShipWon [
 
-	| laps |
+	| laps winner result |
 	laps := board laps.
-	winner := ships detect: [ :ship | ship winAt: board ] ifNone: [ nil ].
-	winner ifNotNil: [ status := Finished new ]
+	result := ships anySatisfy: [ :ship | ship winAt: board ].
+	result ifTrue: [ status := Finished new ]
 ]

@@ -8,20 +8,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
-BattleManager class >> fightBetween: shipA and: shipB [
-
-	| resultA resultB |
-	[
-	resultA := shipA throwDices.
-	resultB := shipB throwDices.
-	resultA = resultB ] whileTrue.
-
-	resultA > resultB
-		ifTrue: [ shipB loseFight ]
-		ifFalse: [ shipA loseFight ]
-]
-
 { #category : 'instance creation' }
 BattleManager class >> with: aDiceBucket [
 
@@ -46,4 +32,18 @@ BattleManager >> fightBetween: shipA and: shipB [
 BattleManager >> initializeWith: aDiceBucket [
 
 	diceBucket := aDiceBucket
+]
+
+{ #category : 'accessing' }
+BattleManager >> resolveIfNeededAt: actualShip in: aGame [
+
+	| shipsInSamePosition |
+	shipsInSamePosition := (aGame ships) select: [ :ship |
+		                       ship ~~ actualShip and: [
+			                       ship position = actualShip position and:
+				                       ship laps = actualShip laps ] ].
+	shipsInSamePosition do: [ :enemy |
+		((actualShip hasAsMercery: enemy ) or: [
+			 enemy hasAsMercery: actualShip ]) ifFalse: [
+			self fightBetween: actualShip and: enemy ] ]
 ]

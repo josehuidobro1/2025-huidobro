@@ -1,10 +1,9 @@
 Class {
 	#name : 'MercenaryCard',
-	#superclass : 'PermanentCard',
+	#superclass : 'Card',
 	#instVars : [
-		'mercenary',
-		'shipWithMercenary',
-		'shipBeingMercenary'
+		'linkedShip',
+		'mercenary'
 	],
 	#classInstVars : [
 		'mercenary'
@@ -13,18 +12,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'operations' }
-MercenaryCard class >> applyTo: aShip [
-
-	aShip receiveMercenaryCardEffectWith: mercenary
-]
-
-{ #category : 'as yet unclassified' }
-MercenaryCard class >> applyTo: aShip using: aShip2 [
-
-	aShip receiveMercenaryCardEffectWith: aShip2
-]
-
 { #category : 'instance creation' }
 MercenaryCard class >> with: aShip [
 
@@ -32,14 +19,23 @@ MercenaryCard class >> with: aShip [
 ]
 
 { #category : 'playing' }
-MercenaryCard >> applyTo: aShip using: aMercenary in:aGame [
-	shipWithMercenary := aShip.
-	shipBeingMercenary := aMercenary .
-	aShip receiveMercenaryCardEffectWith: aMercenary
+MercenaryCard >> applyTo: aShip using: aMercenary in: aGame [
+
+	(aGame cardManager isValidMercenary: aMercenary in: aGame ships)
+		ifFalse: [ Error signal: 'You can not use this ship as a mercenary' ].
+	linkedShip := aShip.
+	mercenary := aMercenary.
+	aShip addMercenary: aMercenary
+]
+
+{ #category : 'testing' }
+MercenaryCard >> isPermanent [
+
+	^ true
 ]
 
 { #category : 'removing' }
 MercenaryCard >> removePermanentEffect [
-	shipBeingMercenary isNotMercenaryAnymore.
-	shipWithMercenary popThisMercenary: shipBeingMercenary .
+
+	linkedShip removeMercenary: mercenary
 ]

@@ -1,6 +1,6 @@
 Class {
 	#name : 'Worm',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#instVars : [
 		'positionX',
 		'positionY'
@@ -23,6 +23,16 @@ Worm class >> with: aX and: aY [
 	^ self new initializeWith: aX positionsOn: aY
 ]
 
+{ #category : 'playing' }
+Worm >> applyTo: aShip in: aGame [
+
+	| aPosition newPosition |
+	aPosition := aShip position.
+	aPosition = positionX ifTrue: [ newPosition := positionY ].
+	aPosition = positionY ifTrue: [ newPosition := positionX ].
+	aShip moveToPosition: newPosition
+]
+
 { #category : 'initialization' }
 Worm >> initializeWith: aX positionsOn: aY [
 
@@ -36,25 +46,6 @@ Worm >> isInside: aAmountOfCells [
 ]
 
 { #category : 'playing' }
-Worm >> positionX [
-	^ positionX.
-]
-
-{ #category : 'playing' }
-Worm >> positionY [
-	^ positionY.
-]
-
-{ #category : 'playing' }
-Worm >> positions: aBoard [ 
+Worm >> positions [
 	^ { positionX. positionY. } .
-]
-
-{ #category : 'playing' }
-Worm >> transportIfConnectedTo: aPosition [
-
-	aPosition = positionX ifTrue: [ ^ positionY ].
-	aPosition = positionY ifTrue: [ ^ positionX ].
-
-	^ aPosition
 ]

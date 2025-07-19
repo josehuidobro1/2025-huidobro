@@ -1,6 +1,6 @@
 Class {
 	#name : 'SpeedCard',
-	#superclass : 'PermanentCard',
+	#superclass : 'Card',
 	#instVars : [
 		'linkedShip'
 	],
@@ -8,19 +8,21 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'operations' }
-SpeedCard class >> applyTo: aShip [
+{ #category : 'playing' }
+SpeedCard >> applyTo: aShip using: aShip2 in: aGame [
 
-	aShip receiveSpeedCardEffect
+	linkedShip := aShip2.
+	aShip2 increaseBonusThrow
 ]
 
-{ #category : 'playing' }
-SpeedCard >> applyTo: aShip using: aShip2 in:aGame [
-	linkedShip := aShip. 
-	aShip receiveSpeedCardEffect.
+{ #category : 'testing' }
+SpeedCard >> isPermanent [
+
+	^ true
 ]
 
 { #category : 'removing' }
 SpeedCard >> removePermanentEffect [
-	linkedShip removeSpeedCardEffect.
+
+	linkedShip decreaseBonusThrow
 ]

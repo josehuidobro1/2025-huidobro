@@ -40,7 +40,7 @@ BoardTest >> test001WhenPlayGameThenReturnGameOver [
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	self assert: aBoard specialCells equals: {
+	self assert: aBoard wormHole positions equals: {
 			aX.
 			aY }
 ]
@@ -114,7 +114,7 @@ BoardTest >> test004WhenCreateBoardWithCellsNotIntegerThenReturnsError [
 { #category : 'tests' }
 BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 
-	| amountOfCells aX aY aWorm aBoard aShip distributions aLoadedDice |
+	| amountOfCells aX aY aWorm aBoard aShip distributions aLoadedDice aDiceBucket ships cardManager aGame dices |
 	amountOfCells := 10.
 	aX := 4.
 	aY := 7.
@@ -127,9 +127,20 @@ BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	aLoadedDice := LoadedDice withSequence: #( 6 ).
-	aShip := Ship create: 'ship 1'.
-	aShip move: 6 in: aBoard.
-	self assert: (aBoard verifyPosition: aShip) position equals: 4
+	dices := OrderedCollection new.
+	dices add: aLoadedDice.
+	aDiceBucket := DiceBucket with: dices.
+	ships := OrderedCollection new.
+	ships add: 'ship 1'.
+	cardManager := CardManager creation.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         cardManager: cardManager.
+	aGame playTurn.
+	self assert: (aGame findShipBy: 'ship 1') position equals: 4
 ]
 
 { #category : 'tests' }
@@ -150,7 +161,7 @@ BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCel
 	loadedDice := LoadedDice withSequence: #( 6 ).
 	aShip := Ship create: 'ship1'.
 	aShip move: loadedDice throw in: aBoard.
-	self assert: (aBoard verifyPosition: aShip) position equals: 4
+	self assert: aShip position equals: 4
 ]
 
 { #category : 'tests' }
@@ -247,28 +258,7 @@ BoardTest >> test010WhenCreateBoardWithDistributionsThenEffectsOFCellsISNoEFfect
 ]
 
 { #category : 'tests' }
-BoardTest >> test011WhenBoardCreateWithParsecThenGetLightYears [
-
-	| amountOfCells aX aY aWorm aBoard distributions |
-	amountOfCells := 20.
-	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
-	aX := 1.
-	aY := 2.
-	aWorm := Worm with: aX and: aY.
-
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: NoEffect with: 1).
-
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	self assert: aBoard lightYearsPerCell equals: 3
-]
-
-{ #category : 'tests' }
-BoardTest >> test012WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbability [
+BoardTest >> test011WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbability [
 
 	| board amountOfCells worm distributions cardEffectCount blackHoleCount noEffectCount totalCells tolerance distanceToMove effect name hyperSpaceCount hyperJumpCount moonWalkCount atomicBombCount |
 	amountOfCells := 1000.

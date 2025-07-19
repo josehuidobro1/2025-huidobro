@@ -12,27 +12,20 @@ Class {
 { #category : 'as yet unclassified' }
 Distance class >> lightYear: anAmount [
 
-	^ self new intializeWithLightYear: anAmount
+	^ self new intializeWithParsecs: anAmount / 3 andLightYears: anAmount
 ]
 
 { #category : 'as yet unclassified' }
 Distance class >> parsecs: anAmount [
 
-	^ self new initializeWithParsecs: anAmount
+	^ self new intializeWithParsecs: anAmount andLightYears:(anAmount * 3)
 ]
 
-{ #category : 'initialization' }
-Distance >> initializeWithParsecs: anAmount [
+{ #category : 'as yet unclassified' }
+Distance >> intializeWithParsecs: someParsecs andLightYears: someLightYear [
 
-	parsecs := anAmount.
-	lightYear := anAmount * 3
-]
-
-{ #category : 'initialization' }
-Distance >> intializeWithLightYear: anAmount [
-
-	lightYear := anAmount.
-	parsecs := anAmount // 3
+	parsecs := someParsecs.
+	lightYear := someLightYear
 ]
 
 { #category : 'accessing' }

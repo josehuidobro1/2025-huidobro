@@ -1,6 +1,6 @@
 Class {
 	#name : 'CardGiver',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#instVars : [
 		'card'
 	],
@@ -17,7 +17,11 @@ CardGiver class >> initializeThis [
 { #category : 'playing' }
 CardGiver >> applyTo: aShip in: aGame [
 
-	| cardFactory |
-	cardFactory := CardFactory new.
-	cardFactory generateRandomCardOn: aShip
+	aGame cardManager drawCardOn: aShip
+]
+
+{ #category : 'testing' }
+CardGiver >> isCardGiver [
+
+	^ true
 ]

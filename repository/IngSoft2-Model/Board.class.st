@@ -42,9 +42,31 @@ Board >> amountOfCellsOf: anEffectOrClass [
 	^ cells count: [ :cell | cell effect className = anEffectOrClass ]
 ]
 
+{ #category : 'as yet unclassified' }
+Board >> calculatePosition: aPosition moving: parsecs [
+
+	| parsecsInCell currentParsec newParsecPos newPosition |
+	parsecsInCell := self parsecsPerCell.
+	currentParsec := aPosition * parsecsInCell.
+	newParsecPos := currentParsec + parsecs.
+	newPosition := (newParsecPos / parsecsInCell) ceiling.
+	^ newPosition
+]
+
+{ #category : 'as yet unclassified' }
+Board >> calculatePositionByParsecs: parsecs [
+
+	| parsecsInCell newPosition |
+	parsecsInCell := self parsecsPerCell.
+	newPosition := (parsecs / parsecsInCell) ceiling.
+	^ newPosition
+]
+
 { #category : 'playing' }
 Board >> effectOnPosition: position [
 
+	(wormHole positions anySatisfy: [ :cell | cell = position ]) ifTrue: [
+		^ wormHole ].
 	^ (cells at: position) effect value
 ]
 
@@ -80,31 +102,25 @@ Board >> lightYearsPerCell [
 	^ (self parsecsPerCell) * 3.
 ]
 
-{ #category : 'playing' }
-Board >> move: distance at: lap having: parsecs [
+{ #category : 'as yet unclassified' }
+Board >> move: aDistance ship: aShip [
 
-	| position currentParsec newParsecPos newPosition currentLap parsecsInCell modPosition |
-	"escenario  --> 7 parsecs y 5 celas --> 1.4 parsecs/celd"
-	parsecsInCell := self parsecsPerCell.
-	currentParsec := distance * parsecsInCell. " 2 * 1.4 = 2.8 parsecs"
-	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 2.8 parsec = 10.8 parsecs"
-	newPosition := (newParsecPos / parsecsInCell) ceiling.
-	newPosition := newPosition <= 0
+	| parsecsInCell currentParsec newParsecPos newPosition currentLap position modPosition |
+	newPosition := aDistance <= 0
 		               ifTrue: [ 1 ]
-		               ifFalse: [ newPosition ]. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
-	currentLap := self moveThrowTheLaps: lap this: newPosition.
+		               ifFalse: [ aDistance ].
+
+	currentLap := self moveThrowTheLaps: aShip laps this: newPosition.
+
 	position := laps > 1
 		            ifTrue: [
 			            modPosition := newPosition \\ amountOfCells.
 			            modPosition = 0
-				            ifTrue: [ "← devuelve posición máxima en lugar de un número fuera de rango"
-					            amountOfCells ]
+				            ifTrue: [ amountOfCells ]
 				            ifFalse: [ modPosition ] ]
-		            ifFalse: [
-			            (newPosition max: 1) min: amountOfCells "← asegura que esté en [1..amountOfCells]" ].
-	^ {
-		  position.
-		  currentLap }
+		            ifFalse: [ (newPosition max: 1) min: amountOfCells ].
+
+	aShip updatePosition: position andLap: currentLap
 ]
 
 { #category : 'playing' }
@@ -123,24 +139,14 @@ Board >> parsecsPerCell [
 	^ distance parsecs / amountOfCells
 ]
 
-{ #category : 'verification' }
-Board >> specialCells [
-
-	^ wormHole positions: self
-]
-
-{ #category : 'verification' }
-Board >> verifyPosition: position [
-
-	| newPosition |
-	newPosition := position.
-	wormHole ifNotNil: [
-		newPosition := wormHole transportIfConnectedTo: position ].
-	^ newPosition
-]
-
 { #category : 'instance creation' }
 Board >> with: aNumberOfLaps [
 
 	laps := aNumberOfLaps
+]
+
+{ #category : 'accessing' }
+Board >> wormHole [
+
+	^ wormHole
 ]

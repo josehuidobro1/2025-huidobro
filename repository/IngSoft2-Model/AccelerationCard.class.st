@@ -1,6 +1,6 @@
 Class {
 	#name : 'AccelerationCard',
-	#superclass : 'PermanentCard',
+	#superclass : 'Card',
 	#instVars : [
 		'linkedShips'
 	],
@@ -15,7 +15,19 @@ AccelerationCard >> applyTo: aShip using: aShip2 in: aGame [
 	aGame applyAccelerationCardEffect
 ]
 
+{ #category : 'testing' }
+AccelerationCard >> isPermanent [
+
+	^ true
+]
+
+{ #category : 'testing' }
+AccelerationCard >> matches: anotherCard [
+
+	^ self class = anotherCard class
+]
+
 { #category : 'removing' }
 AccelerationCard >> removePermanentEffect [
-	linkedShips do: [:ship | ship removeAccelerationCardEffect  ] .
+	linkedShips do: [:ship | ship decreaseBonusThrow. ] .
 ]

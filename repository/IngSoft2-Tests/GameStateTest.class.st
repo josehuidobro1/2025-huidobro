@@ -56,7 +56,7 @@ GameStateTest >> test005WhenGameIsFinishedThenPlayingStateIsFalse [
 { #category : 'tests' }
 GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards ships |
+	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards ships cardManager |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -73,16 +73,15 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
 	ships := OrderedCollection new.
 	ships add: 'ship 1'.
+	cardManager := CardManager creation.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 0
-		         having: (FixedCardFactory with: typesOfCards).
+		         cardManager: cardManager.
 	gameState := Started new.
 	self
 		should: [ gameState showWinner: aGame ]
@@ -96,7 +95,7 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 { #category : 'tests' }
 GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 
-	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards |
+	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards cardManager ships |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -114,16 +113,13 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
-	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
-
+	cardManager := CardManager creation.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 1
-		         having: (FixedCardFactory with: typesOfCards).
+		         until: 0
+		         cardManager: cardManager.
 	aGame play.
 	self assert: aGame showWinner name equals: shipOne
 ]
@@ -131,7 +127,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 { #category : 'tests' }
 GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 
-	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards |
+	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards cardManager |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -148,17 +144,13 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
-	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
-
+	cardManager := CardManager creation.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 1
-		         having: (FixedCardFactory with: typesOfCards).
-
+		         until: 0
+		         cardManager: cardManager.
 	self
 		should: [ aGame currentStatus showWinner: aGame ]
 		raise: Error
@@ -171,7 +163,7 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 { #category : 'tests' }
 GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChangeItPosition [
 
-	| listOfShips listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame ship1 ship2 distributions typesOfCards |
+	| listOfShips listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame ship1 ship2 distributions typesOfCards cardManager |
 	listOfShips := OrderedCollection new.
 	listOfDices := OrderedCollection new.
 	listOfShips add: 'Ship 1'.
@@ -188,16 +180,13 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
-	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
-
+	cardManager := CardManager creation.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 1
-		         having: (FixedCardFactory with: typesOfCards).
+		         until: 0
+		         cardManager: cardManager.
 	aGame playTurn.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
