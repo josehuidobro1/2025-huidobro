@@ -151,10 +151,10 @@ Ship >> move: numberOfCells in: aBoard [
 	aBoard move: newPosition ship: self
 ]
 
-{ #category : 'playing' }
-Ship >> moveToFirstPosition [
+{ #category : 'as yet unclassified' }
+Ship >> moveToPosition: aPosition [
 
-	position := 1
+	position := aPosition
 ]
 
 { #category : 'accessing' }
@@ -175,20 +175,6 @@ Ship >> position [
 ]
 
 { #category : 'playing' }
-Ship >> receiveAtomicBombEffect [
-	self moveToFirstPosition. 
-	self loseShield.
-]
-
-{ #category : 'playing' }
-Ship >> receiveBlackHoleEffectFrom: aBoard [
-
-	| newPosition |
-	newPosition := position - 4.
-	aBoard move: newPosition ship: self
-]
-
-{ #category : 'playing' }
 Ship >> receiveCard: aCard [
 
 	cards add: aCard
@@ -197,35 +183,27 @@ Ship >> receiveCard: aCard [
 { #category : 'playing' }
 Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
 
-	| result distance |
+	| distance |
 	distance := aBoard
 		            calculatePosition: position
 		            moving: numberOfParsecs.
-	result := aBoard move: distance ship: self
+	aBoard move: distance ship: self
 ]
 
 { #category : 'playing' }
 Ship >> receiveMercenaryCardEffectWith: aShip [
 
-	aShip isSomeoneMercenary ifTrue: [ Error signal:'You can not use this ship as a mercenary' ] ifFalse: [ bonusBattle add: aShip. aShip markedAsMercenary].
-	
-]
-
-{ #category : 'playing' }
-Ship >> receiveSpeedCardEffect [
-	self increaseBonusThrow .
+	aShip isSomeoneMercenary
+		ifTrue: [ Error signal: 'You can not use this ship as a mercenary' ]
+		ifFalse: [
+			bonusBattle add: aShip.
+			aShip markedAsMercenary ]
 ]
 
 { #category : 'playing' }
 Ship >> receiveThis: aCard [
 
 	cards add: aCard
-]
-
-{ #category : 'as yet unclassified' }
-Ship >> receiveWormHoleEfffect: aPosition [
-
-	position := aPosition
 ]
 
 { #category : 'playing' }
@@ -235,25 +213,11 @@ Ship >> recieveCardsFrom: cardFactory [
 ]
 
 { #category : 'playing' }
-Ship >> recieveHyperSpaceJumpIn: aBoard [
-
-	| newPosition result |
-	newPosition := position + 4.
-	aBoard move: newPosition ship: self.
-	self loseShield
-]
-
-{ #category : 'playing' }
 Ship >> recoverShields [
 
 	shields := 3.
 	turnsToSkip :=0.
 	optionalTurn :=true.
-]
-
-{ #category : 'removing' }
-Ship >> removeAccelerationCardEffect [
-	self decreaseBonusThrow.
 ]
 
 { #category : 'removing' }
@@ -266,11 +230,6 @@ Ship >> removeCard: aCard [
 		remove: cardToRemove
 		ifAbsent: [
 		Error signal: 'Tried to remove a card that is not in hand' ]
-]
-
-{ #category : 'removing' }
-Ship >> removeSpeedCardEffect [
-	self decreaseBonusThrow .
 ]
 
 { #category : 'accessing' }

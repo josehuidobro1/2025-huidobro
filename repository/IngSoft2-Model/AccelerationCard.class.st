@@ -29,5 +29,5 @@ AccelerationCard >> matches: anotherCard [
 
 { #category : 'removing' }
 AccelerationCard >> removePermanentEffect [
-	linkedShips do: [:ship | ship removeAccelerationCardEffect  ] .
+	linkedShips do: [:ship | ship decreaseBonusThrow. ] .
 ]

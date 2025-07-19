@@ -130,12 +130,6 @@ Board >> parsecsPerCell [
 	^ distance parsecs / amountOfCells
 ]
 
-{ #category : 'verification' }
-Board >> specialCells [
-
-	^ wormHole positions
-]
-
 { #category : 'instance creation' }
 Board >> with: aNumberOfLaps [
 

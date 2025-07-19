@@ -11,13 +11,14 @@ Class {
 { #category : 'operations' }
 SpeedCard class >> applyTo: aShip [
 
-	aShip receiveSpeedCardEffect
+	aShip increaseBonusThrow
 ]
 
 { #category : 'playing' }
-SpeedCard >> applyTo: aShip using: aShip2 in:aGame [
-	linkedShip := aShip. 
-	aShip receiveSpeedCardEffect.
+SpeedCard >> applyTo: aShip using: aShip2 in: aGame [
+
+	linkedShip := aShip.
+	aShip increaseBonusThrow
 ]
 
 { #category : 'testing' }
@@ -28,5 +29,6 @@ SpeedCard >> isPermanent [
 
 { #category : 'removing' }
 SpeedCard >> removePermanentEffect [
-	linkedShip removeSpeedCardEffect.
+
+	linkedShip decreaseBonusThrow
 ]

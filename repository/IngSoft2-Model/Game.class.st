@@ -51,37 +51,17 @@ Game class >> with: arg1 using: arg2 andShipsNamed: arg3 until: arg4 cardManager
 		  cardManager: arg5
 ]
 
-{ #category : 'adding' }
-Game >> addToActiveCardsThisCard: aCard [ 
-	activeCards add: aCard .
-]
-
 { #category : 'playing' }
 Game >> applyAccelerationCardEffect [
 	ships do: [:ship | ship increaseBonusThrow  ].
 ]
 
 { #category : 'playing' }
-Game >> applyAtomicEffectOn: aShip [ 
-	ships do:[ :ship | ship receiveAtomicBombEffect]
-]
+Game >> applyAtomicEffectOn: aShip [
 
-{ #category : 'playing' }
-Game >> applyBlackHoleEffectOn: aShip [
-
-	aShip receiveBlackHoleEffectFrom: board 
-]
-
-{ #category : 'playing' }
-Game >> applyHyperJumEffectOn: aShip moving: cellsToJump [
-
-	aShip receiveHyperJumpIn: board moving: cellsToJump
-]
-
-{ #category : 'playing' }
-Game >> applyHyperSpaceJumpEffectOn: aShip [
-
-	aShip recieveHyperSpaceJumpIn: board
+	ships do: [ :ship |
+		ship moveToPosition: 1.
+		ship loseShield ]
 ]
 
 { #category : 'playing' }

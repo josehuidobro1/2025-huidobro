@@ -30,7 +30,7 @@ Worm >> applyTo: aShip in: aGame [
 	aPosition := aShip position.
 	aPosition = positionX ifTrue: [ newPosition := positionY ].
 	aPosition = positionY ifTrue: [ newPosition := positionX ].
-	aShip receiveWormHoleEfffect: newPosition
+	aShip moveToPosition: newPosition
 ]
 
 { #category : 'initialization' }

@@ -18,5 +18,5 @@ BlackHole class >> initializeThis [
 { #category : 'playing' }
 BlackHole >> applyTo: aShip in: aGame [
 
-	aGame applyBlackHoleEffectOn: aShip
+	aGame board move: aShip position - 4 ship: aShip
 ]
