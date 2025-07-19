@@ -13,5 +13,8 @@ HyperSpaceJump class >> initializeThis [
 { #category : 'playing' }
 HyperSpaceJump >> applyTo: aShip in: aGame [
 
-	aGame applyHyperSpaceJumpEffectOn: aShip
+	| newPosition result |
+	newPosition := aShip position + 4.
+	result := aGame board move: newPosition ship: aShip.
+	aShip loseShield
 ]

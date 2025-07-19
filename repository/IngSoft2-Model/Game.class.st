@@ -142,17 +142,6 @@ Game >> initializeWith: arg1 using: arg2 andShipsNamed: arg3 until: arg4 cardMan
 	ships do: [ :arg7 | cardManager drawInitialCardsFor: arg7 ]
 ]
 
-{ #category : 'testing' }
-Game >> isBefore: shipA than: shipB [
-
-	^ (ships indexOf: shipA) < (ships indexOf: shipB)
-]
-
-{ #category : 'accessing' }
-Game >> permanentCardsPlayed [
-	^ activeCards .
-]
-
 { #category : 'playing' }
 Game >> play [
 

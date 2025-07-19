@@ -40,7 +40,7 @@ BoardTest >> test001WhenPlayGameThenReturnGameOver [
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	self assert: aBoard specialCells equals: {
+	self assert: aBoard wormHole positions equals: {
 			aX.
 			aY }
 ]

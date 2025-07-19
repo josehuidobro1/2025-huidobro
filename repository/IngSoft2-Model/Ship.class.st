@@ -146,14 +146,9 @@ Ship >> markedAsMercenary [
 { #category : 'playing' }
 Ship >> move: numberOfCells in: aBoard [
 
-	| newPosition result newPositionAndLap |
+	| newPosition |
 	newPosition := position + numberOfCells.
-	newPositionAndLap := aBoard
-		                     move: newPosition
-		                     at: currentLap
-		                     having: 0. "New method in Board"
-	position := newPositionAndLap at: 1.
-	currentLap := newPositionAndLap at: 2
+	aBoard move: newPosition ship: self
 ]
 
 { #category : 'playing' }
@@ -188,11 +183,9 @@ Ship >> receiveAtomicBombEffect [
 { #category : 'playing' }
 Ship >> receiveBlackHoleEffectFrom: aBoard [
 
-	| newPosition result |
+	| newPosition |
 	newPosition := position - 4.
-	result := aBoard move: newPosition at: currentLap having: 0.
-	position := result at: 1.
-	currentLap := result at: 2
+	aBoard move: newPosition ship: self
 ]
 
 { #category : 'playing' }
@@ -204,10 +197,11 @@ Ship >> receiveCard: aCard [
 { #category : 'playing' }
 Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
 
-	| result |
-	result := aBoard move: position at: currentLap having: numberOfParsecs.
-	position := result at: 1.
-	currentLap := result at: 2
+	| result distance |
+	distance := aBoard
+		            calculatePosition: position
+		            moving: numberOfParsecs.
+	result := aBoard move: distance ship: self
 ]
 
 { #category : 'playing' }
@@ -245,9 +239,7 @@ Ship >> recieveHyperSpaceJumpIn: aBoard [
 
 	| newPosition result |
 	newPosition := position + 4.
-	result := aBoard move: newPosition at: currentLap having: 0.
-	position := result at: 1.
-	currentLap := result at: 2.
+	aBoard move: newPosition ship: self.
 	self loseShield
 ]
 
@@ -313,6 +305,13 @@ Ship >> throwDicesWith: aDiceBucket [
 Ship >> turnsThatHasToSkip [
 
 	^ turnsToSkip
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> updatePosition: newPosition andLap: newLaps [
+
+	position := newPosition.
+	currentLap := newLaps
 ]
 
 { #category : 'playing' }

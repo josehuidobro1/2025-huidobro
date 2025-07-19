@@ -86,7 +86,7 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions typesOfCards cardManager |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
@@ -105,7 +105,7 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 		         andShipsNamed: ships
 		         until: 1
 		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
+	ship1 := aGame findShipBy: 'ship 1'.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
 	self assert: ship1 position equals: 5
