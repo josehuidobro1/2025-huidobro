@@ -165,7 +165,7 @@ Game >> play [
 Game >> playTurn [
 
 	| currentShip rolledDistance boardEffect |
-	currentShip := turnManager currentShip.
+	currentShip := turnManager nextShip.
 	rolledDistance := bucketOfDices rollFor: currentShip.
 	currentShip move: rolledDistance in: board.
 

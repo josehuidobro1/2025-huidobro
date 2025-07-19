@@ -18,12 +18,6 @@ TurnManager class >> with: ships [
 	^ self new initializeWith: ships
 ]
 
-{ #category : 'as yet unclassified' }
-TurnManager >> currentShip [
-
-	^ ships at: turn
-]
-
 { #category : 'accessing' }
 TurnManager >> findShipBy: shipName [
 
