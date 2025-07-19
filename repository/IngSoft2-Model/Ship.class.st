@@ -106,9 +106,8 @@ Ship >> laps [
 { #category : 'playing' }
 Ship >> loseFight [
 
-	state loseFight.
-
-	position := 1
+	position := 1.
+	state loseFight
 ]
 
 { #category : 'playing' }
@@ -182,7 +181,10 @@ Ship >> skipTurn [
 { #category : 'playing' }
 Ship >> throwDicesWith: aDiceBucket [
 
-	^ aDiceBucket throw + (state payHelpToMyMercenariesWith: aDiceBucket)
+	| result helper |
+	result := aDiceBucket throw.
+	helper := state payHelpToMyMercenariesWith: aDiceBucket.
+	^ result + helper
 ]
 
 { #category : 'accessing' }

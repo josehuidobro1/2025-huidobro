@@ -121,7 +121,7 @@ ShipState >> payHelpToMyMercenariesWith: aDiceBucket [
 	count := 0.
 	mercenaries do: [ :ship |
 		count := count + (ship helpToFightWith: aDiceBucket) ].
-	^ aDiceBucket throw + count
+	^ count
 ]
 
 { #category : 'playing' }
