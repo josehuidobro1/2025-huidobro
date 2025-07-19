@@ -201,18 +201,6 @@ Ship >> receiveMercenaryCardEffectWith: aShip [
 ]
 
 { #category : 'playing' }
-Ship >> receiveThis: aCard [
-
-	cards add: aCard
-]
-
-{ #category : 'playing' }
-Ship >> recieveCardsFrom: cardFactory [
-
-	cards := cardFactory generateInitialCards
-]
-
-{ #category : 'playing' }
 Ship >> recoverShields [
 
 	shields := 3.
@@ -245,12 +233,6 @@ Ship >> skipTurn [
 ]
 
 { #category : 'playing' }
-Ship >> throwDices [
-
-	^ diceBucket throw
-]
-
-{ #category : 'playing' }
 Ship >> throwDicesWith: aDiceBucket [
 
 	| count |
@@ -271,29 +253,6 @@ Ship >> updatePosition: newPosition andLap: newLaps [
 
 	position := newPosition.
 	currentLap := newLaps
-]
-
-{ #category : 'playing' }
-Ship >> useBonusThrow [
-
-	| increment |
-	increment := 0.
-	bonusThrow > 0 ifTrue: [ increment := 1 ].
-	bonusThrow := bonusThrow - 1.
-	^ increment
-]
-
-{ #category : 'playing' }
-Ship >> useCard: aCard with: aShip in: aGame [
-
-	(self hasCard: aCard) ifFalse: [
-		Error signal: 'Cannot play a card you do not have' ].
-	aGame cardManager
-		playCard: aCard
-		by: self
-		target: aShip
-		in: aGame.
-	self removeCard: aCard
 ]
 
 { #category : 'accessing' }
