@@ -83,7 +83,12 @@ Ship >> hasDoubleThrow [
 { #category : 'playing' }
 Ship >> helpToFightWith: aDiceBucket [
 
-	^ aDiceBucket throw
+	| result |
+	result := aDiceBucket throw.
+	state hasDoubleThrow ifTrue: [
+		result := result * 2.
+		state removeDoubleEffect ].
+	^ result
 ]
 
 { #category : 'playing' }
@@ -195,6 +200,9 @@ Ship >> throwDicesWith: aDiceBucket [
 
 	| result helper |
 	result := aDiceBucket throw.
+	state hasDoubleThrow ifTrue: [
+		result := result * 2.
+		state removeDoubleEffect ].
 	helper := state payHelpToMyMercenariesWith: aDiceBucket.
 	^ result + helper
 ]

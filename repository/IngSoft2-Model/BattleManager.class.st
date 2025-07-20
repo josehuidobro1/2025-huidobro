@@ -33,9 +33,7 @@ BattleManager >> getShipPoints: ship [
 
 	| result |
 	result := ship throwDicesWith: diceBucket.
-	ship hasDoubleThrow ifTrue: [
-		result := result * 2.
-		ship usedDoubleEffect ].
+
 	^ result
 ]
 
