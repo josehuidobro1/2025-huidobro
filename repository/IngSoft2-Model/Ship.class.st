@@ -20,6 +20,12 @@ Ship class >> create: aName [
 	^ self new initializeWith: aName
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> activateDoubleEffect [
+
+	state activateDoubleThrow
+]
+
 { #category : 'adding' }
 Ship >> addMercenary: aShip [
 
@@ -66,6 +72,12 @@ Ship >> hasAsMercery: aShip [
 Ship >> hasCard: aCard [
 
 	^ state hasThisCard: aCard
+]
+
+{ #category : 'testing' }
+Ship >> hasDoubleThrow [
+
+	^state hasDoubleThrow
 ]
 
 { #category : 'playing' }
@@ -198,6 +210,12 @@ Ship >> updatePosition: newPosition andLap: newLaps [
 
 	position := newPosition.
 	currentLap := newLaps
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> usedDoubleEffect [
+
+	state removeDoubleEffect
 ]
 
 { #category : 'accessing' }
