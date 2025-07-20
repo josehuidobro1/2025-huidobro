@@ -5,7 +5,9 @@ Class {
 		'position',
 		'name',
 		'currentLap',
-		'state'
+		'state',
+		'shieldsManager',
+		'turnState'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -41,7 +43,7 @@ Ship >> bonusThrow [
 { #category : 'testing' }
 Ship >> canPlay [
 
-	^ state canIPlay
+	^ turnState canIPlay
 ]
 
 { #category : 'playing' }
@@ -53,7 +55,8 @@ Ship >> cards [
 { #category : 'playing' }
 Ship >> choiceToNotPlay [
 
-	^ state chooseToNotPlay
+	shieldsManager recoverShields.
+	turnState chooseToNotPlay
 ]
 
 { #category : 'playing' }
@@ -91,6 +94,12 @@ Ship >> helpToFightWith: aDiceBucket [
 	^ result
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> increaseAShield [
+
+	shieldsManager addAShield
+]
+
 { #category : 'playing' }
 Ship >> increaseBonusThrow [
 
@@ -103,7 +112,9 @@ Ship >> initializeWith: aName [
 	currentLap := 1.
 	position := 1.
 	name := aName.
-	state := ShipState creation
+	state := ShipState creation.
+	shieldsManager := ShieldsManager initializeWith: self.
+	turnState := TurnState initializeWith: self.
 ]
 
 { #category : 'testing' }
@@ -124,13 +135,14 @@ Ship >> laps [
 Ship >> loseFight [
 
 	position := 1.
-	state loseFight
+	state mercenariesLoseFight.
+	shieldsManager loseShield
 ]
 
 { #category : 'playing' }
 Ship >> loseShield [
 
-	state loseShield
+	shieldsManager loseShield
 ]
 
 { #category : 'playing' }
@@ -162,13 +174,13 @@ Ship >> position [
 { #category : 'playing' }
 Ship >> receiveCard: aCard [
 
-	state add: aCard
+	state addThisCard: aCard
 ]
 
 { #category : 'playing' }
 Ship >> recoverShields [
 
-	state recoverShields
+	shieldsManager recoverShields
 ]
 
 { #category : 'removing' }
@@ -186,13 +198,13 @@ Ship >> removeMercenary: aShip [
 { #category : 'accessing' }
 Ship >> shields [
 
-	^ state shields
+	^ shieldsManager shields
 ]
 
 { #category : 'playing' }
 Ship >> skipTurn [
 
-	state reduceTurnsToSkip
+	turnState reduceTurnsToSkip
 ]
 
 { #category : 'playing' }
@@ -210,7 +222,13 @@ Ship >> throwDicesWith: aDiceBucket [
 { #category : 'accessing' }
 Ship >> turnsThatHasToSkip [
 
-	^ state turnsToSkip
+	^ turnState turnsToSkip
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> turnsThatHasToSkip: amountOfTurns [
+
+	turnState increaseTurnsToSkip: amountOfTurns
 ]
 
 { #category : 'as yet unclassified' }
@@ -229,7 +247,7 @@ Ship >> usedDoubleEffect [
 { #category : 'accessing' }
 Ship >> wantsToPlay [
 
-	^ state optionalTurn
+	^ turnState optionalTurn
 ]
 
 { #category : 'playing' }
