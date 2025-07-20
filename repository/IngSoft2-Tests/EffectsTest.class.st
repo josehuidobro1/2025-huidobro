@@ -21,6 +21,7 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -35,7 +36,6 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	ship1 move: 6 in: aBoard.
@@ -59,6 +59,7 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 	aBoard := Board
 		          with: 10
 		          and: aWorm
+		until:1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -70,7 +71,6 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	ship1 move: 2 in: aBoard.
@@ -94,6 +94,7 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 	aBoard := Board
 		          with: 10
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -107,7 +108,6 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	ship1 := aGame findShipBy: 'ship 1'.
 	effect := (distributions at: 1) cellClass.
@@ -131,6 +131,7 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 	aBoard := Board
 		          with: 10
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -144,7 +145,6 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	effect := (distributions at: 1) cellClass.
@@ -169,6 +169,7 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 	aBoard := Board
 		          with: 10
 		          and: aWorm
+		          until: 2
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -183,7 +184,6 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 2
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
@@ -210,6 +210,7 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 	aBoard := Board
 		          with: 10
 		          and: aWorm
+		          until: 4
 		          has: distributions1
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -225,7 +226,6 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
@@ -251,6 +251,7 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreOneBu
 	aBoard := Board
 		          with: 10
 		          and: aWorm
+		          until: 4
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -266,7 +267,6 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreOneBu
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4
 		         cardManager: cardManager.
 	aGame playTurn.
 	aGame playTurn.
@@ -290,6 +290,7 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 	aBoard := Board
 		          with: 10
 		          and: aWorm
+		          until: 4
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -303,7 +304,6 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
@@ -336,6 +336,7 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 4
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -352,7 +353,6 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
@@ -385,6 +385,7 @@ EffectsTest >> test010WhenCreatHyperJumpEffectToShip1andShip2ThenShipsPositionAr
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 4
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
@@ -400,7 +401,6 @@ EffectsTest >> test010WhenCreatHyperJumpEffectToShip1andShip2ThenShipsPositionAr
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4
 		         cardManager: cardManager.
 	aGame playTurn.
 	aGame playTurn.
@@ -497,13 +497,13 @@ EffectsTest >> test014WhenCreatHyperJumpWithParsecsrEffectToShipThenItMovesParse
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 4
 		          has: distributions
 		          basedOn: (Distance parsecs: 60).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
@@ -545,13 +545,13 @@ EffectsTest >> test015WhenCreatHyperJumpLightYearEffectToShipThenItMovesPrrsecs 
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 4
 		          has: distributions
 		          basedOn: (Distance lightYear: 180).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
@@ -586,13 +586,13 @@ EffectsTest >> test016WhenInitializeGameThenLastRealEffectIsEmpty [
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 4
 		          has: distributions
 		          basedOn: (Distance lightYear: 180).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4
 		         cardManager: cardManager.
 	self
 		assert: aGame effectManager lastRealEffect class

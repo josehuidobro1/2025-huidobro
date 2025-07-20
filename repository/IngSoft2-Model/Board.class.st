@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Board class >> with: aAmountOfCells and: aWormHole has: aDistribution basedOn: aDistance [
+Board class >> with: aAmountOfCells and: aWormHole until: numberOfLaps has: aDistribution basedOn: aDistance [
 
 	aAmountOfCells isInteger ifFalse: [
 		^ Error signal: 'Amount of cells must be an integer' ].
@@ -26,6 +26,7 @@ Board class >> with: aAmountOfCells and: aWormHole has: aDistribution basedOn: a
 	^ self new
 		  initializeWith: aAmountOfCells
 		  and: aWormHole
+		  until: numberOfLaps
 		  has: aDistribution
 		  basedOn: aDistance
 ]
@@ -71,12 +72,12 @@ Board >> effectOnPosition: position [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions basedOn: aDistance [
+Board >> initializeWith: aAmountOfCells and: aWormHole until: numberOfLaps has: distributions basedOn: aDistance [
 
 	| cell aDistributor effectsOnCells |
 	amountOfCells := aAmountOfCells.
 	wormHole := aWormHole.
-	laps := 1.
+	laps := numberOfLaps.
 	distance := aDistance.
 	aDistributor := Distributor
 		                withDistribution: distributions
@@ -137,12 +138,6 @@ Board >> moveThrowTheLaps: currentLap this: position [
 Board >> parsecsPerCell [
 
 	^ distance parsecs / amountOfCells
-]
-
-{ #category : 'instance creation' }
-Board >> with: aNumberOfLaps [
-
-	laps := aNumberOfLaps
 ]
 
 { #category : 'accessing' }

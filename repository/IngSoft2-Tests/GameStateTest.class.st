@@ -71,6 +71,7 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships := OrderedCollection new.
@@ -85,7 +86,6 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 0
 		         cardManager: cardManager.
 	gameState := Started new.
 	self
@@ -116,6 +116,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	distributions := OrderedCollection new.
@@ -128,7 +129,6 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 0
 		         cardManager: cardManager.
 	aGame play.
 	self assert: aGame showWinner name equals: shipOne
@@ -152,6 +152,7 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	distributions := OrderedCollection new.
@@ -164,7 +165,6 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 0
 		         cardManager: cardManager.
 	self
 		should: [ aGame currentStatus showWinner: aGame ]
@@ -193,6 +193,7 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	distributions := OrderedCollection new.
@@ -205,7 +206,6 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 0
 		         cardManager: cardManager.
 	aGame playTurn.
 	ship1 := aGame ships at: 1.

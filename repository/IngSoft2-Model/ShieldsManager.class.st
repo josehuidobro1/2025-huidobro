@@ -25,7 +25,7 @@ ShieldsManager class >> initializeWith: aShip [
 { #category : 'adding' }
 ShieldsManager >> addAShield [
 
-	actualShields >= 3 ifTrue: [ maxShields := maxShields + 1 ].
+	actualShields = maxShields ifTrue: [ maxShields := maxShields + 1 ].
 	actualShields := actualShields + 1
 ]
 

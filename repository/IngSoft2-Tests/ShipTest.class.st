@@ -27,6 +27,7 @@ ShipTest >> test001WhenShipReceiveANumberThenMovesThatAmount [
 	aBoard := Board
 		          with: 5
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ship1 move: 3 in: aBoard.
@@ -73,9 +74,9 @@ ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBegin
 	aCircularBoard := Board
 		                  with: amountOfCells
 		                  and: aWorm
+		                  until: 2
 		                  has: distributions
 		                  basedOn: (Distance parsecs: 20).
-	aCircularBoard with: 2.
 	ship1 move: dice throw in: aCircularBoard.
 	self assert: ship1 position equals: 1
 ]
@@ -93,9 +94,9 @@ ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
 	aCircularBoard := Board
 		                  with: 5
 		                  and: aWorm
+		                  until: 3
 		                  has: distributions
 		                  basedOn: (Distance parsecs: 20).
-	aCircularBoard with: 3.
 	ship1 move: dice throw in: aCircularBoard.
 	self assert: ship1 laps equals: 4
 ]
@@ -115,13 +116,14 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
+	laps := 3.
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: laps
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: SpeedCard with: 0.5).
 	distributions add: (Distribution at: RedoCard with: 0.5).
@@ -132,7 +134,6 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 	aGame play.
 
@@ -152,9 +153,9 @@ ShipTest >> test007WhenShipThrow11AndBoardHas5CellsThenShipWinAt2LapsReturnsTrue
 	aCircularBoard := Board
 		                  with: 5
 		                  and: aWorm
+		                  until: 2
 		                  has: distributions
 		                  basedOn: (Distance parsecs: 20).
-	aCircularBoard with: 2.
 	ship1 move: aLoadedDice throw in: aCircularBoard.
 	laps := 2.
 
@@ -242,9 +243,10 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 3
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ships add: 'ship 1'.
 	distributions1 := OrderedCollection new.
 	distributions1 add: (Distribution at: SpeedCard with: 0.5).
@@ -256,7 +258,6 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 
 	aGame playTurn.
@@ -276,12 +277,13 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: HyperSpaceJump with: 1).
+	laps := 3.
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: laps
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	distributions1 := OrderedCollection new.
@@ -294,7 +296,6 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 	aGame playTurn.
 	aGame playTurn.
@@ -317,13 +318,15 @@ ShipTest >> test017WhenShipMovesMoreCellsThanCellsInBoardThenItActualPositionIs1
 	amountOfCells := 10.
 	aWorm := Worm with: 3 and: 4.
 	distributions := OrderedCollection new.
+	laps := 3.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: laps
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ships add: 'ship 1'.
 	distributions1 := OrderedCollection new.
 	distributions1 add: (Distribution at: SpeedCard with: 0.5).
@@ -335,7 +338,6 @@ ShipTest >> test017WhenShipMovesMoreCellsThanCellsInBoardThenItActualPositionIs1
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 	aGame playTurn.
 	self assert: (aGame findShipBy: 'ship 1') position equals: 1
@@ -354,12 +356,14 @@ ShipTest >> test018WhenShipMovesToLastCellInLapThanCellsInBoardThenItIsInLastCel
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
+	laps := 3.
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: laps
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ships add: 'ship 1'.
 	distributions1 := OrderedCollection new.
 	distributions1 add: (Distribution at: SpeedCard with: 0.5).
@@ -371,7 +375,6 @@ ShipTest >> test018WhenShipMovesToLastCellInLapThanCellsInBoardThenItIsInLastCel
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 	aGame playTurn.
 	self assert: (aGame findShipBy: 'ship 1') position equals: 10
@@ -390,12 +393,14 @@ ShipTest >> test019WhenShipMovesByEffectAndItIsInEarlyCellsThenLapsStayZeroAndNo
 	aWorm := Worm with: 4 and: 5.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
+	laps := 3.
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: laps
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ships add: 'ship 1'.
 	distributions1 := OrderedCollection new.
 	distributions1 add: (Distribution at: SpeedCard with: 0.5).
@@ -407,7 +412,6 @@ ShipTest >> test019WhenShipMovesByEffectAndItIsInEarlyCellsThenLapsStayZeroAndNo
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 	aGame playTurn.
 	self assert: (aGame findShipBy: 'ship 1') laps equals: 1

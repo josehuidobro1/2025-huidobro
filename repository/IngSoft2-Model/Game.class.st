@@ -35,16 +35,15 @@ Game class >> validateUniqueNames: ships [
 ]
 
 { #category : 'as yet unclassified' }
-Game class >> with: arg1 using: arg2 andShipsNamed: arg3 until: arg4 cardManager: arg5 [
+Game class >> with: aBoard using: aDiceBucket andShipsNamed: ships cardManager: cardManager [
 
-	arg3 ifEmpty: [ ^ Error signal: 'List of ships must not be empty.' ].
-	self validateUniqueNames: arg3.
+	ships ifEmpty: [ ^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: ships.
 	^ self new
-		  initializeWith: arg1
-		  using: arg2
-		  andShipsNamed: arg3
-		  until: arg4
-		  cardManager: arg5
+		  initializeWith: aBoard
+		  using: aDiceBucket
+		  andShipsNamed: ships
+		  cardManager: cardManager
 ]
 
 { #category : 'playing' }
@@ -100,14 +99,18 @@ Game >> effectManager [
 { #category : 'accessing' }
 Game >> findShipBy: aName [
 
-	^ ships detect: [ :ship | ship name = aName ]
+	| ship |
+	ship := ships
+		        detect: [ :each | each name = aName ]
+		        ifNone: [ Error signal: 'The Game does not have that ship' ].
+	^ ship
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard using: diceBucket andShipsNamed: shipsname until: laps cardManager: aCardManager [
+Game >> initializeWith: aBoard using: diceBucket andShipsNamed: shipsname cardManager: aCardManager [
 
 	| tmp1 |
-	board := aBoard with: laps.
+	board := aBoard.
 	ships := shipsname collect: [ :ship | Ship create: ship ].
 	bucketOfDices := diceBucket.
 	status := Started creation.
@@ -207,8 +210,7 @@ Game >> skipTurnForShipNamed: shipName [
 { #category : 'playing' }
 Game >> someShipWon [
 
-	| laps winner result |
-	laps := board laps.
+	| result |
 	result := ships anySatisfy: [ :ship | ship winAt: board ].
 	result ifTrue: [ status := Finished new ]
 ]

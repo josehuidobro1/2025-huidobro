@@ -2,14 +2,10 @@ Class {
 	#name : 'ShipState',
 	#superclass : 'Object',
 	#instVars : [
-		'turnsToSkip',
-		'optionalTurn',
 		'bonusThrow',
 		'mercenaries',
 		'cards',
-		'shields',
-		'hasDoubleThrow',
-		'shieldsManager'
+		'hasDoubleThrow'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -84,11 +80,8 @@ ShipState >> increaseBonus [
 { #category : 'initialization' }
 ShipState >> initialization [
 
-	turnsToSkip := 0.
-	optionalTurn := true.
 	bonusThrow := 0.
 	mercenaries := OrderedCollection new.
-	shieldsManager := ShieldsManager creation.
 	cards := OrderedCollection new.
 	hasDoubleThrow := false
 ]

@@ -59,12 +59,14 @@ WormHoleTest >> test004WhenShipMovesInsideWormholeThenPositionChanges [
 	ships := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aPosition := 6.
+	laps := 3.
 	aBoard := Board
 		          with: 10
 		          and: aWorm
+		          until: laps
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ships add: 'ship 1'.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: SpeedCard with: 0.5).
@@ -76,7 +78,6 @@ WormHoleTest >> test004WhenShipMovesInsideWormholeThenPositionChanges [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 	ship1 := aGame findShipBy: 'ship 1'.
 	ship1 move: 5 in: aBoard.
