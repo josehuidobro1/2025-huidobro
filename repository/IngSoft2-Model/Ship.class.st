@@ -20,6 +20,12 @@ Ship class >> create: aName [
 	^ self new initializeWith: aName
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> activateDoubleEffect [
+
+	state activateDoubleThrow
+]
+
 { #category : 'adding' }
 Ship >> addMercenary: aShip [
 
@@ -68,10 +74,21 @@ Ship >> hasCard: aCard [
 	^ state hasThisCard: aCard
 ]
 
+{ #category : 'testing' }
+Ship >> hasDoubleThrow [
+
+	^state hasDoubleThrow
+]
+
 { #category : 'playing' }
 Ship >> helpToFightWith: aDiceBucket [
 
-	^ aDiceBucket throw
+	| result |
+	result := aDiceBucket throw.
+	state hasDoubleThrow ifTrue: [
+		result := result * 2.
+		state removeDoubleEffect ].
+	^ result
 ]
 
 { #category : 'playing' }
@@ -183,6 +200,9 @@ Ship >> throwDicesWith: aDiceBucket [
 
 	| result helper |
 	result := aDiceBucket throw.
+	state hasDoubleThrow ifTrue: [
+		result := result * 2.
+		state removeDoubleEffect ].
 	helper := state payHelpToMyMercenariesWith: aDiceBucket.
 	^ result + helper
 ]
@@ -198,6 +218,12 @@ Ship >> updatePosition: newPosition andLap: newLaps [
 
 	position := newPosition.
 	currentLap := newLaps
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> usedDoubleEffect [
+
+	state removeDoubleEffect
 ]
 
 { #category : 'accessing' }

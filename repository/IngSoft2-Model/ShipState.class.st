@@ -7,7 +7,8 @@ Class {
 		'bonusThrow',
 		'mercenaries',
 		'cards',
-		'shields'
+		'shields',
+		'hasDoubleThrow'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -17,6 +18,12 @@ Class {
 ShipState class >> creation [
 
 	^ self new initialization
+]
+
+{ #category : 'as yet unclassified' }
+ShipState >> activateDoubleThrow [
+
+	hasDoubleThrow := true
 ]
 
 { #category : 'adding' }
@@ -68,6 +75,12 @@ ShipState >> decreaseBonus [
 	bonusThrow := bonusThrow - 1
 ]
 
+{ #category : 'accessing' }
+ShipState >> hasDoubleThrow [
+
+	^ hasDoubleThrow
+]
+
 { #category : 'as yet unclassified' }
 ShipState >> hasThisCard: aCardClass [
 
@@ -88,7 +101,8 @@ ShipState >> initialization [
 	bonusThrow := 0.
 	mercenaries := OrderedCollection new.
 	shields := 3.
-	cards := OrderedCollection new
+	cards := OrderedCollection new.
+	hasDoubleThrow := false
 ]
 
 { #category : 'as yet unclassified' }
@@ -154,6 +168,12 @@ ShipState >> removeACard: aCard [
 ShipState >> removeCard: aCard [
 
 	cards remove: aCard
+]
+
+{ #category : 'removing' }
+ShipState >> removeDoubleEffect [
+
+	hasDoubleThrow := false
 ]
 
 { #category : 'removing' }

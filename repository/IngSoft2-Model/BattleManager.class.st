@@ -19,13 +19,22 @@ BattleManager >> fightBetween: shipA and: shipB [
 
 	| resultA resultB |
 	[
-	resultA := shipA throwDicesWith: diceBucket.
-	resultB := shipB throwDicesWith: diceBucket.
+	resultA := self getShipPoints: shipA.
+	resultB := self getShipPoints: shipB.
 	resultA = resultB ] whileTrue.
 
 	resultA > resultB
 		ifTrue: [ shipB loseFight ]
 		ifFalse: [ shipA loseFight ]
+]
+
+{ #category : 'as yet unclassified' }
+BattleManager >> getShipPoints: ship [
+
+	| result |
+	result := ship throwDicesWith: diceBucket.
+
+	^ result
 ]
 
 { #category : 'initialization' }
