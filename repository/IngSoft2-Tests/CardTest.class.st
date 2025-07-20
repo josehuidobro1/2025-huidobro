@@ -977,3 +977,88 @@ CardTest >> test022WhenUseACardThenDiscardPileIncrease [
 	aGame shipNamed: ship1 useCard: SpeedCard with: ship2.
 	self assert: aGame cardManager discardPile size equals: 1
 ]
+
+{ #category : 'tests' }
+CardTest >> test023WhenItUsedAlCardsDeckThenTheDiscardPileShuffledAndCreateTheDeckAgain [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard repeatcard cardManager speedCard |
+	aDice := LoadedDice withSequence: #( 3 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: CardGiver with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard new with: 1).
+	cardManager := CardManager
+		               createAmountOf: 4
+		               andDistribution: distributions.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         cardManager: cardManager.
+	aGame shipNamed: ship1 useCard: SpeedCard with: ship2.
+	aGame shipNamed: ship1 useCard: SpeedCard with: ship2.
+	aGame shipNamed: ship2 useCard: SpeedCard with: ship1.
+	aGame shipNamed: ship2 useCard: SpeedCard with: ship1.
+	aGame playTurn.
+	self assert: aGame cardManager deck size equals: 3
+]
+
+{ #category : 'tests' }
+CardTest >> test024WhenItUsedAlCardsDeckAndThereIsNoCardsInDeckAndAskForCardCardInDeckThenRaiseError [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard repeatcard cardManager speedCard |
+	aDice := LoadedDice withSequence: #( 3 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: CardGiver with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard new with: 1).
+	cardManager := CardManager
+		               createAmountOf: 4
+		               andDistribution: distributions.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         cardManager: cardManager.
+	self
+		should: [ aGame playTurn ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'No cards available to draw and discard pile is empty' ]
+]

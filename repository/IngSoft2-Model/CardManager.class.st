@@ -79,7 +79,10 @@ CardManager >> discardPile [
 { #category : 'as yet unclassified' }
 CardManager >> drawCard [
 
-	^ deck removeFirst
+	| card |
+	deck isEmpty ifTrue: [ self reshuffleDiscardPileIntoDeck ].
+	card := deck removeFirst.
+	^ card
 ]
 
 { #category : 'as yet unclassified' }
@@ -150,4 +153,15 @@ CardManager >> playCard: aCardClass by: aShip target: aShip2 in: aGame [
 CardManager >> registerCard: aCard [
 	discardPile add:aCard.
     (aCard isPermanent )ifTrue:[ activeCards add: aCard ]
+]
+
+{ #category : 'as yet unclassified' }
+CardManager >> reshuffleDiscardPileIntoDeck [
+
+	| shuffledCards |
+	discardPile isEmpty ifTrue: [
+		Error signal: 'No cards available to draw and discard pile is empty' ].
+	shuffledCards := discardPile shuffled.
+	deck addAll: shuffledCards.
+	discardPile := OrderedCollection new
 ]

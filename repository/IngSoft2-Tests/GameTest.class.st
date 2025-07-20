@@ -738,7 +738,7 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 	distributions add: (Distribution at: CardGiver with: 0.10).
 	distributions add: (Distribution at: BlackHole with: 0.20).
 	distributions add: (Distribution at: HyperSpaceJump with: 0.20).
-	distributions add: (Distribution at: MoonWalk with: 0.10).
+	distributions add: (Distribution at: (MoonWalk with: 4) with: 0.10).
 	distributions add:
 		(Distribution at: (HyperJump with: distanceToMove) with: 0.08).
 	distributions add: (Distribution at: AtomicBomb with: 0.02).
@@ -768,7 +768,7 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 	distributions1 add: (Distribution at: SpeedCard with: 0.5).
 	distributions1 add: (Distribution at: RedoCard with: 0.5).
 	cardManager := CardManager
-		               createAmountOf: 10
+		               createAmountOf: 1000
 		               andDistribution: distributions1.
 	aGame := Game
 		         with: aBoard
