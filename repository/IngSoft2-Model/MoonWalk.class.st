@@ -8,11 +8,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'initialization' }
-MoonWalk class >> initializeThis [
-	^ self new initializeWith: 10.
-]
-
 { #category : 'accessing' }
 MoonWalk class >> move: numberOfCells [
 
@@ -22,10 +17,22 @@ MoonWalk class >> move: numberOfCells [
 	^ self new initializeWith: numberOfCells
 ]
 
+{ #category : 'instance creation' }
+MoonWalk class >> with: aAmountOfCells [
+
+	^ self new initializeWith: aAmountOfCells
+]
+
 { #category : 'playing' }
 MoonWalk >> applyTo: aShip in: aGame [
 
 	aGame applyMoonWalkEffectOn: aShip  moving: numberOfCells
+]
+
+{ #category : 'initialization' }
+MoonWalk >> initializeThis [
+
+	^ self
 ]
 
 { #category : 'initialization' }

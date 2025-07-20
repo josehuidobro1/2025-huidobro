@@ -5,6 +5,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'initialization' }
+Effect class >> initializeThis [
+	^ self new.
+]
+
 { #category : 'playing' }
 Effect >> applyTo: aShip in: aGame [
 	self subclassResponsibility .

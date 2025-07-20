@@ -75,7 +75,12 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 		          basedOn: (Distance parsecs: 20).
 	ships := OrderedCollection new.
 	ships add: 'ship 1'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -113,7 +118,12 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -144,7 +154,12 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -180,7 +195,12 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket

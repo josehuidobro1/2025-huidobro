@@ -66,7 +66,12 @@ WormHoleTest >> test004WhenShipMovesInsideWormholeThenPositionChanges [
 		          basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket

@@ -69,9 +69,9 @@ ShipState >> decreaseBonus [
 ]
 
 { #category : 'as yet unclassified' }
-ShipState >> hasThisCard: aCard [
+ShipState >> hasThisCard: aCardClass [
 
-	^ cards anySatisfy: [ :card | card = aCard ]
+	^ cards detect: [ :card | card matches: aCardClass ] ifNone: [ nil ]
 ]
 
 { #category : 'as yet unclassified' }

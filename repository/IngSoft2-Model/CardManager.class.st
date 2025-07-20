@@ -10,10 +10,12 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'accessing' }
-CardManager class >> creation [
+{ #category : 'as yet unclassified' }
+CardManager class >> createAmountOf: amountOfCards andDistribution: distributions [
 
-	^ self new initialization
+	^ self new
+		  intializeWith: amountOfCards
+		  andDistribution: distributions
 ]
 
 { #category : 'as yet unclassified' }
@@ -55,7 +57,7 @@ CardManager >> cancelCard: aCard [
 
 	| card |
 	card := activeCards
-		        detect: [ :c | c matches: aCard ]
+		        detect: [ :c | c matches: aCard class ]
 		        ifNone: [
 		        Error signal: 'No active card matches the one to cancel' ].
 	card removePermanentEffect.
@@ -68,21 +70,16 @@ CardManager >> deck [
 	^ deck
 ]
 
+{ #category : 'accessing' }
+CardManager >> discardPile [
+
+	^ discardPile
+]
+
 { #category : 'as yet unclassified' }
 CardManager >> drawCard [
 
-	| index randomCard typeOfCards |
-	typeOfCards := {
-		               AccelerationCard.
-		               SpeedCard.
-		               CancellationCard.
-		               MercenaryCard.
-		               RedoCard.
-		               RepeatCard.
-		               SpeedCard }.
-	index := Random new nextIntegerBetween: 1 and: typeOfCards size.
-	randomCard := (typeOfCards at: index) new.
-	^ randomCard
+	^ deck removeFirst
 ]
 
 { #category : 'as yet unclassified' }
@@ -111,15 +108,19 @@ CardManager >> ensureHasEnoughCardsForShips: shipCount [
 { #category : 'testing' }
 CardManager >> hasActiveCard: aCard [
 
-	^ activeCards anySatisfy: [ :each | each matches: aCard ]
+	^ activeCards anySatisfy: [ :each | each matches: aCard class ]
 ]
 
-{ #category : 'initialization' }
-CardManager >> initialization [
+{ #category : 'as yet unclassified' }
+CardManager >> intializeWith: amountOfCards andDistribution: distributions [
 
-	deck := OrderedCollection new.
-	discardPile :=OrderedCollection new.
-	activeCards := OrderedCollection new.
+	| aDistributor |
+	aDistributor := Distributor
+		                withDistribution: distributions
+		                on: amountOfCards.
+	deck := aDistributor recieveAmountOfItems.
+	discardPile := OrderedCollection new.
+	activeCards := OrderedCollection new
 ]
 
 { #category : 'testing' }
@@ -129,10 +130,11 @@ CardManager >> isValidMercenary: aShip in: ships [
 ]
 
 { #category : 'as yet unclassified' }
-CardManager >> playCard: aCard by: aShip target: aShip2 in: aGame [
+CardManager >> playCard: aCardClass by: aShip target: aShip2 in: aGame [
 
-	(aShip hasCard: aCard) ifFalse: [
-		Error signal: 'Cannot play a card you do not have' ].
+	| aCard |
+	aCard := aShip hasCard: aCardClass.
+	aCard ifNil: [ Error signal: 'Cannot play a card you do not have' ].
 
 	(aCard isCancellationCard and: [ self activePermanentCards isEmpty ])
 		ifTrue: [

@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions amountOfCells effect typesOfCards cardManager repeatcard |
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions amountOfCells effect typesOfCards cardManager repeatcard cards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with: 9.
@@ -24,13 +24,13 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
-	cardManager := FixCardManager creation.
+	cards := OrderedCollection new.
 	repeatcard := RepeatCard new.
-	cardManager addCardsToDeck: {
-			repeatcard.
-			AccelerationCard new.
-			SpeedCard new.
-			SpeedCard new }.
+	cards add: repeatcard.
+	cards add: AccelerationCard new.
+	cards add: SpeedCard new.
+	cards add: SpeedCard new.
+	cardManager := FixCardManager withCards: cards.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -47,7 +47,7 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 { #category : 'tests' }
 EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositionNeverBeNegative [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 effect distributions typesOfCards cardManager repeatcard |
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 effect distributions typesOfCards cardManager repeatcard cards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with: 10.
@@ -62,11 +62,10 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
-	cardManager := FixCardManager creation.
-	repeatcard := RepeatCard new.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new }.
+	cards := OrderedCollection new.
+
+	6 timesRepeat: (cards add: SpeedCard new).
+	cardManager := FixCardManager withCards: cards.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -98,7 +97,12 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -130,7 +134,12 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -156,7 +165,7 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: MoonWalk with: 1).
+	distributions add: (Distribution at: (MoonWalk with: 4) with: 1).
 	aBoard := Board
 		          with: 10
 		          and: aWorm
@@ -164,7 +173,12 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -201,7 +215,12 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -237,7 +256,12 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreOneBu
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 20
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -269,7 +293,12 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -312,7 +341,12 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 
 	aGame := Game
 		         with: aBoard
@@ -356,7 +390,12 @@ EffectsTest >> test010WhenCreatHyperJumpEffectToShip1andShip2ThenShipsPositionAr
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -419,7 +458,7 @@ EffectsTest >> test013WhenHavingMoonwalkEffectThenHasNCells [
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: MoonWalk with: 1).
+	distributions add: (Distribution at: (MoonWalk with: 10) with: 1).
 
 	self assert: (distributions at: 1) cellClass numberOfCells equals: 10
 ]
@@ -449,7 +488,12 @@ EffectsTest >> test014WhenCreatHyperJumpWithParsecsrEffectToShipThenItMovesParse
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 30
+		               andDistribution: distributions.
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
@@ -469,7 +513,7 @@ EffectsTest >> test014WhenCreatHyperJumpWithParsecsrEffectToShipThenItMovesParse
 { #category : 'tests' }
 EffectsTest >> test015WhenCreatHyperJumpLightYearEffectToShipThenItMovesPrrsecs [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove cardManager |
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove cardManager distributions1 |
 	distanceToMove := OrderedCollection new.
 	distanceToMove add: (Distance lightYear: 27).
 	distanceToMove add: (Distance lightYear: 18).
@@ -491,7 +535,12 @@ EffectsTest >> test015WhenCreatHyperJumpLightYearEffectToShipThenItMovesPrrsecs 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions1 := OrderedCollection new.
+	distributions1 add: (Distribution at: SpeedCard with: 0.5).
+	distributions1 add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions1.
 
 	aBoard := Board
 		          with: amountOfCells
@@ -512,7 +561,7 @@ EffectsTest >> test015WhenCreatHyperJumpLightYearEffectToShipThenItMovesPrrsecs 
 { #category : 'tests' }
 EffectsTest >> test016WhenInitializeGameThenLastRealEffectIsEmpty [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove cardManager |
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove cardManager distributions1 |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 2 5 ).
@@ -524,13 +573,16 @@ EffectsTest >> test016WhenInitializeGameThenLastRealEffectIsEmpty [
 	aWorm := Worm with: aX and: aY.
 
 	distributions := OrderedCollection new.
-	distributions add:
-		(Distribution at: AtomicBomb with: 1).
+	distributions add: (Distribution at: AtomicBomb with: 1).
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
-
+	distributions1 := OrderedCollection new.
+	distributions1 add: (Distribution at: SpeedCard with: 0.5).
+	distributions1 add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions1.
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
@@ -542,5 +594,7 @@ EffectsTest >> test016WhenInitializeGameThenLastRealEffectIsEmpty [
 		         andShipsNamed: ships
 		         until: 4
 		         cardManager: cardManager.
-	self assert:(aGame effectManager lastRealEffect class) equals:NoEffect
+	self
+		assert: aGame effectManager lastRealEffect class
+		equals: NoEffect
 ]

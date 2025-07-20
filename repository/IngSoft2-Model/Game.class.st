@@ -142,13 +142,13 @@ Game >> playTurn [
 ]
 
 { #category : 'playing' }
-Game >> shipNamed: shipName useCard: aCard with: anotherShipName [
+Game >> shipNamed: shipName useCard: aCardClass with: anotherShipName [
 
 	| ship anotherShip |
 	ship := self findShipBy: shipName.
 	anotherShip := self findShipBy: anotherShipName.
 	cardManager
-		playCard: aCard
+		playCard: aCardClass
 		by: ship
 		target: anotherShip
 		in: self

@@ -5,6 +5,18 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'initialization' }
+Card class >> initializeThis [
+
+	^ self new
+]
+
+{ #category : 'initialization' }
+Card >> initializeThis [
+
+	^ self
+]
+
 { #category : 'testing' }
 Card >> isCancellationCard [
 
@@ -26,5 +38,5 @@ Card >> isRedo [
 { #category : 'testing' }
 Card >> matches: anotherCard [
 
-	^ self class = anotherCard class
+	^ self class = anotherCard
 ]

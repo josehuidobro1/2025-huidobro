@@ -78,11 +78,11 @@ Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions basedO
 	wormHole := aWormHole.
 	laps := 1.
 	distance := aDistance.
-	aDistributor := EffectDistributor
+	aDistributor := Distributor
 		                withDistribution: distributions
 		                on: aAmountOfCells.
 
-	effectsOnCells := aDistributor recieveAmountOfEffects.
+	effectsOnCells := aDistributor recieveAmountOfItems.
 	cells := OrderedCollection new.
 	1 to: amountOfCells do: [ :i |
 		cell := Cell new.
