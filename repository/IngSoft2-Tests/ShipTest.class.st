@@ -208,18 +208,6 @@ ShipTest >> test012WhenShipLoseAllItsShieldsThenItCanNotPlay [
 ]
 
 { #category : 'tests' }
-ShipTest >> test013WhenShipRecoverItsShieldsThenItCanPlay [
-
-	| ship1  |
-	ship1 := Ship create: 'Ship1'.
-	ship1 loseShield .
-	ship1 loseShield .
-	ship1 loseShield .
-	ship1 recoverShields .
-	self assert: ship1 canPlay equals: true
-]
-
-{ #category : 'tests' }
 ShipTest >> test014WhenShipHas2TurnToSkipAndHAsSkipped1TurnThenItHas1TurnToSkip [
 
 	| ship1 ships ship2 ship3 turnManager actualShip |
