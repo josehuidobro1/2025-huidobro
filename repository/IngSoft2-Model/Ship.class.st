@@ -91,6 +91,12 @@ Ship >> helpToFightWith: aDiceBucket [
 	^ result
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> increaseAShield [
+
+	state addAShield
+]
+
 { #category : 'playing' }
 Ship >> increaseBonusThrow [
 

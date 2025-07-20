@@ -1225,3 +1225,46 @@ CardTest >> test029WhenShipFightButHasMercenaryShipAndThisOneHasDoubleThrowThenA
 	result:=(aGame findShipBy: ship1) throwDicesWith: aDiceBucket .
 	self assert: result equals: 7.
 ]
+
+{ #category : 'tests' }
+CardTest >> test030WhenShipFightButHasMercenaryShipAndThisOneHasDoubleThrowThenAplyToTheBattle [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard repeatcard cardManager speedCard cards doubleCard ship3 mercenaryCard result defend |
+	aDice := LoadedDice withSequence: #( 3 3 1 4 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ship3 := 'ship 3'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	ships add: ship3.
+	cards := OrderedCollection new.
+	defend := DefendCard new.
+	cards add: defend.
+	5 timesRepeat: [ cards add: SpeedCard new ].
+	cardManager := FixCardManager withCards: cards.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         cardManager: cardManager.
+	aGame shipNamed: ship1 useCard: defend with: ship2.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (aGame findShipBy: ship1) shields equals: 3.
+	self assert: (aGame findShipBy: ship2) shields equals: 3
+]

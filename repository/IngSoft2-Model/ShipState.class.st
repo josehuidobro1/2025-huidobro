@@ -33,6 +33,12 @@ ShipState >> add: aCard [
 ]
 
 { #category : 'adding' }
+ShipState >> addAShield [
+
+	shields := shields + 1
+]
+
+{ #category : 'adding' }
 ShipState >> addMercenary: aShip [
 
 	mercenaries add: aShip
