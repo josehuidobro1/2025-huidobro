@@ -320,3 +320,26 @@ BoardTest >> test011WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbab
 	self assert: noEffectCount / totalCells >= (0.38 - tolerance).
 	self assert: noEffectCount / totalCells <= (0.38 + tolerance)
 ]
+
+{ #category : 'tests' }
+BoardTest >> test012WhenCreateBoardWithLessThan1LapThenRaiseError [
+
+	| amountOfCells aWorm distributions |
+	amountOfCells := 10.
+	aWorm := Worm with: 4 and: 7.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	self
+		should: [
+			Board
+				with: amountOfCells
+				and: aWorm
+				until: 0
+				has: distributions
+				basedOn: (Distance parsecs: 20) ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'Laps must be equal or greater than one' ]
+]

@@ -134,7 +134,7 @@ Ship >> laps [
 { #category : 'playing' }
 Ship >> loseFight [
 
-	position := 1.
+	self updatePosition: 1 andLap: 1.
 	state mercenariesLoseFight.
 	shieldsManager loseShield
 ]

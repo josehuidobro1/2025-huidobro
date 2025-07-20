@@ -2,7 +2,6 @@ Class {
 	#name : 'HyperJump',
 	#superclass : 'Effect',
 	#instVars : [
-		'parsecsToMove',
 		'index',
 		'distancesToMove'
 	],

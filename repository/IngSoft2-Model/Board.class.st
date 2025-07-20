@@ -23,6 +23,8 @@ Board class >> with: aAmountOfCells and: aWormHole until: numberOfLaps has: aDis
 	(aWormHole isInside: aAmountOfCells) ifFalse: [
 		^ Error signal:
 			  'Position of the worm hole exceed amount board`s cells' ].
+	numberOfLaps < 1 ifTrue: [
+		^ Error signal: 'Laps must be equal or greater than one' ].
 	^ self new
 		  initializeWith: aAmountOfCells
 		  and: aWormHole

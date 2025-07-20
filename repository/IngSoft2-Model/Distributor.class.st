@@ -3,9 +3,7 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'distribution',
-		'cells',
-		'amount',
-		'defaultItem'
+		'amount'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -17,28 +15,11 @@ Distributor class >> withDistribution: aDistribution on: aAmount [
 	^ self new initializeWith: aDistribution and: aAmount
 ]
 
-{ #category : 'as yet unclassified' }
-Distributor class >> withDistribution: aDistribution on: amountOfCells andDefaultItem: defaultClass [
-
-	^ self new
-		  initializeWith: aDistribution
-		  on: amountOfCells
-		  andWithDefault: defaultClass
-]
-
 { #category : 'initialization' }
 Distributor >> initializeWith: aDistribution and: amountOfItems [
 
 	distribution := aDistribution.
 	amount := amountOfItems
-]
-
-{ #category : 'initialization' }
-Distributor >> initializeWith: aDistribution on: amountOfCells andWithDefault: defaultClass [
-
-	distribution := aDistribution.
-	amount := amountOfCells.
-	defaultItem := defaultClass
 ]
 
 { #category : 'playing' }

@@ -1,17 +1,14 @@
 Class {
 	#name : 'CardGiver',
 	#superclass : 'Effect',
-	#instVars : [
-		'card'
-	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'playing' }
-CardGiver >> applyTo: aShip in: aGame [
+CardGiver >> applyTo: arg1 in: arg2 [
 
-	aGame cardManager drawCardOn: aShip
+	arg2 cardManager drawCardOn: arg1
 ]
 
 { #category : 'testing' }
