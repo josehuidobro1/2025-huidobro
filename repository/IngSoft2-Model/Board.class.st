@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Board class >> with: aAmountOfCells and: aWormHole has: aDistribution basedOn: aDistance [
+Board class >> with: aAmountOfCells and: aWormHole until: numberOfLaps has: aDistribution basedOn: aDistance [
 
 	aAmountOfCells isInteger ifFalse: [
 		^ Error signal: 'Amount of cells must be an integer' ].
@@ -23,9 +23,12 @@ Board class >> with: aAmountOfCells and: aWormHole has: aDistribution basedOn: a
 	(aWormHole isInside: aAmountOfCells) ifFalse: [
 		^ Error signal:
 			  'Position of the worm hole exceed amount board`s cells' ].
+	numberOfLaps < 1 ifTrue: [
+		^ Error signal: 'Laps must be equal or greater than one' ].
 	^ self new
 		  initializeWith: aAmountOfCells
 		  and: aWormHole
+		  until: numberOfLaps
 		  has: aDistribution
 		  basedOn: aDistance
 ]
@@ -43,14 +46,12 @@ Board >> amountOfCellsOf: anEffectOrClass [
 ]
 
 { #category : 'as yet unclassified' }
-Board >> calculatePosition: aPosition moving: parsecs [
+Board >> applyEffectOn: aShip atPosition: aPosition in: aGame [
 
-	| parsecsInCell currentParsec newParsecPos newPosition |
-	parsecsInCell := self parsecsPerCell.
-	currentParsec := aPosition * parsecsInCell.
-	newParsecPos := currentParsec + parsecs.
-	newPosition := (newParsecPos / parsecsInCell) ceiling.
-	^ newPosition
+	| effect |
+	effect := self effectOnPosition: aPosition.
+	effect applyTo: aShip in: aGame.
+	effect isCardGiver ifFalse: [ aGame registerEffect: effect ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -71,18 +72,18 @@ Board >> effectOnPosition: position [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions basedOn: aDistance [
+Board >> initializeWith: aAmountOfCells and: aWormHole until: numberOfLaps has: distributions basedOn: aDistance [
 
 	| cell aDistributor effectsOnCells |
 	amountOfCells := aAmountOfCells.
 	wormHole := aWormHole.
-	laps := 1.
+	laps := numberOfLaps.
 	distance := aDistance.
-	aDistributor := EffectDistributor
+	aDistributor := Distributor
 		                withDistribution: distributions
 		                on: aAmountOfCells.
 
-	effectsOnCells := aDistributor recieveAmountOfEffects.
+	effectsOnCells := aDistributor recieveAmountOfItems.
 	cells := OrderedCollection new.
 	1 to: amountOfCells do: [ :i |
 		cell := Cell new.
@@ -105,10 +106,8 @@ Board >> lightYearsPerCell [
 { #category : 'as yet unclassified' }
 Board >> move: aDistance ship: aShip [
 
-	| parsecsInCell currentParsec newParsecPos newPosition currentLap position modPosition |
-	newPosition := aDistance <= 0
-		               ifTrue: [ 1 ]
-		               ifFalse: [ aDistance ].
+	| newPosition currentLap position modPosition |
+	newPosition := aDistance max: 1.
 
 	currentLap := self moveThrowTheLaps: aShip laps this: newPosition.
 
@@ -137,12 +136,6 @@ Board >> moveThrowTheLaps: currentLap this: position [
 Board >> parsecsPerCell [
 
 	^ distance parsecs / amountOfCells
-]
-
-{ #category : 'instance creation' }
-Board >> with: aNumberOfLaps [
-
-	laps := aNumberOfLaps
 ]
 
 { #category : 'accessing' }

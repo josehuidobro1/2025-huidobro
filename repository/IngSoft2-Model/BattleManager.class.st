@@ -19,13 +19,22 @@ BattleManager >> fightBetween: shipA and: shipB [
 
 	| resultA resultB |
 	[
-	resultA := shipA throwDicesWith: diceBucket.
-	resultB := shipB throwDicesWith: diceBucket.
+	resultA := self getShipPoints: shipA.
+	resultB := self getShipPoints: shipB.
 	resultA = resultB ] whileTrue.
 
 	resultA > resultB
 		ifTrue: [ shipB loseFight ]
 		ifFalse: [ shipA loseFight ]
+]
+
+{ #category : 'as yet unclassified' }
+BattleManager >> getShipPoints: ship [
+
+	| result |
+	result := ship throwDicesWith: diceBucket.
+
+	^ result
 ]
 
 { #category : 'initialization' }
@@ -37,13 +46,12 @@ BattleManager >> initializeWith: aDiceBucket [
 { #category : 'accessing' }
 BattleManager >> resolveIfNeededAt: actualShip in: aGame [
 
-	| shipsInSamePosition |
-	shipsInSamePosition := (aGame ships) select: [ :ship |
+	| shipsInSamePosition enemyShipIsMercenary actualShipIsMercenary |
+	shipsInSamePosition := aGame ships select: [ :ship |
 		                       ship ~~ actualShip and: [
 			                       ship position = actualShip position and:
 				                       ship laps = actualShip laps ] ].
 	shipsInSamePosition do: [ :enemy |
-		((actualShip hasAsMercery: enemy ) or: [
-			 enemy hasAsMercery: actualShip ]) ifFalse: [
+		(actualShip shouldFightAgainst: enemy) ifTrue: [
 			self fightBetween: actualShip and: enemy ] ]
 ]

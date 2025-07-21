@@ -21,19 +21,23 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	typesOfCards := OrderedCollection new.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	aGame play.
 	self assert: aGame showWinner isNotNil
@@ -55,6 +59,7 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 
@@ -62,12 +67,16 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 
 	self assert: aGame play equals: 'Game over'
@@ -90,14 +99,19 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		until:1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	aGame play.
 	self assert: aGame showWinner name equals: 'shipOne'
@@ -119,15 +133,20 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	aGame play.
 	assertedResult := Dictionary new.
@@ -153,14 +172,19 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	(aGame ships at: 1) move: 10 in: aBoard.
 	(aGame ships at: 2) move: 5 in: aBoard.
@@ -174,7 +198,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 { #category : 'tests' }
 GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards cardManager |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -187,20 +211,26 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 3
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 1'.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	self
 		should: [
 			Game
 				with: aBoard
 				using: aDiceBucket
 				andShipsNamed: ships
-				until: 1
-				cardManager: CardManager creation ]
+				cardManager: cardManager ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -211,7 +241,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 { #category : 'tests' }
 GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards cardManager |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -221,19 +251,25 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := aBoard := Board
-		                    with: amountOfCells
-		                    and: aWorm
-		                    has: distributions
-		                    basedOn: (Distance parsecs: 20).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          until: 1
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	self
 		should: [
 			Game
 				with: aBoard
 				using: aDiceBucket
 				andShipsNamed: ships
-				until: 0
-				cardManager: CardManager creation ]
+				cardManager: cardManager ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -257,18 +293,23 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 20
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 
 	self assert: (aGame ships at: 1) position equals: 1
@@ -290,17 +331,22 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 
 	(aGame ships at: 2) move: 10 in: aBoard.
@@ -327,18 +373,23 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 
 	aGame playTurn.
@@ -354,7 +405,7 @@ GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions typesOfCards cardManager |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -364,18 +415,23 @@ GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 30
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	self
 		should: [ aGame showRanking ]
@@ -410,21 +466,22 @@ GameTest >> test011WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbabi
 	board := Board
 		         with: amountOfCells
 		         and: worm
+		         until: 1
 		         has: distributions
 		         basedOn: (Distance parsecs: 20).
 
-	cardEffectCount := board amountOfCellsOf: 'CardGiver' .
-	blackHoleCount := board  amountOfCellsOf: 'BlackHole' .
-	noEffectCount := board  amountOfCellsOf:  'NoEffect' .
-	hyperSpaceCount := board  amountOfCellsOf: 'HyperSpaceJump' .
-	hyperJumpCount := board  amountOfCellsOf: 'HyperJump' .
-	moonWalkCount := board  amountOfCellsOf:  'MoonWalk' .
-	atomicBombCount := board  amountOfCellsOf:  'AtomicBomb' .
+	cardEffectCount := board amountOfCellsOf: 'CardGiver'.
+	blackHoleCount := board amountOfCellsOf: 'BlackHole'.
+	noEffectCount := board amountOfCellsOf: 'NoEffect'.
+	hyperSpaceCount := board amountOfCellsOf: 'HyperSpaceJump'.
+	hyperJumpCount := board amountOfCellsOf: 'HyperJump'.
+	moonWalkCount := board amountOfCellsOf: 'MoonWalk'.
+	atomicBombCount := board amountOfCellsOf: 'AtomicBomb'.
 
 	totalCells := amountOfCells.
 	tolerance := 0.05. "5% de margen de error\"
 
-	self assert: cardEffectCount / totalCells >=( 0.10 - tolerance).
+	self assert: cardEffectCount / totalCells >= (0.10 - tolerance).
 	self assert: cardEffectCount / totalCells <= (0.10 + tolerance).
 
 	self assert: blackHoleCount / totalCells >= (0.20 - tolerance).
@@ -450,18 +507,23 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 30
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 3
@@ -483,18 +545,23 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	cardManager := CardManager creation..
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 6
@@ -509,7 +576,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	aDice := LoadedDice withSequence: #( 6 3 3 5 ).
 	dices1 add: aDice.
 	aDiceBucket1 := DiceBucket with: dices1.
-	aDice := LoadedDice with: 4.
+	aDice := LoadedDice withSequence: #( 4 ).
 	amountOfCells := 10.
 	aWorm := Worm with: 9 and: 10.
 	distributions := OrderedCollection new.
@@ -517,19 +584,24 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
 	ships add: ship1.
 	ships add: ship2.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	aGame playTurn.
 	aGame playTurn.
@@ -553,16 +625,21 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: 1
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ships add: 'ship 1'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1
 		         cardManager: cardManager.
 	ship1 := aGame ships at: 1.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
@@ -572,7 +649,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 { #category : 'tests' }
 GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShipThenFight [
 
-	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 ship2 typesOfCards cardManager |
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 ship2 typesOfCards cardManager distributions1 |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 14 3 ).
@@ -582,22 +659,28 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
+	laps := 3.
 	aBoard := aBoard := Board
 		                    with: amountOfCells
 		                    and: aWorm
+		                    until: laps
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-	laps := 3.
+
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
 	ships add: ship1.
 	ships add: ship2.
-	cardManager := CardManager creation.
+	distributions1 := OrderedCollection new.
+	distributions1 add: (Distribution at: SpeedCard with: 0.5).
+	distributions1 add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions1.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
 	self assert: (aGame ships at: 1) position equals: 1
@@ -606,7 +689,7 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 { #category : 'tests' }
 GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNotTransferThrowTheWormHole [
 
-	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 typesOfCards ship2 cardManager |
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 typesOfCards ship2 cardManager distributions1 |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 7 5 ).
@@ -616,22 +699,28 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
+	laps := 1.
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: laps
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	laps := 1.
+
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
 	ships add: ship1.
 	ships add: ship2.
-	cardManager := CardManager creation.
+	distributions1 := OrderedCollection new.
+	distributions1 add: (Distribution at: SpeedCard with: 0.5).
+	distributions1 add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions1.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 4
@@ -640,7 +729,7 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 { #category : 'tests' }
 GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 
-	| amountOfCells worm distributions distanceToMove aDice dices1 aDiceBucket1 aWorm laps ship1 ship2 ships ship3 ship4 aGame aBoard winner typesOfCards cardManager |
+	| amountOfCells worm distributions distanceToMove aDice dices1 aDiceBucket1 aWorm laps ship1 ship2 ships ship3 ship4 aGame aBoard winner typesOfCards cardManager distributions1 |
 	amountOfCells := 5.
 	worm := Worm with: 2 and: 4.
 	distanceToMove := OrderedCollection new.
@@ -652,14 +741,15 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 	distributions add: (Distribution at: CardGiver with: 0.10).
 	distributions add: (Distribution at: BlackHole with: 0.20).
 	distributions add: (Distribution at: HyperSpaceJump with: 0.20).
-	distributions add: (Distribution at: MoonWalk with: 0.10).
+	distributions add: (Distribution at: (MoonWalk with: 4) with: 0.10).
 	distributions add:
 		(Distribution at: (HyperJump with: distanceToMove) with: 0.08).
 	distributions add: (Distribution at: AtomicBomb with: 0.02).
-
+	laps := 3.
 	aBoard := Board
 		          with: amountOfCells
 		          and: worm
+		          until: laps
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	aDice := Dice with: 6.
@@ -669,7 +759,7 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 	amountOfCells := 5.
 	aWorm := Worm with: 2 and: 4.
 	ships := OrderedCollection new.
-	laps := 3.
+
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
 	ships add: ship1.
@@ -678,15 +768,145 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 	ship4 := 'ship 4'.
 	ships add: ship3.
 	ships add: ship4.
-	cardManager := CardManager creation.
+	distributions1 := OrderedCollection new.
+	distributions1 add: (Distribution at: SpeedCard with: 0.5).
+	distributions1 add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 1000
+		               andDistribution: distributions1.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1
 		         andShipsNamed: ships
-		         until: laps
 		         cardManager: cardManager.
 	aGame play.
 	ships := #( 'ship 1' 'ship 2' 'ship 3' 'ship 4' ).
 	winner := aGame showWinner.
 	self assert: (ships includes: winner name)
+]
+
+{ #category : 'tests' }
+GameTest >> test018WhenAskToFindAShipByaNAmeThatITDoesNotHAveThenRaiseError [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps cardManager aGame |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 6 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    until: 1
+		                    has: distributions
+		                    basedOn: (Distance parsecs: 20).
+
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 30
+		               andDistribution: distributions.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         cardManager: cardManager.
+	self
+		should: [ aGame findShipBy: 'another ship' ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'The Game does not have that ship' ]
+]
+
+{ #category : 'tests' }
+GameTest >> test019WhenCreateGameWithCardManagerNoEnoughtCardTodraInitialCardsThenRaiseError [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps cardManager aGame |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 6 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: CardGiver with: 1).
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    until: 1
+		                    has: distributions
+		                    basedOn: (Distance parsecs: 20).
+
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 4
+		               andDistribution: distributions.
+	self
+		should: [
+			Game
+				with: aBoard
+				using: aDiceBucket
+				andShipsNamed: ships
+				cardManager: cardManager ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'No cards available to draw and discard pile is empty' ]
+]
+
+{ #category : 'tests' }
+GameTest >> test020WhenShipLoseTheBatleThenPositionIsOneAndTheLapAlso [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps cardManager aGame |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 25 25 4 3 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    until: 4
+		                    has: distributions
+		                    basedOn: (Distance parsecs: 20).
+
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 4
+		               andDistribution: distributions.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         cardManager: cardManager.
+	aGame playTurn.
+	aGame playTurn.
+
+	self assert: (aGame findShipBy: 'ship 1') position equals: 1.
+	self assert: (aGame findShipBy: 'ship 1') laps equals: 1
 ]

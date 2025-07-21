@@ -71,16 +71,21 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships := OrderedCollection new.
 	ships add: 'ship 1'.
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 0
 		         cardManager: cardManager.
 	gameState := Started new.
 	self
@@ -111,14 +116,19 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 0
 		         cardManager: cardManager.
 	aGame play.
 	self assert: aGame showWinner name equals: shipOne
@@ -142,14 +152,19 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 0
 		         cardManager: cardManager.
 	self
 		should: [ aGame currentStatus showWinner: aGame ]
@@ -178,18 +193,40 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
-	cardManager := CardManager creation.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: SpeedCard with: 0.5).
+	distributions add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 0
 		         cardManager: cardManager.
 	aGame playTurn.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
 
 	self deny: ship1 position equals: ship2 position
+]
+
+{ #category : 'tests' }
+GameStateTest >> test010WhenGameIStartedButNotPlayedThenPlayingReturnFalse [
+
+	| state |
+	state := Started creation.
+	self deny: state isPlaying
+]
+
+{ #category : 'tests' }
+GameStateTest >> test011WhenGameIStartedButNotPlayedThenPlayingReturnTrue [
+
+	| state |
+	state := Started creation.
+	state markAsPlaying.
+	self assert: state isPlaying
 ]

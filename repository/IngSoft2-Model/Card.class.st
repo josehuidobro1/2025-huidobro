@@ -5,18 +5,16 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'generators' }
-Card >> generateRandomCard [
+{ #category : 'initialization' }
+Card class >> initializeThis [
 
-	| classes |
-	classes := self class subclasses.
-	^ (classes at: (Random new nextIntegerBetween: 1 and: classes size)) new. 
+	^ self new
 ]
 
-{ #category : 'testing' }
-Card >> isCancellationCard [
+{ #category : 'initialization' }
+Card >> initializeThis [
 
-	^ false
+	^ self
 ]
 
 { #category : 'testing' }
@@ -26,13 +24,7 @@ Card >> isPermanent [
 ]
 
 { #category : 'testing' }
-Card >> isRedo [
-
-	^ false
-]
-
-{ #category : 'testing' }
 Card >> matches: anotherCard [
 
-	^ self class = anotherCard class
+	^ self class = anotherCard
 ]

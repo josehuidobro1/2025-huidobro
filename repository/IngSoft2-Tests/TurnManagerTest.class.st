@@ -158,3 +158,34 @@ TurnManagerTest >> test008WhenAllShipsCanNotPlayThenRaiseError [
 				assert: error messageText
 				equals: 'There is no ship witch can play' ]
 ]
+
+{ #category : 'tests' }
+TurnManagerTest >> test009WhenSkipTurnForShipThenShipDoNotWantToPlay [
+
+	| ships ship1 ship2 turnManager ship |
+	ships := OrderedCollection new.
+	ship1 := Ship create: 'ship1'.
+	ship2 := Ship create: 'ship2'.
+	ships add: ship1.
+	ships add: ship2.
+	turnManager := TurnManager with: ships.
+	turnManager skipTurnForShipNamed: 'ship2'.
+	turnManager nextShip.
+	ship := turnManager nextShip.
+	self deny: ship equals: ship2.
+]
+
+{ #category : 'tests' }
+TurnManagerTest >> test010WhenTurnFindShipByNameThenReturnTheCorrectShip [
+
+	| ships ship1 ship2 turnManager ship |
+	ships := OrderedCollection new.
+	ship1 := Ship create: 'ship1'.
+	ship2 := Ship create: 'ship2'.
+	ships add: ship1.
+	ships add: ship2.
+	turnManager := TurnManager with: ships.
+	ship := turnManager findShipBy: 'ship2'.
+	self deny: ship equals: ship1.
+	self assert: ship equals: ship2
+]

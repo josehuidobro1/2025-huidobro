@@ -10,12 +10,6 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
-{ #category : 'instance creation' }
-LoadedDice class >> with: aAmountOfFaces [
-
-	^ self new initializeWith: aAmountOfFaces
-]
-
 { #category : 'as yet unclassified' }
 LoadedDice class >> withSequence: throwns [
 

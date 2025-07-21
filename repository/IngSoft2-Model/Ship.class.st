@@ -5,7 +5,9 @@ Class {
 		'position',
 		'name',
 		'currentLap',
-		'state'
+		'state',
+		'shieldsManager',
+		'turnState'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -18,6 +20,12 @@ Ship class >> create: aName [
 		^ Error signal: 'Ship´s name must be a string.' ].
 
 	^ self new initializeWith: aName
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> activateDoubleEffect [
+
+	state activateDoubleThrow
 ]
 
 { #category : 'adding' }
@@ -35,7 +43,7 @@ Ship >> bonusThrow [
 { #category : 'testing' }
 Ship >> canPlay [
 
-	^ state canIPlay
+	^ turnState canIPlay
 ]
 
 { #category : 'playing' }
@@ -47,7 +55,8 @@ Ship >> cards [
 { #category : 'playing' }
 Ship >> choiceToNotPlay [
 
-	^ state chooseToNotPlay
+	shieldsManager recoverShields.
+	turnState chooseToNotPlay
 ]
 
 { #category : 'playing' }
@@ -68,10 +77,27 @@ Ship >> hasCard: aCard [
 	^ state hasThisCard: aCard
 ]
 
+{ #category : 'testing' }
+Ship >> hasDoubleThrow [
+
+	^state hasDoubleThrow
+]
+
 { #category : 'playing' }
 Ship >> helpToFightWith: aDiceBucket [
 
-	^ aDiceBucket throw
+	| result |
+	result := aDiceBucket throw.
+	state hasDoubleThrow ifTrue: [
+		result := result * 2.
+		state removeDoubleEffect ].
+	^ result
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> increaseAShield [
+
+	shieldsManager addAShield
 ]
 
 { #category : 'playing' }
@@ -86,7 +112,9 @@ Ship >> initializeWith: aName [
 	currentLap := 1.
 	position := 1.
 	name := aName.
-	state := ShipState creation
+	state := ShipState creation.
+	shieldsManager := ShieldsManager initializeWith: self.
+	turnState := TurnState initializeWith: self.
 ]
 
 { #category : 'testing' }
@@ -106,14 +134,15 @@ Ship >> laps [
 { #category : 'playing' }
 Ship >> loseFight [
 
-	position := 1.
-	state loseFight
+	self updatePosition: 1 andLap: 1.
+	state mercenariesLoseFight.
+	shieldsManager loseShield
 ]
 
 { #category : 'playing' }
 Ship >> loseShield [
 
-	state loseShield
+	shieldsManager loseShield
 ]
 
 { #category : 'playing' }
@@ -145,13 +174,13 @@ Ship >> position [
 { #category : 'playing' }
 Ship >> receiveCard: aCard [
 
-	state add: aCard
+	state addThisCard: aCard
 ]
 
 { #category : 'playing' }
 Ship >> recoverShields [
 
-	state recoverShields
+	shieldsManager recoverShields
 ]
 
 { #category : 'removing' }
@@ -169,13 +198,20 @@ Ship >> removeMercenary: aShip [
 { #category : 'accessing' }
 Ship >> shields [
 
-	^ state shields
+	^ shieldsManager shields
+]
+
+{ #category : 'asserting' }
+Ship >> shouldFightAgainst: aShip [
+
+	^ (self hasAsMercery: aShip) not and: [
+		  (aShip hasAsMercery: self) not ]
 ]
 
 { #category : 'playing' }
 Ship >> skipTurn [
 
-	state reduceTurnsToSkip
+	turnState reduceTurnsToSkip
 ]
 
 { #category : 'playing' }
@@ -183,6 +219,9 @@ Ship >> throwDicesWith: aDiceBucket [
 
 	| result helper |
 	result := aDiceBucket throw.
+	state hasDoubleThrow ifTrue: [
+		result := result * 2.
+		state removeDoubleEffect ].
 	helper := state payHelpToMyMercenariesWith: aDiceBucket.
 	^ result + helper
 ]
@@ -190,7 +229,13 @@ Ship >> throwDicesWith: aDiceBucket [
 { #category : 'accessing' }
 Ship >> turnsThatHasToSkip [
 
-	^ state turnsToSkip
+	^ turnState turnsToSkip
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> turnsThatHasToSkip: amountOfTurns [
+
+	turnState increaseTurnsToSkip: amountOfTurns
 ]
 
 { #category : 'as yet unclassified' }
@@ -200,10 +245,10 @@ Ship >> updatePosition: newPosition andLap: newLaps [
 	currentLap := newLaps
 ]
 
-{ #category : 'accessing' }
-Ship >> wantsToPlay [
+{ #category : 'as yet unclassified' }
+Ship >> usedDoubleEffect [
 
-	^ state optionalTurn
+	state removeDoubleEffect
 ]
 
 { #category : 'playing' }

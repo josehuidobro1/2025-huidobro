@@ -2,12 +2,10 @@ Class {
 	#name : 'ShipState',
 	#superclass : 'Object',
 	#instVars : [
-		'turnsToSkip',
-		'optionalTurn',
 		'bonusThrow',
 		'mercenaries',
 		'cards',
-		'shields'
+		'hasDoubleThrow'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -19,10 +17,10 @@ ShipState class >> creation [
 	^ self new initialization
 ]
 
-{ #category : 'adding' }
-ShipState >> add: aCard [
+{ #category : 'as yet unclassified' }
+ShipState >> activateDoubleThrow [
 
-	cards add: aCard
+	hasDoubleThrow := true
 ]
 
 { #category : 'adding' }
@@ -31,16 +29,16 @@ ShipState >> addMercenary: aShip [
 	mercenaries add: aShip
 ]
 
+{ #category : 'adding' }
+ShipState >> addThisCard: aCard [
+
+	cards add: aCard
+]
+
 { #category : 'accessing' }
 ShipState >> bonusThrow [
 
 	^ bonusThrow
-]
-
-{ #category : 'testing' }
-ShipState >> canIPlay [
-
-	^ turnsToSkip = 0
 ]
 
 { #category : 'accessing' }
@@ -56,22 +54,21 @@ ShipState >> checkIfIHaveAsMercery: aShip [
 ]
 
 { #category : 'as yet unclassified' }
-ShipState >> chooseToNotPlay [
-
-	self recoverShields.
-	turnsToSkip := turnsToSkip + 1
-]
-
-{ #category : 'as yet unclassified' }
 ShipState >> decreaseBonus [
 
 	bonusThrow := bonusThrow - 1
 ]
 
-{ #category : 'as yet unclassified' }
-ShipState >> hasThisCard: aCard [
+{ #category : 'accessing' }
+ShipState >> hasDoubleThrow [
 
-	^ cards anySatisfy: [ :card | card = aCard ]
+	^ hasDoubleThrow
+]
+
+{ #category : 'as yet unclassified' }
+ShipState >> hasThisCard: aCardClass [
+
+	^ cards detect: [ :card | card matches: aCardClass ] ifNone: [ nil ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -83,35 +80,16 @@ ShipState >> increaseBonus [
 { #category : 'initialization' }
 ShipState >> initialization [
 
-	turnsToSkip := 0.
-	optionalTurn := true.
 	bonusThrow := 0.
 	mercenaries := OrderedCollection new.
-	shields := 3.
-	cards := OrderedCollection new
+	cards := OrderedCollection new.
+	hasDoubleThrow := false
 ]
 
 { #category : 'as yet unclassified' }
-ShipState >> loseFight [
+ShipState >> mercenariesLoseFight [
 
-	mercenaries do: [ :mercenaryShip | mercenaryShip loseShield ].
-	self loseShield
-]
-
-{ #category : 'playing' }
-ShipState >> loseShield [
-
-	shields := shields - 1.
-	shields = 0 ifFalse: [ ^ self ].
-
-	self recoverShields.
-	turnsToSkip := 2
-]
-
-{ #category : 'accessing' }
-ShipState >> optionalTurn [
-
-	^ optionalTurn
+	mercenaries do: [ :mercenary | mercenary loseFight ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -122,20 +100,6 @@ ShipState >> payHelpToMyMercenariesWith: aDiceBucket [
 	mercenaries do: [ :ship |
 		count := count + (ship helpToFightWith: aDiceBucket) ].
 	^ count + bonusThrow
-]
-
-{ #category : 'playing' }
-ShipState >> recoverShields [
-
-	shields := 3.
-	turnsToSkip :=0.
-	optionalTurn :=true.
-]
-
-{ #category : 'as yet unclassified' }
-ShipState >> reduceTurnsToSkip [
-
-	turnsToSkip := turnsToSkip - 1
 ]
 
 { #category : 'removing' }
@@ -157,19 +121,13 @@ ShipState >> removeCard: aCard [
 ]
 
 { #category : 'removing' }
+ShipState >> removeDoubleEffect [
+
+	hasDoubleThrow := false
+]
+
+{ #category : 'removing' }
 ShipState >> removeMercenaries: aShip [
 
 	mercenaries remove: aShip
-]
-
-{ #category : 'accessing' }
-ShipState >> shields [
-
-	^ shields
-]
-
-{ #category : 'accessing' }
-ShipState >> turnsToSkip [
-
-	^ turnsToSkip
 ]

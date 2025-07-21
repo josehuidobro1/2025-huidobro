@@ -41,7 +41,7 @@ TurnManager >> nextShip [
 	[ turnsSkipped < totalShips ] whileTrue: [
 		ship := ships at: turn.
 		turn := turn \\ totalShips + 1.
-		(ship canPlay and: [ ship wantsToPlay ])
+		(ship canPlay )
 			ifTrue: [ ^ ship ]
 			ifFalse: [
 				ship skipTurn.

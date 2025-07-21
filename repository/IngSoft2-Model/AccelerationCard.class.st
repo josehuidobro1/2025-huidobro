@@ -21,12 +21,6 @@ AccelerationCard >> isPermanent [
 	^ true
 ]
 
-{ #category : 'testing' }
-AccelerationCard >> matches: anotherCard [
-
-	^ self class = anotherCard class
-]
-
 { #category : 'removing' }
 AccelerationCard >> removePermanentEffect [
 	linkedShips do: [:ship | ship decreaseBonusThrow. ] .

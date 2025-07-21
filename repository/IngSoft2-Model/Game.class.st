@@ -10,7 +10,8 @@ Class {
 		'battleManager',
 		'cardManager',
 		'effectManager',
-		'winner'
+		'winner',
+		'lastRealEffect'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -35,16 +36,15 @@ Game class >> validateUniqueNames: ships [
 ]
 
 { #category : 'as yet unclassified' }
-Game class >> with: arg1 using: arg2 andShipsNamed: arg3 until: arg4 cardManager: arg5 [
+Game class >> with: aBoard using: aDiceBucket andShipsNamed: ships cardManager: cardManager [
 
-	arg3 ifEmpty: [ ^ Error signal: 'List of ships must not be empty.' ].
-	self validateUniqueNames: arg3.
+	ships ifEmpty: [ ^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: ships.
 	^ self new
-		  initializeWith: arg1
-		  using: arg2
-		  andShipsNamed: arg3
-		  until: arg4
-		  cardManager: arg5
+		  initializeWith: aBoard
+		  using: aDiceBucket
+		  andShipsNamed: ships
+		  cardManager: cardManager
 ]
 
 { #category : 'playing' }
@@ -100,22 +100,31 @@ Game >> effectManager [
 { #category : 'accessing' }
 Game >> findShipBy: aName [
 
-	^ ships detect: [ :ship | ship name = aName ]
+	| ship |
+	ship := ships
+		        detect: [ :each | each name = aName ]
+		        ifNone: [ Error signal: 'The Game does not have that ship' ].
+	^ ship
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard using: diceBucket andShipsNamed: shipsname until: laps cardManager: aCardManager [
+Game >> initializeWith: aBoard using: diceBucket andShipsNamed: shipsname cardManager: aCardManager [
 
-	| tmp1 |
-	board := aBoard with: laps.
+	board := aBoard.
 	ships := shipsname collect: [ :ship | Ship create: ship ].
 	bucketOfDices := diceBucket.
 	status := Started creation.
 	turnManager := TurnManager with: ships.
 	battleManager := BattleManager with: diceBucket.
-	effectManager := EffectManager creation.
+	lastRealEffect := NoEffect new.
 	cardManager := aCardManager.
 	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
+]
+
+{ #category : 'accessing' }
+Game >> lastRealEffect [
+
+	^ lastRealEffect
 ]
 
 { #category : 'playing' }
@@ -133,22 +142,29 @@ Game >> playTurn [
 	currentShip := turnManager nextShip.
 	rolledDistance := bucketOfDices rollFor: currentShip.
 	currentShip move: rolledDistance in: board.
-
-	boardEffect := board effectOnPosition: currentShip position.
-	effectManager apply: boardEffect to: currentShip in: self.
+	board
+		applyEffectOn: currentShip
+		atPosition: currentShip position
+		in: self.
 	battleManager resolveIfNeededAt: currentShip in: self.
 
 	self someShipWon
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> registerEffect: anEffect [
+
+	lastRealEffect := anEffect
+]
+
 { #category : 'playing' }
-Game >> shipNamed: shipName useCard: aCard with: anotherShipName [
+Game >> shipNamed: shipName useCard: aCardClass with: anotherShipName [
 
 	| ship anotherShip |
 	ship := self findShipBy: shipName.
 	anotherShip := self findShipBy: anotherShipName.
 	cardManager
-		playCard: aCard
+		playCard: aCardClass
 		by: ship
 		target: anotherShip
 		in: self
@@ -207,8 +223,7 @@ Game >> skipTurnForShipNamed: shipName [
 { #category : 'playing' }
 Game >> someShipWon [
 
-	| laps winner result |
-	laps := board laps.
+	| result |
 	result := ships anySatisfy: [ :ship | ship winAt: board ].
 	result ifTrue: [ status := Finished new ]
 ]

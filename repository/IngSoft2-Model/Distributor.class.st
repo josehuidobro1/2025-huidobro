@@ -1,28 +1,29 @@
 Class {
-	#name : 'EffectDistributor',
+	#name : 'Distributor',
 	#superclass : 'Object',
 	#instVars : [
 		'distribution',
-		'cells'
+		'amount'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'as yet unclassified' }
-EffectDistributor class >> withDistribution: aDistribution on:amountOfCells [ 
-	^self new initializeWith: aDistribution on:amountOfCells
+Distributor class >> withDistribution: aDistribution on: aAmount [
+
+	^ self new initializeWith: aDistribution and: aAmount
 ]
 
 { #category : 'initialization' }
-EffectDistributor >> initializeWith: aDistribution on: amountOfCells [
+Distributor >> initializeWith: aDistribution and: amountOfItems [
 
 	distribution := aDistribution.
-	cells := amountOfCells
+	amount := amountOfItems
 ]
 
 { #category : 'playing' }
-EffectDistributor >> recieveAmountOfEffects [
+Distributor >> recieveAmountOfItems [
 
 	| cumulativeProbabilities cum effectsOnCells randomItem effectSelected random |
 	cumulativeProbabilities := OrderedCollection new.
@@ -35,11 +36,10 @@ EffectDistributor >> recieveAmountOfEffects [
 
 	effectsOnCells := OrderedCollection new.
 
-	cells timesRepeat: [
+	amount timesRepeat: [
 		randomItem := random next. "Entre 0 y 1"
 		effectSelected := cumulativeProbabilities
-			                  detect: [ :assoc | randomItem <= assoc key ]
-			                  ifNone: [ NoEffect ].
+			                  detect: [ :assoc | randomItem <= assoc key ].
 		effectsOnCells add: effectSelected value ].
 
 	^ effectsOnCells
