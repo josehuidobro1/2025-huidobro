@@ -108,3 +108,26 @@ ShipStateTest >> test005WhenPayHElpToMyMercenariesAndSomeMErcenaryHAsDoubleThrow
 
 	self assert: points equals: 12
 ]
+
+{ #category : 'tests' }
+ShipStateTest >> test006WhenIncreaseBonusThrowThenBonusThrowISOne [
+
+	| state ship |
+	state := ShipState creation.
+
+	state increaseBonus.
+
+	self assert: state bonusThrow equals: 1
+]
+
+{ #category : 'tests' }
+ShipStateTest >> test007WhenDecreaseBonusThrowThenBonusThrowISZero [
+
+	| state ship |
+	state := ShipState creation.
+
+	state increaseBonus.
+	state decreaseBonus.
+
+	self assert: state bonusThrow equals: 0
+]
