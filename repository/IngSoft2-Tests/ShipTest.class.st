@@ -416,3 +416,39 @@ ShipTest >> test019WhenShipMovesByEffectAndItIsInEarlyCellsThenLapsStayZeroAndNo
 	aGame playTurn.
 	self assert: (aGame findShipBy: 'ship 1') laps equals: 1
 ]
+
+{ #category : 'tests' }
+ShipTest >> test020WhenShipIsCreatedThenShieldsAre3 [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame typesOfCards cardManager distributions1 |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 1 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 4 and: 5.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	laps := 3.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          until: laps
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+
+	ships add: 'ship 1'.
+	distributions1 := OrderedCollection new.
+	distributions1 add: (Distribution at: SpeedCard with: 0.5).
+	distributions1 add: (Distribution at: RedoCard with: 0.5).
+	cardManager := CardManager
+		               createAmountOf: 10
+		               andDistribution: distributions1.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         cardManager: cardManager.
+	self assert: (aGame findShipBy: 'ship 1') shields equals: 3
+]

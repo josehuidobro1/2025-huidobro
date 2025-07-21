@@ -23,13 +23,6 @@ ShieldsManager >> addAShield [
 	actualShields := actualShields + 1
 ]
 
-{ #category : 'initialization' }
-ShieldsManager >> initialization [
-
-	maxShields := 3.
-	actualShields := 3
-]
-
 { #category : 'as yet unclassified' }
 ShieldsManager >> intializeWith: aShip [
 
