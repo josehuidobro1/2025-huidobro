@@ -201,6 +201,13 @@ Ship >> shields [
 	^ shieldsManager shields
 ]
 
+{ #category : 'asserting' }
+Ship >> shouldFightAgainst: aShip [
+
+	^ (self hasAsMercery: aShip) not and: [
+		  (aShip hasAsMercery: self) not ]
+]
+
 { #category : 'playing' }
 Ship >> skipTurn [
 

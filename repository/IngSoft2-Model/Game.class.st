@@ -10,7 +10,8 @@ Class {
 		'battleManager',
 		'cardManager',
 		'effectManager',
-		'winner'
+		'winner',
+		'lastRealEffect'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -115,9 +116,15 @@ Game >> initializeWith: aBoard using: diceBucket andShipsNamed: shipsname cardMa
 	status := Started creation.
 	turnManager := TurnManager with: ships.
 	battleManager := BattleManager with: diceBucket.
-	effectManager := EffectManager creation.
+	lastRealEffect := NoEffect new.
 	cardManager := aCardManager.
 	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
+]
+
+{ #category : 'accessing' }
+Game >> lastRealEffect [
+
+	^ lastRealEffect
 ]
 
 { #category : 'playing' }
@@ -147,7 +154,7 @@ Game >> playTurn [
 { #category : 'as yet unclassified' }
 Game >> registerEffect: anEffect [
 
-	effectManager registerEffect: anEffect
+	lastRealEffect := anEffect
 ]
 
 { #category : 'playing' }

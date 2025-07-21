@@ -594,7 +594,5 @@ EffectsTest >> test016WhenInitializeGameThenLastRealEffectIsEmpty [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         cardManager: cardManager.
-	self
-		assert: aGame effectManager lastRealEffect class
-		equals: NoEffect
+	self assert: aGame lastRealEffect class equals: NoEffect
 ]

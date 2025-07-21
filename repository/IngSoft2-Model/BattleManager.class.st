@@ -52,8 +52,6 @@ BattleManager >> resolveIfNeededAt: actualShip in: aGame [
 			                       ship position = actualShip position and:
 				                       ship laps = actualShip laps ] ].
 	shipsInSamePosition do: [ :enemy |
-		enemyShipIsMercenary := actualShip hasAsMercery: enemy.
-		actualShipIsMercenary := enemy hasAsMercery: actualShip.
-		(enemyShipIsMercenary or: [ actualShipIsMercenary ]) ifFalse: [
+		(actualShip shouldFightAgainst: enemy) ifTrue: [
 			self fightBetween: actualShip and: enemy ] ]
 ]
