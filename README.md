@@ -9,6 +9,6 @@
 ```smalltalk
 Metacello new
    baseline: 'IngSoft2';
-   githubUser: 'uca-argentina' project: '2025-sprinters' commitish: 'master' path: 'repository';
+   githubUser: 'josehuidobro1' project: '2025-huidobro' commitish: 'master' path: 'repository';
    load: 'development'.
 ```
