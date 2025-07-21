@@ -109,7 +109,6 @@ Game >> findShipBy: aName [
 { #category : 'initialization' }
 Game >> initializeWith: aBoard using: diceBucket andShipsNamed: shipsname cardManager: aCardManager [
 
-	| tmp1 |
 	board := aBoard.
 	ships := shipsname collect: [ :ship | Ship create: ship ].
 	bucketOfDices := diceBucket.

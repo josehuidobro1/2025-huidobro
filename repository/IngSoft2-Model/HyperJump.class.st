@@ -5,10 +5,6 @@ Class {
 		'index',
 		'distancesToMove'
 	],
-	#classInstVars : [
-		'parsecsToMove',
-		'index'
-	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }

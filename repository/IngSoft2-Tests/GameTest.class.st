@@ -405,7 +405,7 @@ GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions typesOfCards cardManager |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -576,7 +576,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	aDice := LoadedDice withSequence: #( 6 3 3 5 ).
 	dices1 add: aDice.
 	aDiceBucket1 := DiceBucket with: dices1.
-	aDice := LoadedDice with: 4.
+	aDice := LoadedDice withSequence: #( 4 ).
 	amountOfCells := 10.
 	aWorm := Worm with: 9 and: 10.
 	distributions := OrderedCollection new.

@@ -101,13 +101,6 @@ CardManager >> drawInitialCardsFor: aShip [
 	self drawCardOn: aShip
 ]
 
-{ #category : 'as yet unclassified' }
-CardManager >> ensureHasEnoughCardsForShips: shipCount [
-
-	deck size >= (shipCount * 2) ifFalse: [
-		Error signal: 'Not enough cards to give 2 to each ship.' ]
-]
-
 { #category : 'testing' }
 CardManager >> hasActiveCard: aCard [
 

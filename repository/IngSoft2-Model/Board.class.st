@@ -46,17 +46,6 @@ Board >> amountOfCellsOf: anEffectOrClass [
 ]
 
 { #category : 'as yet unclassified' }
-Board >> calculatePosition: aPosition moving: parsecs [
-
-	| parsecsInCell currentParsec newParsecPos newPosition |
-	parsecsInCell := self parsecsPerCell.
-	currentParsec := aPosition * parsecsInCell.
-	newParsecPos := currentParsec + parsecs.
-	newPosition := (newParsecPos / parsecsInCell) ceiling.
-	^ newPosition
-]
-
-{ #category : 'as yet unclassified' }
 Board >> calculatePositionByParsecs: parsecs [
 
 	| parsecsInCell newPosition |
@@ -108,10 +97,8 @@ Board >> lightYearsPerCell [
 { #category : 'as yet unclassified' }
 Board >> move: aDistance ship: aShip [
 
-	| parsecsInCell currentParsec newParsecPos newPosition currentLap position modPosition |
-	newPosition := aDistance <= 0
-		               ifTrue: [ 1 ]
-		               ifFalse: [ aDistance ].
+	| newPosition currentLap position modPosition |
+	newPosition := aDistance max: 1.
 
 	currentLap := self moveThrowTheLaps: aShip laps this: newPosition.
 

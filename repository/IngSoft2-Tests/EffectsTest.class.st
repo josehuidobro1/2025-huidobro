@@ -11,7 +11,7 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions amountOfCells effect typesOfCards cardManager repeatcard cards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 9.
+	aDice := LoadedDice withSequence: #( 9 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
@@ -50,7 +50,7 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 effect distributions typesOfCards cardManager repeatcard cards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
@@ -59,13 +59,13 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 	aBoard := Board
 		          with: 10
 		          and: aWorm
-		until:1
+		          until: 1
 		          has: distributions
 		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	cards := OrderedCollection new.
 
-	6 timesRepeat: ([cards add: SpeedCard new]).
+	6 timesRepeat: [ cards add: SpeedCard new ].
 	cardManager := FixCardManager withCards: cards.
 	aGame := Game
 		         with: aBoard
@@ -122,7 +122,7 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 	effect := HyperSpaceJump new.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
@@ -160,7 +160,7 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 	"effect := MoonWalk move:n."
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
@@ -201,7 +201,7 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
@@ -452,7 +452,7 @@ EffectsTest >> test013WhenHavingMoonwalkEffectThenHasNCells [
 	| dices aDice aDiceBucket amountOfCells aWorm ships distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice withSequence: #( 5 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.

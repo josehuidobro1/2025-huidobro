@@ -10,12 +10,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'accessing' }
-ShieldsManager class >> creation [
-
-	^ self new initialization
-]
-
 { #category : 'initialization' }
 ShieldsManager class >> initializeWith: aShip [
 
@@ -48,9 +42,7 @@ ShieldsManager >> intializeWith: aShip [
 ShieldsManager >> loseShield [
 
 	actualShields := actualShields - 1.
-	actualShields = 0 ifFalse: [ ^ self ].
-
-	ship turnsThatHasToSkip: 2
+	actualShields = 0 ifTrue: [ ship turnsThatHasToSkip: 2 ]
 ]
 
 { #category : 'playing' }
