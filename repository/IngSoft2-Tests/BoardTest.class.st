@@ -343,3 +343,21 @@ BoardTest >> test012WhenCreateBoardWithLessThan1LapThenRaiseError [
 				assert: error messageText
 				equals: 'Laps must be equal or greater than one' ]
 ]
+
+{ #category : 'tests' }
+BoardTest >> test013WhenCreateBoardThenReturnCorrectLaps [
+
+	| amountOfCells aWorm distributions laps aBoard |
+	amountOfCells := 10.
+	aWorm := Worm with: 4 and: 7.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	laps := 3.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          until: laps
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	self assert: aBoard laps equals: laps
+]
