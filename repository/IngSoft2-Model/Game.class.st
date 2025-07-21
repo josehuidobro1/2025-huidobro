@@ -135,12 +135,19 @@ Game >> playTurn [
 	currentShip := turnManager nextShip.
 	rolledDistance := bucketOfDices rollFor: currentShip.
 	currentShip move: rolledDistance in: board.
-
-	boardEffect := board effectOnPosition: currentShip position.
-	effectManager apply: boardEffect to: currentShip in: self.
+	board
+		applyEffectOn: currentShip
+		atPosition: currentShip position
+		in: self.
 	battleManager resolveIfNeededAt: currentShip in: self.
 
 	self someShipWon
+]
+
+{ #category : 'as yet unclassified' }
+Game >> registerEffect: anEffect [
+
+	effectManager registerEffect: anEffect
 ]
 
 { #category : 'playing' }

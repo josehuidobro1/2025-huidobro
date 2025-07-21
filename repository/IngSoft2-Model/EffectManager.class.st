@@ -14,16 +14,6 @@ EffectManager class >> creation [
 	^ self new initialization
 ]
 
-{ #category : 'as yet unclassified' }
-EffectManager >> apply: anEffect to: aShip in: aGame [
-
-	(anEffect isCardGiver) ifTrue: [
-		aGame cardManager drawCardOn: aShip.
-		^ self ].
-	anEffect applyTo: aShip in: aGame.
-	self registerEffect: anEffect
-]
-
 { #category : 'initialization' }
 EffectManager >> initialization [
 

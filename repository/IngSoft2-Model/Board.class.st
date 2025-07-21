@@ -46,6 +46,15 @@ Board >> amountOfCellsOf: anEffectOrClass [
 ]
 
 { #category : 'as yet unclassified' }
+Board >> applyEffectOn: aShip atPosition: aPosition in: aGame [
+
+	| effect |
+	effect := self effectOnPosition: aPosition.
+	effect applyTo: aShip in: aGame.
+	effect isCardGiver ifFalse: [ aGame registerEffect: effect ]
+]
+
+{ #category : 'as yet unclassified' }
 Board >> calculatePositionByParsecs: parsecs [
 
 	| parsecsInCell newPosition |
