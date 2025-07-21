@@ -251,12 +251,6 @@ Ship >> usedDoubleEffect [
 	state removeDoubleEffect
 ]
 
-{ #category : 'accessing' }
-Ship >> wantsToPlay [
-
-	^ turnState optionalTurn
-]
-
 { #category : 'playing' }
 Ship >> winAt: aBoard [
 

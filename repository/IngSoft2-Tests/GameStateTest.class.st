@@ -213,3 +213,20 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 
 	self deny: ship1 position equals: ship2 position
 ]
+
+{ #category : 'tests' }
+GameStateTest >> test010WhenGameIStartedButNotPlayedThenPlayingReturnFalse [
+
+	| state |
+	state := Started creation.
+	self deny: state isPlaying
+]
+
+{ #category : 'tests' }
+GameStateTest >> test011WhenGameIStartedButNotPlayedThenPlayingReturnTrue [
+
+	| state |
+	state := Started creation.
+	state markAsPlaying.
+	self assert: state isPlaying
+]
