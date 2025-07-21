@@ -28,14 +28,13 @@ CardManager >> activePermanentCards [
 CardManager >> applyRedoEffectOn: aShip in: aGame [
 
 	| realCard |
-    discardPile isEmpty ifTrue: [
-        ^ Error signal: 'There are no cards played before.'
-    ].
-    realCard := discardPile reversed
-        detect: [ :card | card isRedo not ]
-        ifNone: [ ^ Error signal: 'No real card to redo.' ].
+	discardPile isEmpty ifTrue: [
+		^ Error signal: 'There are no cards played before.' ].
+	realCard := discardPile reversed
+		            detect: [ :card | (card matches: RedoCard) not ]
+		            ifNone: [ ^ Error signal: 'No real card to redo.' ].
 
-    realCard applyTo: aShip using: aShip in: aGame.
+	realCard applyTo: aShip using: aShip in: aGame
 ]
 
 { #category : 'as yet unclassified' }
@@ -46,7 +45,7 @@ CardManager >> applyTo: aShip using: aShip2 in: aGame [
         ^ Error signal: 'There are no cards played before.'
     ].
     realCard := discardPile reversed
-        detect: [ :card | card isRedo not ]
+        detect: [ :card | (card matches: RedoCard) not ]
         ifNone: [ ^ Error signal: 'No real card to redo.' ].
 
     realCard applyTo: aShip using: aShip in: aGame.
@@ -132,10 +131,10 @@ CardManager >> playCard: aCardClass by: aShip target: aShip2 in: aGame [
 	aCard := aShip hasCard: aCardClass.
 	aCard ifNil: [ Error signal: 'Cannot play a card you do not have' ].
 
-	(aCard isCancellationCard and: [ self activePermanentCards isEmpty ])
-		ifTrue: [
-			self error:
-				'Cannot play cancellation card with no active permanent cards' ].
+	((aCard matches: CancellationCard) and: [
+		 self activePermanentCards isEmpty ]) ifTrue: [
+		self error:
+			'Cannot play cancellation card with no active permanent cards' ].
 
 	aCard applyTo: aShip using: aShip2 in: aGame.
 	aShip removeCard: aCard.

@@ -38,7 +38,7 @@ FixCardManager >> playCard: aCardClass by: aShip target: aShip2 in: aGame [
 	aCard := aShip hasCard: aCardClass class.
 	aCard ifNil: [ Error signal: 'Cannot play a card you do not have' ].
 
-	(aCardClass isCancellationCard and: [
+	((aCardClass matches: CancellationCard) and: [
 		 self activePermanentCards isEmpty ]) ifTrue: [
 		self error:
 			'Cannot play cancellation card with no active permanent cards' ].

@@ -1269,3 +1269,78 @@ CardTest >> test030WhenShipFightButHasMercenaryShipAndThisOneHasDoubleThrowThenA
 	self assert: (aGame findShipBy: ship1) shields equals: 3.
 	self assert: (aGame findShipBy: ship2) shields equals: 2
 ]
+
+{ #category : 'tests' }
+CardTest >> test031WhenInitializeThisReturnACard [
+
+	| card |
+	card := CancellationCard new.
+
+	self assert: card initializeThis equals: card
+]
+
+{ #category : 'tests' }
+CardTest >> test032WhenCardIsCreatedAndIsNotPermanentThenIsRPermanentResturnFalse [
+
+	| card |
+	card := CancellationCard new.
+	self deny: card isPermanent
+]
+
+{ #category : 'tests' }
+CardTest >> test033WhenCardISMAtchesWithASameTypeOfCardThenReturnTrue [
+
+	| card |
+	card := CancellationCard new.
+
+	self assert: (card matches: CancellationCard)
+]
+
+{ #category : 'tests' }
+CardTest >> test034WhenCardISMAtchesWithADifferentTypeOfCardThenReturnFalse [
+
+	| card |
+	card := CancellationCard new.
+
+	self deny: (card matches: SpeedCard)
+]
+
+{ #category : 'tests' }
+CardTest >> test035WhenApplyDoubleCardOnShipThenItHaveDoubleThrow [
+
+	| aDice dices aDiceBucket distributions amountOfCells aWorm aBoard ship1 ship2 ships cards doubleCard cardManager aGame |
+	aDice := LoadedDice withSequence: #( 3 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: CardGiver with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          until: 1
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	cards := OrderedCollection new.
+	doubleCard := DoubleCard new.
+	cards add: doubleCard.
+	5 timesRepeat: [ cards add: SpeedCard new ].
+	cardManager := FixCardManager withCards: cards.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         cardManager: cardManager.
+	ship1 := aGame findShipBy: ship1.
+	ship2 := aGame findShipBy: ship2.
+	doubleCard applyTo: ship2 using: ship1 in: aGame.
+	self assert: ship1 hasDoubleThrow
+]
