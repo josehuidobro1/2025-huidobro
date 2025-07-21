@@ -361,3 +361,77 @@ BoardTest >> test013WhenCreateBoardThenReturnCorrectLaps [
 		          basedOn: (Distance parsecs: 20).
 	self assert: aBoard laps equals: laps
 ]
+
+{ #category : 'tests' }
+BoardTest >> test014WhenCreateBoardThenReturnCorrectLightYears [
+
+	| amountOfCells aWorm distributions laps aBoard |
+	amountOfCells := 10.
+	aWorm := Worm with: 4 and: 7.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	laps := 3.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          until: laps
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	self assert: aBoard lightYearsPerCell equals:6
+]
+
+{ #category : 'tests' }
+BoardTest >> test015WhenCreateBoardThenReturnCorrectParsecsPerCell [
+
+	| amountOfCells aWorm distributions laps aBoard |
+	amountOfCells := 10.
+	aWorm := Worm with: 4 and: 7.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	laps := 3.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          until: laps
+		          has: distributions
+		          basedOn: (Distance lightYear: 60).
+	self assert: aBoard parsecsPerCell equals: 2
+]
+
+{ #category : 'tests' }
+BoardTest >> test016WhenCreateBoardWithAllBlackHoleEffectThenEffectOnPositionOnAnyCellIsBlackHole [
+
+	| amountOfCells aWorm distributions laps aBoard effect |
+	amountOfCells := 10.
+	aWorm := Worm with: 4 and: 7.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	laps := 3.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          until: laps
+		          has: distributions
+		          basedOn: (Distance lightYear: 60).
+	effect := aBoard effectOnPosition: 3.
+	self assert: effect class equals: BlackHole
+]
+
+{ #category : 'tests' }
+BoardTest >> test017WhenAskForEffectOnPositionOnaWormHoleCellThenReturnWormHole [
+
+	| amountOfCells aWorm distributions laps aBoard effect |
+	amountOfCells := 10.
+	aWorm := Worm with: 4 and: 7.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	laps := 3.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          until: laps
+		          has: distributions
+		          basedOn: (Distance lightYear: 60).
+	effect := aBoard effectOnPosition: 4.
+	self assert: effect class equals: Worm
+]
